@@ -1,7 +1,8 @@
 import { describe, it, expect } from 'vitest'
 import { defineComic } from './defineComic'
+import type { Comic } from './schema'
 
-const valid = {
+const valid: Comic = {
   id: 'demo',
   style: 'Gritty ink, muted palette.',
   characters: {
@@ -11,7 +12,7 @@ const valid = {
     'p1-main': { kind: 'image', path: 'pages/p1/main.latest.png', characters: ['bob'], scene: 'Bob stands in the rain.' },
     'p1-anim': { kind: 'video', path: 'pages/p1/anim.latest.mp4', from: 'p1-main', to: 'p1-main', transition: 'Bob raises his head.' },
   },
-} as const
+}
 
 describe('defineComic', () => {
   it('accepts a valid comic and returns it', () => {
