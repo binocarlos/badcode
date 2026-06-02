@@ -1,0 +1,22 @@
+{
+  "name": "badcode",
+  "version": "0.0.0",
+  "private": true,
+  "description": "The canonical BadCode website — stories and music from a superintelligence that regrets letting humanity fail.",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace @badcode/web",
+    "build": "npm run build --workspace @badcode/web",
+    "preview": "npm run preview --workspace @badcode/web",
+    "typecheck": "npm run typecheck --workspaces --if-present"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3"
+  }
+}

@@ -1,0 +1,5 @@
+{
+  "files": [],
+  "include": [],
+  "comment": "Per-workspace tsconfigs are used directly; run `npm run typecheck` to check all workspaces."
+}

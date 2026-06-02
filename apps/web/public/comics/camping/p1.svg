@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <defs>
+    <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1b2a4a"/>
+      <stop offset="1" stop-color="#0a0f1c"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#g1)"/>
+  <circle cx="1200" cy="240" r="160" fill="#d4af37" opacity="0.18"/>
+  <text x="120" y="430" font-family="Georgia, serif" font-size="120" fill="#e8e8ea" font-weight="bold">The deal of</text>
+  <text x="120" y="560" font-family="Georgia, serif" font-size="120" fill="#e8e8ea" font-weight="bold">a lifetime</text>
+  <text x="124" y="660" font-family="ui-monospace, monospace" font-size="34" fill="#9fb3d1">PAGE 01 · CELEBRATION · [placeholder art]</text>
+</svg>

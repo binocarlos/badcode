@@ -1,0 +1,26 @@
+{
+  "name": "@badcode/comic",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Code-first scroll-driven comic rendering library for BadCode.",
+  "type": "module",
+  "main": "./src/index.ts",
+  "module": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./effects": "./src/effects/index.ts",
+    "./transitions": "./src/transitions/index.ts",
+    "./text": "./src/text/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0"
+  },
+  "dependencies": {
+    "roughjs": "^4.6.6"
+  }
+}
