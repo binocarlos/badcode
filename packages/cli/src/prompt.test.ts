@@ -77,4 +77,9 @@ describe('buildPrompt: --add text', () => {
     const r = buildPrompt(comic, { kind: 'asset', id: 'p2-main' }, 'Make it golden hour.')
     expect(r.prompt.endsWith('Scene: Bob offers a coin.\nMake it golden hour.')).toBe(true)
   })
+
+  it('appends additive text to a video prompt too', () => {
+    const r = buildPrompt(comic, { kind: 'asset', id: 'p2-anim' }, 'Slow motion.')
+    expect(r.prompt.endsWith('Transition: Bob extends his hand.\nSlow motion.')).toBe(true)
+  })
 })

@@ -45,3 +45,8 @@ export function parseVersion(filename: string): number | null {
   const match = filename.match(/\.v(\d+)\.[^.]+$/)
   return match ? Number(match[1]) : null
 }
+
+/** Bucket key prefix for an asset's directory, e.g. `comics/demo/pages/p2/`. */
+export function comicKeyPrefix(comicId: string, parts: LatestParts): string {
+  return `comics/${comicId}/${parts.dir ? `${parts.dir}/` : ''}`
+}

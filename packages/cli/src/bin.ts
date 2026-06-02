@@ -6,6 +6,7 @@ import { push } from './push'
 import { status } from './status'
 import { GsutilBucket } from './bucket'
 import type { Target } from './target'
+import type { PromptResult } from './prompt'
 
 /** Resolve the CLI's (assetId | --character) into a Target. */
 function toTarget(assetId: string | undefined, character: string | undefined): Target {
@@ -14,7 +15,7 @@ function toTarget(assetId: string | undefined, character: string | undefined): T
   throw new Error('provide an <assetId> or --character <id>')
 }
 
-function printPrompt(result: { prompt: string; references: { label: string; url: string }[]; refHeading: string }): void {
+function printPrompt(result: PromptResult): void {
   console.log('\n--- PROMPT (paste into Gemini) ---\n')
   console.log(result.prompt)
   if (result.references.length > 0) {

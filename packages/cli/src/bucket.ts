@@ -1,9 +1,10 @@
 import { execFile } from 'node:child_process'
 import { promisify } from 'node:util'
+import { BUCKET } from '@badcode/comic-meta'
 
 const execFileAsync = promisify(execFile)
 
-export const GS_BUCKET = 'badcode-storage'
+export const GS_BUCKET = BUCKET
 export const IMMUTABLE_CC = 'public, max-age=31536000, immutable'
 export const LATEST_CC = 'no-cache'
 

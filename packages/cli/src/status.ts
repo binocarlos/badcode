@@ -1,6 +1,6 @@
 import type { Comic } from '@badcode/comic-meta'
 import type { Bucket } from './bucket'
-import { splitLatestPath, parseVersion } from './bucket-path'
+import { splitLatestPath, parseVersion, comicKeyPrefix } from './bucket-path'
 
 export interface AssetStatus {
   id: string
@@ -11,7 +11,7 @@ export interface AssetStatus {
 
 async function statusFor(bucket: Bucket, comicId: string, id: string, kind: string, path: string): Promise<AssetStatus> {
   const parts = splitLatestPath(path)
-  const dirPrefix = `comics/${comicId}/${parts.dir ? `${parts.dir}/` : ''}`
+  const dirPrefix = comicKeyPrefix(comicId, parts)
   const versionFiles = await bucket.list(`${dirPrefix}${parts.base}.v*.${parts.ext}`)
   const latestFiles = await bucket.list(`${dirPrefix}${parts.base}.latest.${parts.ext}`)
   const versions = versionFiles.map(parseVersion).filter((n): n is number => n !== null).length

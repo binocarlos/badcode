@@ -54,4 +54,25 @@ describe('push', () => {
     const { bucket } = fakeBucket([])
     await expect(push(bucket, comic, { kind: 'asset', id: 'nope' }, '/tmp/x.png')).rejects.toThrow(/unknown asset/)
   })
+
+  it('handles a root-level asset (empty dir) without a double slash', async () => {
+    const rootComic = defineComic({
+      id: 'demo',
+      style: 'ink',
+      characters: {},
+      assets: { cover: { kind: 'image', path: 'cover.latest.png', characters: [], scene: 'x' } },
+    })
+    const { bucket, calls } = fakeBucket([])
+    const version = await push(bucket, rootComic, { kind: 'asset', id: 'cover' }, '/tmp/cover.png')
+    expect(version).toBe(1)
+    expect(calls.upload[0][1]).toBe('comics/demo/cover.v1.png')
+    expect(calls.copy[0][1]).toBe('comics/demo/cover.latest.png')
+  })
+
+  it('uses max+1 when version numbers have gaps', async () => {
+    const { bucket, calls } = fakeBucket(['main.v1.png', 'main.v3.png'])
+    const version = await push(bucket, comic, { kind: 'asset', id: 'p2-main' }, '/tmp/out.png')
+    expect(version).toBe(4)
+    expect(calls.upload[0][1]).toBe('comics/demo/pages/p2/main.v4.png')
+  })
 })
