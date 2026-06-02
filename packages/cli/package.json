@@ -1,0 +1,24 @@
+{
+  "name": "@badcode/cli",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "badcode — CLI for preparing Gemini prompts and managing comic assets in GCS.",
+  "bin": {
+    "badcode": "./src/bin.ts"
+  },
+  "scripts": {
+    "badcode": "tsx src/bin.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@badcode/comic-meta": "*",
+    "commander": "^12.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "tsx": "^4.19.2",
+    "vitest": "^2.1.8"
+  }
+}
