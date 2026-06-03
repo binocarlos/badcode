@@ -1,25 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&display=swap');
+
 :root {
-  color-scheme: dark;
+  --black: #000;
+  --white: #fff;
+  --cyan: #46d5ff;
+  --grey: #6a7480;
+  --mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
-html,
-body {
+html, body, #root {
   margin: 0;
   padding: 0;
-  background: #000;
-  color: #f5f5f5;
-  font-family:
-    system-ui,
-    -apple-system,
-    'Segoe UI',
-    Roboto,
-    sans-serif;
+  background: var(--black);
+  color: var(--white);
+  font-family: var(--mono);
 }
 
-#root {
-  min-height: 100vh;
+a { color: var(--cyan); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* The 3D canvas is fixed; a tall spacer drives scroll → camera t. */
+.home-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+}
+.home-scroll-driver { position: relative; width: 100%; }
+
+/* Honour reduced motion globally for any CSS transitions we add. */
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
 }
