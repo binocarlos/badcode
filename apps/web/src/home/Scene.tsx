@@ -4,6 +4,7 @@ import { Spine } from './Spine'
 import { Constellation } from './Constellation'
 import { BranchTip } from './BranchTip'
 import { CameraRig } from './CameraRig'
+import { Chrome } from './Chrome'
 import { GRAPH } from './graph'
 import { COLORS } from './colors'
 import { createCameraController, CameraControllerContext } from './cameraController'
@@ -32,6 +33,7 @@ export default function Scene() {
           <BranchTip title={GRAPH.tips.futureProof.title} pos={GRAPH.tips.futureProof.pos} route={GRAPH.tips.futureProof.route} up={false} />
         </Canvas>
       </div>
+      <Chrome />
       <div className="home-scroll-driver" style={{ height: `${SCROLL_PAGES * 100}vh` }} aria-hidden />
     </CameraControllerContext.Provider>
   )
