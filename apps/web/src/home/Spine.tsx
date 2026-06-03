@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { Line } from '@react-three/drei'
 import { useFrame } from '@react-three/fiber'
 import { GRAPH } from './graph'
@@ -33,22 +33,25 @@ export function Spine() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const historyRef = useRef<any>(null)
   const lastProgress = useRef(-1)
+  // ctrl.drawProgress is mutated outside React (gsap), so it can't gate render directly.
+  // Flip this reactive flag from inside useFrame when the draw-in completes.
+  const [branchesVisible, setBranchesVisible] = useState(ctrl.drawProgress > 0.98)
 
   useFrame(() => {
     const line = historyRef.current
-    if (!line || ctrl.drawProgress === lastProgress.current) return
-    lastProgress.current = ctrl.drawProgress
-    line.geometry.setPositions(drawnHistory(ctrl.drawProgress).flat())
+    if (line && ctrl.drawProgress !== lastProgress.current) {
+      lastProgress.current = ctrl.drawProgress
+      line.geometry.setPositions(drawnHistory(ctrl.drawProgress).flat())
+    }
+    if (!branchesVisible && ctrl.drawProgress > 0.98) setBranchesVisible(true)
   })
-
-  const branchesVisible = ctrl.drawProgress > 0.98
   return (
     <group>
-      <Line ref={historyRef} points={to3(branches.history)} color={COLORS.white} lineWidth={2} />
+      <Line ref={historyRef} points={to3(branches.history)} color={COLORS.white} lineWidth={3} />
       {branchesVisible && (
         <>
-          <Line points={to3(branches.bad)} color="#bbbbbb" lineWidth={2} />
-          <Line points={to3(branches.good)} color="#bbbbbb" lineWidth={2} />
+          <Line points={to3(branches.bad)} color="#dfe7ec" lineWidth={3} />
+          <Line points={to3(branches.good)} color="#dfe7ec" lineWidth={3} />
         </>
       )}
       {historyCommits.map(([x, y], i) => (
