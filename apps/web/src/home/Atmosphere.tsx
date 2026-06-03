@@ -5,7 +5,7 @@ import { COLORS } from './colors'
 export function Atmosphere() {
   return (
     <>
-      <fog attach="fog" args={[COLORS.black, 30, 90]} />
+      <fog attach="fog" args={[COLORS.black, 55, 220]} />
       <ambientLight intensity={0.4} />
       <pointLight position={[0, 0, 20]} intensity={30} color={COLORS.cyan} />
       <Stars radius={120} depth={60} count={1400} factor={3} fade speed={0.4} />

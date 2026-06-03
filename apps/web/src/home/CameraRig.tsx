@@ -6,8 +6,8 @@ import { useCameraController } from './cameraController'
 const here = new Vector3()
 const ahead = new Vector3()
 const desired = new Vector3()
-const introPos = new Vector3(2, 0, 60) // pulled-back overview
-const introTarget = new Vector3(2, 0, 0)
+const introPos = new Vector3(6, 0, 76) // pulled-back overview that frames the whole fork
+const introTarget = new Vector3(6, 0, 0)
 
 /** Side-on follow camera: sits back on +Z above the local tour point, looks slightly ahead. */
 export function CameraRig() {
@@ -22,8 +22,8 @@ export function CameraRig() {
       return
     }
     pointAtT(ctrl.t, here)
-    pointAtT(Math.min(1, ctrl.t + 0.04), ahead)
-    desired.set(here.x, here.y + 2, 14) // back on +Z, slightly above
+    pointAtT(Math.min(1, ctrl.t + 0.05), ahead)
+    desired.set(here.x, here.y + 3, 18) // back on +Z, slightly above
     camera.position.lerp(desired, k)
     camera.lookAt(ahead.x, ahead.y, 0)
   })
