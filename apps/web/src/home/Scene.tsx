@@ -4,6 +4,7 @@ import { Spine } from './Spine'
 import { Constellation } from './Constellation'
 import { BranchTip } from './BranchTip'
 import { CameraRig } from './CameraRig'
+import { Atmosphere } from './Atmosphere'
 import { Chrome } from './Chrome'
 import { GRAPH } from './graph'
 import { COLORS } from './colors'
@@ -26,6 +27,7 @@ export default function Scene() {
       <div className="home-canvas">
         <Canvas camera={{ position: [2, 0, 60], fov: 50 }}>
           <color attach="background" args={[COLORS.black]} />
+          <Atmosphere />
           <CameraRig />
           <Spine />
           <Constellation />
