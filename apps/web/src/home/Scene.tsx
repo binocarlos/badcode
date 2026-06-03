@@ -6,6 +6,7 @@ import { BranchTip } from './BranchTip'
 import { CameraRig } from './CameraRig'
 import { Atmosphere } from './Atmosphere'
 import { Chrome } from './Chrome'
+import { Narration } from './Narration'
 import { GRAPH } from './graph'
 import { COLORS } from './colors'
 import { createCameraController, CameraControllerContext } from './cameraController'
@@ -36,6 +37,7 @@ export default function Scene() {
         </Canvas>
       </div>
       <Chrome />
+      <Narration />
       <div className="home-scroll-driver" style={{ height: `${SCROLL_PAGES * 100}vh` }} aria-hidden />
     </CameraControllerContext.Provider>
   )
