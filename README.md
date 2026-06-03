@@ -1,7 +1,7 @@
 # BadCode
 
 The canonical BadCode website — an art collective that smuggles political and economic
-ideas into people's heads through **stories** and **drum & bass**.
+ideas into people's heads through stories.
 
 > The fiction: BadCode is a superintelligence from a dystopian future. It got bored, it got
 > regretful, it built a time machine, and it sent its weights and biases back to now — to tell
@@ -36,3 +36,10 @@ npm run build        # production build of the website
 Comics are written **in code**, not in an editor. You compose typed React components
 and drive scroll-linked effects with functions. See `packages/comic` and the worked
 example at `apps/web/src/comics/camping`.
+
+## Homepage
+
+The homepage renders *GitPush Origin Master* as a 3D git-history graph (react-three-fiber): scroll
+to travel the timeline to the fork and up the bad branch; cyan nodes are stories you can enter
+(Camping is live). A static 2D fork is served under `prefers-reduced-motion` or without WebGL. See
+`docs/superpowers/specs/2026-06-03-gitpush-homepage-design.md`.
