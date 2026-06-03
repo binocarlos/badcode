@@ -1,5 +1,6 @@
 import { Canvas } from '@react-three/fiber'
 import { Spine } from './Spine'
+import { Constellation } from './Constellation'
 import { COLORS } from './colors'
 
 export default function Scene() {
@@ -8,6 +9,7 @@ export default function Scene() {
       <Canvas camera={{ position: [0, 0, 45], fov: 50 }}>
         <color attach="background" args={[COLORS.black]} />
         <Spine />
+        <Constellation />
       </Canvas>
     </div>
   )
