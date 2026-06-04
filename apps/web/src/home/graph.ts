@@ -51,7 +51,7 @@ export const GRAPH = {
 } as const
 
 type DrawThresholdInput = {
-  branch: 'bad' | 'good' | 'history'
+  branch: Branch
   clip:   readonly [number, number]
 }
 
