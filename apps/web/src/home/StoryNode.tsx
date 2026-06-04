@@ -11,21 +11,19 @@ import { COLORS } from './colors'
 
 export function StoryNode({
   step,
-  focus,
   layout,
   onFlash,
   revealed,
   menuMode,
 }: {
   step:     HomeStep
-  focus:    number
   layout:   TimelineLayout
   onFlash:  () => void
   revealed: boolean
   menuMode: boolean
 }) {
-  const navigate   = useNavigate()
-  const ctrl       = useCameraController()
+  const navigate = useNavigate()
+  const ctrl     = useCameraController()
   const [hovered, setHovered] = useState(false)
   const [cx, cy] = step.pos
   const [tx, ty] = step.clip
@@ -47,7 +45,7 @@ export function StoryNode({
 
   if (!revealed) return null
 
-  // Historical event nodes: tick mark + label, no sphere, not clickable.
+  // Historical event: tick mark + label on the trunk line.
   if (step.kind === 'event') {
     return (
       <group>
@@ -73,8 +71,8 @@ export function StoryNode({
     )
   }
 
-  // Content nodes: floating sphere + tether + label.
-  const dim = step.status === 'live' ? 1 : 0.45
+  // Content node: sphere + tether + label. Opacity is full once revealed — no focus fade.
+  const dim = step.status === 'live' ? 1 : 0.5
 
   return (
     <group>
@@ -83,7 +81,7 @@ export function StoryNode({
         color={COLORS.tether}
         lineWidth={1}
         transparent
-        opacity={menuMode ? 0.7 : 0.7 * focus}
+        opacity={0.6}
       />
       {step.route && (
         <mesh
@@ -101,7 +99,7 @@ export function StoryNode({
         <meshBasicMaterial
           color={COLORS.cyan}
           transparent
-          opacity={dim * (menuMode ? 1 : Math.max(focus, 0.15))}
+          opacity={hovered ? 1 : dim}
           toneMapped={false}
         />
       </mesh>
@@ -111,9 +109,7 @@ export function StoryNode({
           fontFamily: 'var(--mono)',
           fontSize:   12,
           whiteSpace: 'nowrap',
-          opacity:    menuMode
-            ? dim
-            : (hovered || step.status === 'live' ? dim * Math.max(focus, 0.2) : 0.25 * focus),
+          opacity:    hovered ? 1 : dim,
           transition: 'opacity 120ms',
         }}>
           {step.title}{step.status === 'coming-soon' ? ' · soon' : ''}
