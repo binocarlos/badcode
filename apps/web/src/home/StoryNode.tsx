@@ -45,44 +45,23 @@ export function StoryNode({
 
   if (!revealed) return null
 
-  // Historical event: tick mark + label on the trunk line.
-  if (step.kind === 'event') {
-    return (
-      <group>
-        <Line
-          points={[[cx, cy - 0.35, 0], [cx, cy + 0.35, 0]]}
-          color={COLORS.white}
-          lineWidth={2}
-          transparent
-          opacity={0.5}
-        />
-        <Html position={[cx + 0.3, cy + 0.6, 0]} style={{ pointerEvents: 'none' }}>
-          <div style={{
-            color:      COLORS.white,
-            fontFamily: 'var(--mono)',
-            fontSize:   10,
-            whiteSpace: 'nowrap',
-            opacity:    0.55,
-          }}>
-            {step.title}
-          </div>
-        </Html>
-      </group>
-    )
-  }
-
-  // Content node: sphere + tether + label. Opacity is full once revealed — no focus fade.
-  const dim = step.status === 'live' ? 1 : 0.5
+  const isEvent   = step.kind === 'event'
+  const dim       = isEvent ? 0.7 : (step.status === 'live' ? 1 : 0.5)
+  const sphereR   = isEvent ? 0.4 : (hovered ? 0.7 : 0.55)
+  const nodeColor = isEvent ? COLORS.grey : COLORS.cyan
 
   return (
     <group>
+      {/* Tether line: branch attachment → floating node position */}
       <Line
         points={[[tx, ty, 0], [cx, cy, 0]]}
         color={COLORS.tether}
         lineWidth={1}
         transparent
-        opacity={0.6}
+        opacity={0.5}
       />
+
+      {/* Hit sphere (invisible) — only for navigable content */}
       {step.route && (
         <mesh
           position={[cx, cy, 0]}
@@ -94,20 +73,35 @@ export function StoryNode({
           <meshBasicMaterial transparent opacity={0} depthWrite={false} />
         </mesh>
       )}
+
+      {/* Visible sphere */}
       <mesh position={[cx, cy, 0]}>
-        <sphereGeometry args={[hovered ? 0.7 : 0.55, 24, 24]} />
+        <sphereGeometry args={[sphereR, 24, 24]} />
         <meshBasicMaterial
-          color={COLORS.cyan}
+          color={nodeColor}
           transparent
           opacity={hovered ? 1 : dim}
           toneMapped={false}
         />
       </mesh>
-      <Html position={[cx + 1, cy + 0.8, 0]} style={{ pointerEvents: 'none' }}>
+
+      {/* White torus ring for branch endpoints (Storyverse / Future Proof) */}
+      {step.ring && (
+        <mesh position={[cx, cy, 0]} rotation={[Math.PI / 2, 0, 0]}>
+          <torusGeometry args={[1.0, 0.08, 16, 48]} />
+          <meshBasicMaterial color={COLORS.white} toneMapped={false} />
+        </mesh>
+      )}
+
+      {/* Label */}
+      <Html
+        position={[cx + (isEvent ? 0.6 : 1), cy + (isEvent ? 0.6 : 0.8), 0]}
+        style={{ pointerEvents: 'none' }}
+      >
         <div style={{
-          color:      COLORS.cyan,
+          color:      isEvent ? COLORS.white : COLORS.cyan,
           fontFamily: 'var(--mono)',
-          fontSize:   12,
+          fontSize:   isEvent ? 10 : 12,
           whiteSpace: 'nowrap',
           opacity:    hovered ? 1 : dim,
           transition: 'opacity 120ms',

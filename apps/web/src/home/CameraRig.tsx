@@ -24,10 +24,12 @@ const KF: Array<{
   { p: 0.51, pos: [10,  9,  22], look: [10,   6,  0] }, // camping
   { p: 0.59, pos: [18,  12, 22], look: [18,   6,  0] }, // karen
   { p: 0.67, pos: [25,  10, 22], look: [25,   6,  0] }, // emperor's coin
-  { p: 0.72, pos: [30,  9,  25], look: [30,   6,  0] }, // storyverse
-  { p: 0.80, pos: [6,   0,  52], look: [6,    0,  0] }, // back to fork
+  { p: 0.72, pos: [30,  9,  25], look: [30,   6,  0] }, // storyverse arrives
+  { p: 0.79, pos: [30,  9,  25], look: [30,   6,  0] }, // dwell at storyverse
+  { p: 0.84, pos: [6,   0,  52], look: [6,    0,  0] }, // pull back to fork
   { p: 0.89, pos: [18, -9,  22], look: [18,  -6,  0] }, // optimistic lens
-  { p: 0.95, pos: [30, -8,  25], look: [30,  -6,  0] }, // future proof
+  { p: 0.93, pos: [30, -8,  25], look: [30,  -6,  0] }, // future proof arrives
+  { p: 0.98, pos: [30, -8,  25], look: [30,  -6,  0] }, // dwell at future proof
   { p: 1.00, pos: [6,   0,  76], look: [6,    0,  0] }, // overview (story end)
 ]
 

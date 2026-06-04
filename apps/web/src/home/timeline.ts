@@ -31,6 +31,7 @@ export interface HomeStep extends StepDef {
   clip:            [number, number]   // branch attachment point for Spine tether
   pos:             [number, number]   // node float position for StoryNode label
   kind?:           'event' | 'content'   // default 'content'
+  ring?:           boolean            // render a white torus ring (branch endpoints)
   cameraBehavior?: CameraBehaviorFn
   route?:          string
   status?:         'live' | 'coming-soon'
@@ -50,7 +51,7 @@ export const homeSteps: HomeStep[] = [
     camera: { position: [-18, 2, 30], lookAt: [-18, 0, 0] },
     title:  '1971 — Off the Gold Standard',
     clip:   [-18, 0],
-    pos:    [-18, 0],
+    pos:    [-18, 2.5],   // floats above trunk
   },
   {
     id:     'git-born',
@@ -60,7 +61,7 @@ export const homeSteps: HomeStep[] = [
     camera: { position: [-10, 2, 30], lookAt: [-10, 0, 0] },
     title:  '2005 — Git Is Born',
     clip:   [-10, 0],
-    pos:    [-10, 0],
+    pos:    [-10, -2.5],  // floats below trunk
   },
   {
     id:     'financial-crisis',
@@ -70,7 +71,7 @@ export const homeSteps: HomeStep[] = [
     camera: { position: [-4, 2, 30], lookAt: [-4, 0, 0] },
     title:  '2008 — The Crash',
     clip:   [-4, 0],
-    pos:    [-4, 0],
+    pos:    [-4, 2.5],    // floats above trunk
   },
   {
     id:     'camping',
@@ -108,6 +109,7 @@ export const homeSteps: HomeStep[] = [
   {
     id:     'storyverse',
     branch: 'bad',
+    ring:   true,
     phases: { enter: 2, hold: 1, exit: 2 },
     camera: { position: [30, 9, 22], lookAt: [30, 6, 0] },
     title:  'Storyverse',
@@ -129,6 +131,7 @@ export const homeSteps: HomeStep[] = [
   {
     id:     'future-proof',
     branch: 'good',
+    ring:   true,
     phases: { enter: 1, hold: 1, exit: 2 },
     camera: { position: [30, -8, 22], lookAt: [30, -6, 0] },
     title:  'Future Proof',
