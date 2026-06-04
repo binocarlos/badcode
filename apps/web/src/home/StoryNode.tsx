@@ -85,9 +85,10 @@ export function StoryNode({
         />
       </mesh>
 
-      {/* White torus ring for branch endpoints (Storyverse / Future Proof) */}
+      {/* White torus ring for branch endpoints — default rotation puts torus in XY plane,
+          so it appears as a vertical circle (through the poles) when viewed from Z. */}
       {step.ring && (
-        <mesh position={[cx, cy, 0]} rotation={[Math.PI / 2, 0, 0]}>
+        <mesh position={[cx, cy, 0]}>
           <torusGeometry args={[1.0, 0.08, 16, 48]} />
           <meshBasicMaterial color={COLORS.white} toneMapped={false} />
         </mesh>

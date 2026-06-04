@@ -20,12 +20,11 @@ const history: Vec2[] = [
 const bad: Vec2[] = [FORK, BAD_ELBOW, [18, 6], BAD_TIP]
 const good: Vec2[] = [FORK, GOOD_ELBOW, [18, -6], GOOD_TIP]
 
-/** Faint history commits (decorative; positions only). */
+/** Decorative commit dots on the history trunk — one per event node. */
 const historyCommits: Vec2[] = [
-  [-26, 0],
-  [-18, 0],
-  [-10, 0],
-  [-3, 0],
+  [-18, 0],  // gold-standard
+  [-10, 0],  // git-born
+  [-4,  0],  // financial-crisis
 ]
 
 /**
@@ -61,14 +60,38 @@ const clamp01 = (v: number) => Math.min(1, Math.max(0, v))
  * Returns the drawProgress value (0-1) at which the Spine tip first reaches
  * this node's clip position on the tour path.
  *
+ * Uses segment-index geometry (matching drawnSlice) rather than a linear x/30
+ * approximation, so nodes appear the moment the line actually reaches them.
+ *
  * Branch draw ranges mirror Spine.tsx:
- *   history  x ∈ [-30, 0]  →  drawProgress ∈ [0.00, 0.40]
- *   bad      x ∈ [  0, 30] →  drawProgress ∈ [0.40, 0.72]
- *   good     x ∈ [  0, 30] →  drawProgress ∈ [0.72, 1.00]
+ *   history  →  drawProgress ∈ [0.00, 0.40]
+ *   bad      →  drawProgress ∈ [0.40, 0.72]  (3 segments: diagonal + 2 flat)
+ *   good     →  drawProgress ∈ [0.72, 0.95]  (3 segments: diagonal + 2 flat)
  */
 export function drawThreshold({ branch, clip }: DrawThresholdInput): number {
-  const x = clip[0]
-  if (branch === 'history') return clamp01(((x + 30) / 30) * 0.4)
-  if (branch === 'bad')     return clamp01(0.4 + (x / 30) * 0.32)
-  return                           clamp01(0.72 + (x / 30) * 0.28)
+  const cx = clip[0]
+  if (branch === 'history') {
+    // Straight horizontal line from x=-30 to x=0 — linear x maps directly.
+    return clamp01(((cx + 30) / 30) * 0.4)
+  }
+
+  // bad3 = [(0,0), (6,6), (18,6), (30,6)]  — 3 segments
+  // good3 = [(0,0), (6,-6), (18,-6), (30,-6)] — 3 segments
+  // drawnSlice gives equal weight to each segment by index, so we compute
+  // the fractional segment index (head) at which the line tip first hits cx.
+  let head: number
+  if (cx <= 6) {
+    head = cx / 6           // diagonal segment 0: FORK → elbow
+  } else if (cx <= 18) {
+    head = 1 + (cx - 6) / 12   // flat segment 1
+  } else {
+    head = 2 + (cx - 18) / 12  // flat segment 2
+  }
+  const localProgress = clamp01(head / 3)
+
+  if (branch === 'bad') {
+    return clamp01(0.4 + localProgress * 0.32)
+  }
+  // good branch draws over 0.72→0.95 (matches Spine localGood range)
+  return clamp01(0.72 + localProgress * 0.23)
 }

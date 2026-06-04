@@ -28,8 +28,9 @@ const KF: Array<{
   { p: 0.79, pos: [30,  9,  25], look: [30,   6,  0] }, // dwell at storyverse
   { p: 0.84, pos: [6,   0,  52], look: [6,    0,  0] }, // pull back to fork
   { p: 0.89, pos: [18, -9,  22], look: [18,  -6,  0] }, // optimistic lens
-  { p: 0.93, pos: [30, -8,  25], look: [30,  -6,  0] }, // future proof arrives
-  { p: 0.98, pos: [30, -8,  25], look: [30,  -6,  0] }, // dwell at future proof
+  { p: 0.91, pos: [30, -8,  25], look: [30,  -6,  0] }, // camera arrives at future proof
+  { p: 0.95, pos: [30, -8,  25], look: [30,  -6,  0] }, // future proof node appears here
+  { p: 0.98, pos: [30, -8,  25], look: [30,  -6,  0] }, // dwell with node visible
   { p: 1.00, pos: [6,   0,  76], look: [6,    0,  0] }, // overview (story end)
 ]
 

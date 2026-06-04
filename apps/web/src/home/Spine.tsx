@@ -34,7 +34,7 @@ function drawnSlice(
 const clamp01 = (v: number) => Math.min(1, Math.max(0, v))
 const localHistory = (p: number) => clamp01(p / 0.4)
 const localBad     = (p: number) => clamp01((p - 0.4)  / 0.32)
-const localGood    = (p: number) => clamp01((p - 0.72) / 0.28)
+const localGood    = (p: number) => clamp01((p - 0.72) / 0.23) // completes at 0.95
 
 // Lines start collapsed (all verts at first point = zero-length = invisible).
 // useFrame grows them from there — no initial flash of the full graph.

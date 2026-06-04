@@ -32,19 +32,23 @@ describe('drawThreshold', () => {
     expect(drawThreshold({ branch: 'history', clip: [0, 0] })).toBeCloseTo(0.4)
   })
 
-  it('bad branch node at x = 10 → ~0.507', () => {
-    expect(drawThreshold({ branch: 'bad', clip: [10, 6] })).toBeCloseTo(0.507)
+  // bad branch: segment-based geometry, elbow at x=6
+  // camping x=10: segment 1 frac=(10-6)/12=0.333 → head=1.333 → local=0.444 → 0.4+0.444*0.32=0.542
+  it('bad branch node at x = 10 → ~0.542', () => {
+    expect(drawThreshold({ branch: 'bad', clip: [10, 6] })).toBeCloseTo(0.542)
   })
 
   it('bad branch tip at x = 30 → 0.72', () => {
     expect(drawThreshold({ branch: 'bad', clip: [30, 6] })).toBeCloseTo(0.72)
   })
 
-  it('good branch node at x = 18 → ~0.888', () => {
-    expect(drawThreshold({ branch: 'good', clip: [18, -6] })).toBeCloseTo(0.888)
+  // good branch draws over 0.72→0.95 (localGood range)
+  // x=18: segment 1 frac=1 → head=2 → local=0.667 → 0.72+0.667*0.23=0.873
+  it('good branch node at x = 18 → ~0.873', () => {
+    expect(drawThreshold({ branch: 'good', clip: [18, -6] })).toBeCloseTo(0.873)
   })
 
-  it('good branch tip at x = 30 → 1.0', () => {
-    expect(drawThreshold({ branch: 'good', clip: [30, -6] })).toBeCloseTo(1.0)
+  it('good branch tip at x = 30 → 0.95', () => {
+    expect(drawThreshold({ branch: 'good', clip: [30, -6] })).toBeCloseTo(0.95)
   })
 })
