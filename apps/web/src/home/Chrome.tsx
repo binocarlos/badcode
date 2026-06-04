@@ -22,7 +22,6 @@ export function Chrome() {
     }
     ctrl.mode = 'travel'
     window.scrollTo(0, 0)
-    ctrl.t = 0
     const tw = autoplay()
     tw.eventCallback('onComplete', () => { setPlaying(false); tween.current = null })
     tween.current = tw

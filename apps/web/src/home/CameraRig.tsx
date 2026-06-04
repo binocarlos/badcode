@@ -1,6 +1,5 @@
 import { useThree, useFrame } from '@react-three/fiber'
 import { Vector3 } from 'three'
-import { pointAtT } from './path'
 import { useCameraController } from './cameraController'
 
 const here = new Vector3()
@@ -23,10 +22,11 @@ export function CameraRig() {
       desiredPos.copy(introPos)
       desiredLook.copy(introTarget)
     } else {
-      pointAtT(ctrl.t, here)
-      pointAtT(Math.min(1, ctrl.t + 0.04), ahead)
-      desiredPos.set(here.x, here.y + 2.5, 18) // back on +Z, slightly above
-      desiredLook.set(ahead.x, ahead.y, 0)
+      // Placeholder until Task 7 rewrites CameraRig with explicit pose interpolation.
+      here.set(10, 9, 18)
+      ahead.set(10, 6, 0)
+      desiredPos.copy(here)
+      desiredLook.copy(ahead)
     }
     camera.position.lerp(desiredPos, k)
     lookTarget.lerp(desiredLook, k)

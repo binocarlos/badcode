@@ -23,7 +23,6 @@ export default function Scene() {
   const onScroll = useCallback(
     (t: number) => {
       if (t > 0 && ctrl.mode === 'intro') ctrl.mode = 'travel'
-      ctrl.t = t
     },
     [ctrl],
   )
