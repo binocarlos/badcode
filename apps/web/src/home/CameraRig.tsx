@@ -8,26 +8,27 @@ const desiredPos  = new Vector3()
 const desiredLook = new Vector3()
 const lookTarget  = new Vector3(6, 0, 0)
 
-// Camera path: drawProgress (0-1) → camera pose.
-// Keyframes are placed just after each node's drawThreshold so the camera
-// arrives at a good vantage point when the node lights up.
+// Camera path keyframes keyed to story drawProgress (0-1).
+// Note: first AND last keyframes are OVERVIEW_POSE so the camera is already
+// oriented when entering/leaving the story zone.
 const KF: Array<{
   p:    number
   pos:  [number, number, number]
   look: [number, number, number]
 }> = [
-  { p: 0.00, pos: [6,   0,  76], look: [6,   0,  0] }, // overview
+  { p: 0.00, pos: [6,   0,  76], look: [6,   0,  0] }, // overview (story start)
   { p: 0.16, pos: [-18, 2,  36], look: [-18,  0,  0] }, // gold-standard
   { p: 0.27, pos: [-10, 2,  36], look: [-10,  0,  0] }, // git-born
   { p: 0.35, pos: [-4,  2,  36], look: [-4,   0,  0] }, // financial-crisis
-  { p: 0.40, pos: [6,   0,  52], look: [6,    0,  0] }, // fork — zoom out to see split
+  { p: 0.40, pos: [6,   0,  52], look: [6,    0,  0] }, // fork
   { p: 0.51, pos: [10,  9,  22], look: [10,   6,  0] }, // camping
   { p: 0.59, pos: [18,  12, 22], look: [18,   6,  0] }, // karen
   { p: 0.67, pos: [25,  10, 22], look: [25,   6,  0] }, // emperor's coin
   { p: 0.72, pos: [30,  9,  25], look: [30,   6,  0] }, // storyverse
   { p: 0.80, pos: [6,   0,  52], look: [6,    0,  0] }, // back to fork
   { p: 0.89, pos: [18, -9,  22], look: [18,  -6,  0] }, // optimistic lens
-  { p: 1.00, pos: [30, -8,  25], look: [30,  -6,  0] }, // future proof
+  { p: 0.95, pos: [30, -8,  25], look: [30,  -6,  0] }, // future proof
+  { p: 1.00, pos: [6,   0,  76], look: [6,    0,  0] }, // overview (story end)
 ]
 
 function lerp(a: number, b: number, t: number) { return a + (b - a) * t }
@@ -49,14 +50,14 @@ function targetAt(p: number) {
   return last
 }
 
-export function CameraRig({ mode }: { mode: 'story' | 'menu' }) {
+export function CameraRig() {
   const camera = useThree((s) => s.camera)
   const ctrl   = useCameraController()
 
   useFrame((_, dt) => {
-    const k = 1 - Math.pow(0.0001, dt) // frame-rate-independent lerp
+    const k = 1 - Math.pow(0.0001, dt)
 
-    const tgt = mode === 'menu'
+    const tgt = ctrl.isOverview
       ? { pos: OVERVIEW_POSE.position, look: OVERVIEW_POSE.lookAt }
       : targetAt(ctrl.drawProgress)
 

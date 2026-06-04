@@ -3,14 +3,15 @@ import { createContext, useContext } from 'react'
 
 export type CameraMode = 'intro' | 'travel'
 
-/** Mutable ref-like controller shared by the rig, the opening sequence, and Chrome. */
 export interface CameraController {
   mode:         CameraMode
   drawProgress: number
+  isOverview:   boolean   // true when in the top/bottom overview bands
 }
 
 export function createCameraController(): CameraController {
-  return { mode: 'intro', drawProgress: 0 }
+  // Start in overview so the full diagram is visible on load.
+  return { mode: 'intro', drawProgress: 1, isOverview: true }
 }
 
 export const CameraControllerContext = createContext<CameraController | null>(null)
