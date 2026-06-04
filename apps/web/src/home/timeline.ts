@@ -24,14 +24,16 @@ export const OVERVIEW_POSE: CameraPose = {
 }
 
 export interface HomeStep extends StepDef {
-  phases:  Phases
-  camera:  CameraPose
-  title:   string
-  branch:  'bad' | 'good'
-  clip:    [number, number]   // branch attachment point for Spine tether
-  pos:     [number, number]   // node float position for StoryNode label
-  route?:  string
-  status?: 'live' | 'coming-soon'
+  phases:          Phases
+  camera:          CameraPose
+  title:           string
+  branch:          'bad' | 'good' | 'history'
+  clip:            [number, number]   // branch attachment point for Spine tether
+  pos:             [number, number]   // node float position for StoryNode label
+  kind?:           'event' | 'content'   // default 'content'
+  cameraBehavior?: CameraBehaviorFn
+  route?:          string
+  status?:         'live' | 'coming-soon'
 }
 
 /**
@@ -40,6 +42,36 @@ export interface HomeStep extends StepDef {
  * Phase budgets are in UNIT_VH units (1 = one viewport of scroll).
  */
 export const homeSteps: HomeStep[] = [
+  {
+    id:     'gold-standard',
+    kind:   'event',
+    branch: 'history',
+    phases: { enter: 0.5, hold: 0.5, exit: 0.5 },
+    camera: { position: [-18, 2, 30], lookAt: [-18, 0, 0] },
+    title:  '1971 — Off the Gold Standard',
+    clip:   [-18, 0],
+    pos:    [-18, 0],
+  },
+  {
+    id:     'git-born',
+    kind:   'event',
+    branch: 'history',
+    phases: { enter: 0.5, hold: 0.5, exit: 0.5 },
+    camera: { position: [-10, 2, 30], lookAt: [-10, 0, 0] },
+    title:  '2005 — Git Is Born',
+    clip:   [-10, 0],
+    pos:    [-10, 0],
+  },
+  {
+    id:     'financial-crisis',
+    kind:   'event',
+    branch: 'history',
+    phases: { enter: 0.5, hold: 0.5, exit: 0.5 },
+    camera: { position: [-4, 2, 30], lookAt: [-4, 0, 0] },
+    title:  '2008 — The Crash',
+    clip:   [-4, 0],
+    pos:    [-4, 0],
+  },
   {
     id:     'camping',
     branch: 'bad',
