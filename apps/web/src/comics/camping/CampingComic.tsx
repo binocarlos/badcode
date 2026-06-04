@@ -15,7 +15,7 @@ export function CampingComic() {
   return (
     <ScrollComic progressBar pageIndicator scrollHint>
       {/* 1 — the celebration. Slow zoom toward the gold halo. */}
-      <Page scrollDuration={1.4} effect={zoom({ amount: 1.4, focal: [0.75, 0.27] })} background="#0a0f1c">
+      <Page phases={{ enter: 0, hold: 1.4, exit: 0 }} scrollDuration={1.4} effect={zoom({ amount: 1.4, focal: [0.75, 0.27] })} background="#0a0f1c">
         <ImageWidget src={resolve(meta, 'p1-main')} />
         <SidePanelText reveal={[fadeIn(), pause(0.3), fadeOut()]} background="dark-glass">
           <h1 style={{ margin: '0 0 12px', fontSize: 34 }}>Camping</h1>
@@ -28,6 +28,7 @@ export function CampingComic() {
 
       {/* 2 — the car park. Color drains to grey as we meet Bob. Rough speech bubble. */}
       <Page
+        phases={{ enter: 0, hold: 1.6, exit: 0 }}
         scrollDuration={1.6}
         effect={grayscale()}
         transition={crossfade({ duration: 700 })}
@@ -47,6 +48,7 @@ export function CampingComic() {
 
       {/* 3 — the ghost. A breathing zoom; iris-in; a rough thought bubble. */}
       <Page
+        phases={{ enter: 0, hold: 1.6, exit: 0 }}
         scrollDuration={1.6}
         effect={zoomInOut({ peak: 1.3 })}
         transition={iris({ duration: 800 })}
@@ -66,6 +68,7 @@ export function CampingComic() {
 
       {/* 4 — five years later. A slow pan; sequential fade; narration + payoff bubble. */}
       <Page
+        phases={{ enter: 0, hold: 1.6, exit: 0 }}
         scrollDuration={1.6}
         effect={pan({ x: -8, scale: 1.2 })}
         transition={fadeOutFadeIn({ duration: 800 })}
