@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
-import { GRAPH, storyNodes } from './graph'
+import { GRAPH } from './graph'
+import { homeSteps } from './timeline'
 import { COLORS } from './colors'
 
 // Plane (x:-32..32, y:-14..14) → SVG (0..1280, 0..560). y is flipped (up = -screen).
@@ -35,8 +36,8 @@ export function Fallback2D() {
             </Link>
           ))}
           {/* story nodes */}
-          {storyNodes.map((n) => (
-            <Link key={n.id} to={n.route} aria-label={`${n.title}${n.status === 'live' ? '' : ' (coming soon)'}`}>
+          {homeSteps.map((n) => (
+            <Link key={n.id} to={n.route ?? '#'} aria-label={`${n.title}${n.status === 'live' ? '' : ' (coming soon)'}`}>
               <rect x={SX(n.pos[0]) - 14} y={SY(n.pos[1]) - 14} width={240} height={28} fill="transparent" />
               <line x1={SX(n.clip[0])} y1={SY(n.clip[1])} x2={SX(n.pos[0])} y2={SY(n.pos[1])} stroke={COLORS.tether} strokeWidth={1} />
               <circle cx={SX(n.pos[0])} cy={SY(n.pos[1])} r={8} fill="none" stroke={COLORS.cyan} strokeWidth={2} opacity={n.status === 'live' ? 1 : 0.5} />

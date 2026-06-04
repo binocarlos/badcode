@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Line, Html } from '@react-three/drei'
 import gsap from 'gsap'
-import type { StoryNode as StoryNodeData } from './graph'
+import type { HomeStep as StoryNodeData } from './timeline'
 import { flyToT } from './drivers'
 import { useCameraController } from './cameraController'
 import { COLORS } from './colors'
@@ -17,10 +17,10 @@ export function StoryNode({ node, onFlash }: { node: StoryNodeData; onFlash: () 
 
   const enter = () => {
     ctrl.mode = 'travel'
-    flyToT(node.t, 1.1)
+    flyToT(0, 1.1) // TODO Task 11: replace with timeline-derived scroll position
     gsap.delayedCall(1.0, () => {
       onFlash()
-      gsap.delayedCall(0.35, () => navigate(node.route, { state: { fromNode: node.id } }))
+      gsap.delayedCall(0.35, () => navigate(node.route ?? '/', { state: { fromNode: node.id } }))
     })
   }
 

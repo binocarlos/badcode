@@ -1,7 +1,6 @@
 import { useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { flyToT, autoplay } from './drivers'
-import { waypoints } from './graph'
 import { useCameraController } from './cameraController'
 
 const btn: React.CSSProperties = {
@@ -37,9 +36,9 @@ export function Chrome() {
         <div style={{ color: 'var(--grey)', fontSize: 11 }}>git push origin master</div>
       </div>
       <div style={{ position: 'absolute', top: 20, right: 24, display: 'flex', gap: 10, pointerEvents: 'auto' }}>
-        <button style={btn} onClick={() => { ctrl.mode = 'travel'; flyToT(waypoints.fork) }}>fork</button>
-        <button style={btn} onClick={() => { ctrl.mode = 'travel'; flyToT(waypoints.storyverse) }}>storyverse</button>
-        <button style={btn} onClick={() => { ctrl.mode = 'travel'; flyToT(waypoints.futureProof) }}>future proof</button>
+        <button style={btn} onClick={() => { ctrl.mode = 'travel'; flyToT(0.235) }}>fork</button>
+        <button style={btn} onClick={() => { ctrl.mode = 'travel'; flyToT(0.49) }}>storyverse</button>
+        <button style={btn} onClick={() => { ctrl.mode = 'travel'; flyToT(1) }}>future proof</button>
         <button style={btn} onClick={togglePlay}>{playing ? 'stop' : 'play'}</button>
         <Link to="/about" style={{ ...btn, display: 'inline-block' }}>about</Link>
       </div>

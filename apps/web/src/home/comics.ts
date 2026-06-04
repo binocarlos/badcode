@@ -1,6 +1,6 @@
 import type { ComponentType } from 'react'
 import { CampingComic } from '../comics/camping/CampingComic'
-import { storyNodes } from './graph'
+import { homeSteps } from './timeline'
 
 export type ComicResolution =
   | { kind: 'live'; title: string; Component: ComponentType }
@@ -13,7 +13,7 @@ const liveComics: Record<string, ComponentType> = {
 }
 
 export function resolveComic(slug: string): ComicResolution {
-  const node = storyNodes.find((n) => n.route === `/comics/${slug}`)
+  const node = homeSteps.find((n) => n.route === `/comics/${slug}`)
   if (!node) return { kind: 'not-found' }
   const Component = liveComics[slug]
   if (node.status === 'live' && Component) return { kind: 'live', title: node.title, Component }

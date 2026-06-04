@@ -1,6 +1,5 @@
 import { useRef, useState, useCallback } from 'react'
 import { Canvas } from '@react-three/fiber'
-import { useLocation } from 'react-router-dom'
 import { Spine } from './Spine'
 import { Constellation } from './Constellation'
 import { BranchTip } from './BranchTip'
@@ -9,7 +8,7 @@ import { Atmosphere } from './Atmosphere'
 import { Chrome } from './Chrome'
 import { Narration } from './Narration'
 import { OpeningSequence } from './OpeningSequence'
-import { GRAPH, storyNodes } from './graph'
+import { GRAPH } from './graph'
 import { COLORS } from './colors'
 import { createCameraController, CameraControllerContext } from './cameraController'
 import { useScrollProgress } from './useScrollProgress'
@@ -18,20 +17,8 @@ import { useScrollProgress } from './useScrollProgress'
 const SCROLL_PAGES = 6
 
 export default function Scene() {
-  const location = useLocation()
   const ctrl = useRef(createCameraController()).current
   const [flash, setFlash] = useState(false)
-
-  // Re-emerge: if we returned to "/" from a node, start the camera already at that node.
-  const fromNode = (location.state as { fromNode?: string } | null)?.fromNode
-  if (fromNode && ctrl.mode === 'intro') {
-    const node = storyNodes.find((n) => n.id === fromNode)
-    if (node) {
-      ctrl.mode = 'travel'
-      ctrl.t = node.t
-      ctrl.drawProgress = 1
-    }
-  }
 
   const onScroll = useCallback(
     (t: number) => {
