@@ -48,30 +48,30 @@ export const homeSteps: HomeStep[] = [
     kind:   'event',
     branch: 'history',
     phases: { enter: 0.5, hold: 0.5, exit: 0.5 },
-    camera: { position: [-18, 2, 30], lookAt: [-18, 0, 0] },
+    camera: { position: [-22, 2, 30], lookAt: [-22, 0, 0] },
     title:  '1971 — Off the Gold Standard',
-    clip:   [-18, 0],
-    pos:    [-18, 2.5],   // floats above trunk
+    clip:   [-22, 0],
+    pos:    [-22, 2.5],   // floats above trunk
   },
   {
     id:     'git-born',
     kind:   'event',
     branch: 'history',
     phases: { enter: 0.5, hold: 0.5, exit: 0.5 },
-    camera: { position: [-10, 2, 30], lookAt: [-10, 0, 0] },
+    camera: { position: [-14, 2, 30], lookAt: [-14, 0, 0] },
     title:  '2005 — Git Is Born',
-    clip:   [-10, 0],
-    pos:    [-10, -2.5],  // floats below trunk
+    clip:   [-14, 0],
+    pos:    [-14, -2.5],  // floats below trunk
   },
   {
     id:     'financial-crisis',
     kind:   'event',
     branch: 'history',
     phases: { enter: 0.5, hold: 0.5, exit: 0.5 },
-    camera: { position: [-4, 2, 30], lookAt: [-4, 0, 0] },
+    camera: { position: [-7, 2, 30], lookAt: [-7, 0, 0] },
     title:  '2008 — The Crash',
-    clip:   [-4, 0],
-    pos:    [-4, 2.5],    // floats above trunk
+    clip:   [-7, 0],
+    pos:    [-7, 2.5],    // floats above trunk
   },
   {
     id:     'camping',
@@ -114,7 +114,7 @@ export const homeSteps: HomeStep[] = [
     camera: { position: [30, 9, 22], lookAt: [30, 6, 0] },
     title:  'Storyverse',
     route:  '/storyverse',
-    clip:   [30, 6],
+    clip:   [29, 6],  // branch tip stops at ring edge (radius 1 short of centre)
     pos:    [30, 6],
   },
   {
@@ -136,7 +136,7 @@ export const homeSteps: HomeStep[] = [
     camera: { position: [30, -8, 22], lookAt: [30, -6, 0] },
     title:  'Future Proof',
     route:  '/future-proof',
-    clip:   [30, -6],
+    clip:   [29, -6],  // branch tip stops at ring edge
     pos:    [30, -6],
   },
 ]

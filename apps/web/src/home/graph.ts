@@ -6,9 +6,9 @@ export type Branch = 'history' | 'bad' | 'good'
 /** History runs flat along -x → 0; fork at origin; bad up, good down, then flat. */
 const FORK: Vec2 = [0, 0]
 const BAD_ELBOW: Vec2 = [6, 6]
-const BAD_TIP: Vec2 = [30, 6]
+const BAD_TIP: Vec2 = [29, 6]    // 1 unit short of ring centre so the line stops at the ring edge
 const GOOD_ELBOW: Vec2 = [6, -6]
-const GOOD_TIP: Vec2 = [30, -6]
+const GOOD_TIP: Vec2 = [29, -6]  // same
 
 const history: Vec2[] = [
   [-30, 0],
@@ -22,9 +22,9 @@ const good: Vec2[] = [FORK, GOOD_ELBOW, [18, -6], GOOD_TIP]
 
 /** Decorative commit dots on the history trunk — one per event node. */
 const historyCommits: Vec2[] = [
-  [-18, 0],  // gold-standard
-  [-10, 0],  // git-born
-  [-4,  0],  // financial-crisis
+  [-22, 0],  // gold-standard (at history waypoint)
+  [-14, 0],  // git-born
+  [-7,  0],  // financial-crisis
 ]
 
 /**

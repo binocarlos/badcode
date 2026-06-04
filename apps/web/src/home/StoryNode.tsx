@@ -46,9 +46,9 @@ export function StoryNode({
   if (!revealed) return null
 
   const isEvent   = step.kind === 'event'
-  const dim       = isEvent ? 0.7 : (step.status === 'live' ? 1 : 0.5)
+  const dim       = isEvent ? 0.65 : (step.status === 'live' ? 1 : 0.5)
   const sphereR   = isEvent ? 0.4 : (hovered ? 0.7 : 0.55)
-  const nodeColor = isEvent ? COLORS.grey : COLORS.cyan
+  const nodeColor = COLORS.cyan  // events and content both cyan
 
   return (
     <group>
