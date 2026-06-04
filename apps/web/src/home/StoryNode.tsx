@@ -33,6 +33,10 @@ export function StoryNode({ node, onFlash }: { node: StoryNodeData; onFlash: () 
         onPointerOut={() => { setHovered(false); document.body.style.cursor = 'auto' }}
         onClick={(e) => { e.stopPropagation(); enter() }}
       >
+        <sphereGeometry args={[1.2, 16, 16]} />
+        <meshBasicMaterial transparent opacity={0} depthWrite={false} />
+      </mesh>
+      <mesh position={[cx, cy, 0]}>
         <sphereGeometry args={[hovered ? 0.7 : 0.55, 24, 24]} />
         <meshBasicMaterial color={COLORS.cyan} transparent opacity={dim} toneMapped={false} />
       </mesh>

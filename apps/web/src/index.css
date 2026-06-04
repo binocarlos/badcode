@@ -28,7 +28,9 @@ a:hover { text-decoration: underline; }
   width: 100vw;
   height: 100vh;
 }
-.home-scroll-driver { position: relative; width: 100%; }
+/* Empty spacer: provides scroll length only. Must not eat pointer events, or it
+   would sit over the fixed canvas and block clicks/hover on the 3D story nodes. */
+.home-scroll-driver { position: relative; width: 100%; pointer-events: none; }
 
 /* Honour reduced motion globally for any CSS transitions we add. */
 @media (prefers-reduced-motion: reduce) {
