@@ -27,7 +27,12 @@ export interface TimelineSample {
   current:   number
   /** True when scroll is before step 0's enter or after the last step's exit. */
   overview:  boolean
-  /** 0..1 across the full scroll track (for progress indicators). */
+  /**
+   * Scroll position as a fraction of the total track height (0..totalHeight).
+   * NOTE: this is scrollPx / totalHeight, not a viewport-adjusted scroll percentage.
+   * For a user-facing progress bar, consumers should compute
+   * scrollPx / (totalHeight - window.innerHeight) instead.
+   */
   position:  number
   direction: 'fwd' | 'bwd' | 'none'
 }
@@ -73,7 +78,7 @@ export function sampleTimeline(
 ): TimelineSample {
   const { steps } = layout
   const focus: number[] = new Array(steps.length).fill(0)
-  let current = 0
+  let current = -1
   let maxFocus = -1
 
   for (let i = 0; i < steps.length; i++) {
@@ -101,6 +106,12 @@ export function sampleTimeline(
 
   if (overview) {
     current = scrollPx < (first?.enterStart ?? 0) ? 0 : steps.length - 1
+  } else if (current === -1) {
+    // No step has focus (between steps) — nearest is the one whose exit just ended
+    current = steps.length - 1
+    for (let i = 0; i < steps.length; i++) {
+      if (scrollPx < steps[i].holdStart) { current = i; break }
+    }
   }
 
   const position = layout.totalHeight > 0 ? clamp01(scrollPx / layout.totalHeight) : 0
