@@ -3,6 +3,7 @@ import { usePageContext, useEngineContext } from '../engine/PageContext'
 import { useScrollEffect } from '../hooks/useScrollEffect'
 import { sortChildren } from './slots'
 import type { EffectInstance, TransitionInstance } from '../types'
+import type { Phases } from '@badcode/scroll-timeline'
 
 export interface PageProps {
   /**
@@ -10,6 +11,11 @@ export interface PageProps {
    * pages give effects and text reveals more room to breathe.
    */
   scrollDuration?: number
+  /**
+   * Three-phase scroll budget. If provided, takes precedence over scrollDuration.
+   * `{ enter: 0, hold: 1, exit: 0 }` is exactly equivalent to `scrollDuration={1}`.
+   */
+  phases?: Phases
   /**
    * Transition played when this page becomes current (read by <ScrollComic>).
    * Omit for an instant cut.
