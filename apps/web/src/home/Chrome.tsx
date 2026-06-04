@@ -1,3 +1,4 @@
+import { useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { flyToT, autoplay } from './drivers'
 import { waypoints } from './graph'
@@ -10,6 +11,25 @@ const btn: React.CSSProperties = {
 
 export function Chrome() {
   const ctrl = useCameraController()
+  const [playing, setPlaying] = useState(false)
+  const tween = useRef<ReturnType<typeof autoplay> | null>(null)
+
+  const togglePlay = () => {
+    if (playing) {
+      tween.current?.kill()
+      tween.current = null
+      setPlaying(false)
+      return
+    }
+    ctrl.mode = 'travel'
+    window.scrollTo(0, 0)
+    ctrl.t = 0
+    const tw = autoplay()
+    tw.eventCallback('onComplete', () => { setPlaying(false); tween.current = null })
+    tween.current = tw
+    setPlaying(true)
+  }
+
   return (
     <div style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 2 }}>
       <div style={{ position: 'absolute', top: 20, left: 24, pointerEvents: 'auto' }}>
@@ -19,7 +39,8 @@ export function Chrome() {
       <div style={{ position: 'absolute', top: 20, right: 24, display: 'flex', gap: 10, pointerEvents: 'auto' }}>
         <button style={btn} onClick={() => { ctrl.mode = 'travel'; flyToT(waypoints.fork) }}>fork</button>
         <button style={btn} onClick={() => { ctrl.mode = 'travel'; flyToT(waypoints.storyverse) }}>storyverse</button>
-        <button style={btn} onClick={() => { ctrl.mode = 'travel'; autoplay() }}>play</button>
+        <button style={btn} onClick={() => { ctrl.mode = 'travel'; flyToT(waypoints.futureProof) }}>future proof</button>
+        <button style={btn} onClick={togglePlay}>{playing ? 'stop' : 'play'}</button>
         <Link to="/about" style={{ ...btn, display: 'inline-block' }}>about</Link>
       </div>
     </div>

@@ -18,7 +18,7 @@ export function flyToT(t: number, duration = 1.6): gsap.core.Tween {
 }
 
 /** Trailer/attract: sweep from start to end over `duration` seconds. */
-export function autoplay(duration = 12): gsap.core.Tween {
+export function autoplay(duration = 18): gsap.core.Tween {
   const proxy = { y: window.scrollY }
   return gsap.to(proxy, {
     y: () => document.documentElement.scrollHeight - window.innerHeight,
