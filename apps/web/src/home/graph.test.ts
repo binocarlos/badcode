@@ -1,6 +1,6 @@
 // apps/web/src/home/graph.test.ts
 import { describe, it, expect } from 'vitest'
-import { GRAPH } from './graph'
+import { GRAPH, drawThreshold } from './graph'
 
 describe('graph', () => {
   it('defines the three branches with at least two points each', () => {
@@ -19,5 +19,32 @@ describe('graph', () => {
   it('the tour retraces through the fork (origin appears twice)', () => {
     const atFork = GRAPH.tour.filter(([x, y]) => x === 0 && y === 0)
     expect(atFork.length).toBe(2)
+  })
+})
+
+// history: threshold = ((x + 30) / 30) * 0.4
+describe('drawThreshold', () => {
+  it('history node at x = -18 → ~0.16', () => {
+    expect(drawThreshold({ branch: 'history', clip: [-18, 0] })).toBeCloseTo(0.16)
+  })
+
+  it('history node at x = 0 (fork) → 0.4', () => {
+    expect(drawThreshold({ branch: 'history', clip: [0, 0] })).toBeCloseTo(0.4)
+  })
+
+  it('bad branch node at x = 10 → ~0.507', () => {
+    expect(drawThreshold({ branch: 'bad', clip: [10, 6] })).toBeCloseTo(0.507)
+  })
+
+  it('bad branch tip at x = 30 → 0.72', () => {
+    expect(drawThreshold({ branch: 'bad', clip: [30, 6] })).toBeCloseTo(0.72)
+  })
+
+  it('good branch node at x = 18 → ~0.888', () => {
+    expect(drawThreshold({ branch: 'good', clip: [18, -6] })).toBeCloseTo(0.888)
+  })
+
+  it('good branch tip at x = 30 → 1.0', () => {
+    expect(drawThreshold({ branch: 'good', clip: [30, -6] })).toBeCloseTo(1.0)
   })
 })

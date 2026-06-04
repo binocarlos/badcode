@@ -49,3 +49,26 @@ export const GRAPH = {
     futureProof: { title: 'Future Proof', pos: GOOD_TIP, route: '/future-proof', branch: 'good' as const },
   },
 } as const
+
+type DrawThresholdInput = {
+  branch: 'bad' | 'good' | 'history'
+  clip:   readonly [number, number]
+}
+
+const clamp01 = (v: number) => Math.min(1, Math.max(0, v))
+
+/**
+ * Returns the drawProgress value (0-1) at which the Spine tip first reaches
+ * this node's clip position on the tour path.
+ *
+ * Branch draw ranges mirror Spine.tsx:
+ *   history  x ∈ [-30, 0]  →  drawProgress ∈ [0.00, 0.40]
+ *   bad      x ∈ [  0, 30] →  drawProgress ∈ [0.40, 0.72]
+ *   good     x ∈ [  0, 30] →  drawProgress ∈ [0.72, 1.00]
+ */
+export function drawThreshold({ branch, clip }: DrawThresholdInput): number {
+  const x = clip[0]
+  if (branch === 'history') return clamp01(((x + 30) / 30) * 0.4)
+  if (branch === 'bad')     return clamp01(0.4 + (x / 30) * 0.32)
+  return                           clamp01(0.72 + (x / 30) * 0.28)
+}
