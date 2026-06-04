@@ -8,6 +8,15 @@ export interface CameraPose {
   lookAt:   [number, number, number]
 }
 
+export interface CameraBehaviorCtx {
+  focus: number       // 0-1 trapezoid for this step
+  prev:  CameraPose   // previous step's pose (clamps to self at index 0)
+  self:  CameraPose   // this step's declared camera pose
+  next:  CameraPose   // next step's pose (clamps to self at last index)
+}
+
+export type CameraBehaviorFn = (ctx: CameraBehaviorCtx) => CameraPose
+
 /** The zoomed-out overview — shown at scroll = 0 and scroll = max. */
 export const OVERVIEW_POSE: CameraPose = {
   position: [6, 0, 76],
