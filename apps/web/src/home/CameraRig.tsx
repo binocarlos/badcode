@@ -17,6 +17,7 @@ function poseToVectors(pose: CameraPose): [Vector3, Vector3] {
 }
 
 const [overviewPos, overviewLook] = poseToVectors(OVERVIEW_POSE)
+const stepPoses = homeSteps.map((s) => poseToVectors(s.camera))
 
 /**
  * Drives the camera from the timeline sample each frame.
@@ -25,8 +26,9 @@ const [overviewPos, overviewLook] = poseToVectors(OVERVIEW_POSE)
  *
  * Because the hand-off is sequential, at most one focus[i] > 0 at a time, so the
  * blend is simply: desiredPos = homeSteps[current].camera.position (during hold).
- * During enter/exit, focus[prev] falls while focus[next] rises — they interpolate
- * naturally without extra code.
+ * Only one step has focus > 0 at a time; during its enter/exit the focus value is
+ * between 0 and 1, but after normalisation desiredPos equals that step's pose exactly.
+ * The lerp factor k provides all the smoothing.
  */
 export function CameraRig({ sample }: { sample: TimelineSample }) {
   const camera = useThree((s) => s.camera)
@@ -46,7 +48,7 @@ export function CameraRig({ sample }: { sample: TimelineSample }) {
       for (let i = 0; i < homeSteps.length; i++) {
         const f = sample.focus[i]
         if (f <= 0) continue
-        const [p, l] = poseToVectors(homeSteps[i].camera)
+        const [p, l] = stepPoses[i]
         desiredPos.addScaledVector(p, f)
         desiredLook.addScaledVector(l, f)
         totalFocus += f
