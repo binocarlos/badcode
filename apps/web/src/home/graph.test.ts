@@ -32,11 +32,34 @@ describe('graph', () => {
     expect(GRAPH.branches.good.length).toBeGreaterThanOrEqual(2)
   })
 
-  it('the tour spline begins at history start and ends at the bad (storyverse) tip', () => {
+  it('the tour begins at history start and ends at the good (future proof) tip', () => {
     const first = GRAPH.tour[0]
     const last = GRAPH.tour[GRAPH.tour.length - 1]
     expect(first).toEqual(GRAPH.branches.history[0])
-    expect(last).toEqual(GRAPH.branches.bad[GRAPH.branches.bad.length - 1])
+    expect(last).toEqual(GRAPH.branches.good[GRAPH.branches.good.length - 1])
+  })
+
+  it('the tour retraces through the fork (origin appears twice)', () => {
+    const atFork = GRAPH.tour.filter(([x, y]) => x === 0 && y === 0)
+    expect(atFork.length).toBe(2)
+  })
+
+  it('story node t increases monotonically in authored order', () => {
+    let prev = -Infinity
+    for (const n of storyNodes) {
+      expect(n.t).toBeGreaterThan(prev)
+      prev = n.t
+    }
+  })
+
+  it('the good-branch node has a real (non-zero) tour position', () => {
+    const lens = storyNodes.find((n) => n.id === 'optimistic-lens') as StoryNode
+    expect(lens.t).toBeGreaterThan(0.5)
+  })
+
+  it('futureProof waypoint is the end of the tour', () => {
+    expect(typeof waypoints.futureProof).toBe('number')
+    expect(waypoints.futureProof).toBeCloseTo(1)
   })
 
   it('exposes fork, storyverse and futureProof waypoints', () => {
