@@ -7,10 +7,14 @@ export function Constellation({
   sample,
   layout,
   onFlash,
+  revealedSteps,
+  menuMode,
 }: {
-  sample:  TimelineSample
-  layout:  TimelineLayout
-  onFlash: () => void
+  sample:        TimelineSample
+  layout:        TimelineLayout
+  onFlash:       () => void
+  revealedSteps: Set<string>
+  menuMode:      boolean
 }) {
   return (
     <group>
@@ -21,6 +25,8 @@ export function Constellation({
           focus={sample.focus[i] ?? 0}
           layout={layout}
           onFlash={onFlash}
+          revealed={revealedSteps.has(step.id)}
+          menuMode={menuMode}
         />
       ))}
     </group>

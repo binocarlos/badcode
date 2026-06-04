@@ -14,29 +14,67 @@ export function StoryNode({
   focus,
   layout,
   onFlash,
+  revealed,
+  menuMode,
 }: {
-  step:    HomeStep
-  focus:   number
-  layout:  TimelineLayout
-  onFlash: () => void
+  step:     HomeStep
+  focus:    number
+  layout:   TimelineLayout
+  onFlash:  () => void
+  revealed: boolean
+  menuMode: boolean
 }) {
   const navigate   = useNavigate()
   const ctrl       = useCameraController()
   const [hovered, setHovered] = useState(false)
-  const dim   = step.status === 'live' ? 1 : 0.45
   const [cx, cy] = step.pos
   const [tx, ty] = step.clip
 
   const enter = () => {
-    ctrl.mode = 'travel'
-    flyToStep(step.id, layout, 1.1)
-    gsap.delayedCall(1.0, () => {
+    if (!step.route) return
+    if (menuMode) {
       onFlash()
-      gsap.delayedCall(0.35, () =>
-        navigate(step.route ?? '#', { state: { fromNode: step.id } }),
-      )
-    })
+      gsap.delayedCall(0.35, () => navigate(step.route!, { state: { fromNode: step.id } }))
+    } else {
+      ctrl.mode = 'travel'
+      flyToStep(step.id, layout, 1.1)
+      gsap.delayedCall(1.0, () => {
+        onFlash()
+        gsap.delayedCall(0.35, () => navigate(step.route!, { state: { fromNode: step.id } }))
+      })
+    }
   }
+
+  if (!revealed) return null
+
+  // Historical event nodes: tick mark + label, no sphere, not clickable.
+  if (step.kind === 'event') {
+    return (
+      <group>
+        <Line
+          points={[[cx, cy - 0.35, 0], [cx, cy + 0.35, 0]]}
+          color={COLORS.white}
+          lineWidth={2}
+          transparent
+          opacity={0.5}
+        />
+        <Html position={[cx + 0.3, cy + 0.6, 0]} style={{ pointerEvents: 'none' }}>
+          <div style={{
+            color:      COLORS.white,
+            fontFamily: 'var(--mono)',
+            fontSize:   10,
+            whiteSpace: 'nowrap',
+            opacity:    0.55,
+          }}>
+            {step.title}
+          </div>
+        </Html>
+      </group>
+    )
+  }
+
+  // Content nodes: floating sphere + tether + label.
+  const dim = step.status === 'live' ? 1 : 0.45
 
   return (
     <group>
@@ -45,25 +83,25 @@ export function StoryNode({
         color={COLORS.tether}
         lineWidth={1}
         transparent
-        opacity={0.7 * focus}
+        opacity={menuMode ? 0.7 : 0.7 * focus}
       />
-      {/* Invisible hit-sphere (radius 1.2) — carries hover/click handlers. */}
-      <mesh
-        position={[cx, cy, 0]}
-        onPointerOver={(e) => { e.stopPropagation(); setHovered(true); document.body.style.cursor = 'pointer' }}
-        onPointerOut={() => { setHovered(false); document.body.style.cursor = 'auto' }}
-        onClick={(e) => { e.stopPropagation(); enter() }}
-      >
-        <sphereGeometry args={[1.2, 16, 16]} />
-        <meshBasicMaterial transparent opacity={0} depthWrite={false} />
-      </mesh>
-      {/* Visible sphere — size driven by hover; opacity driven by focus. */}
+      {step.route && (
+        <mesh
+          position={[cx, cy, 0]}
+          onPointerOver={(e) => { e.stopPropagation(); setHovered(true); document.body.style.cursor = 'pointer' }}
+          onPointerOut={() => { setHovered(false); document.body.style.cursor = 'auto' }}
+          onClick={(e) => { e.stopPropagation(); enter() }}
+        >
+          <sphereGeometry args={[1.2, 16, 16]} />
+          <meshBasicMaterial transparent opacity={0} depthWrite={false} />
+        </mesh>
+      )}
       <mesh position={[cx, cy, 0]}>
         <sphereGeometry args={[hovered ? 0.7 : 0.55, 24, 24]} />
         <meshBasicMaterial
           color={COLORS.cyan}
           transparent
-          opacity={dim * Math.max(focus, 0.15)}
+          opacity={dim * (menuMode ? 1 : Math.max(focus, 0.15))}
           toneMapped={false}
         />
       </mesh>
@@ -73,7 +111,9 @@ export function StoryNode({
           fontFamily: 'var(--mono)',
           fontSize:   12,
           whiteSpace: 'nowrap',
-          opacity:    hovered || step.status === 'live' ? dim * Math.max(focus, 0.2) : 0.25 * focus,
+          opacity:    menuMode
+            ? dim
+            : (hovered || step.status === 'live' ? dim * Math.max(focus, 0.2) : 0.25 * focus),
           transition: 'opacity 120ms',
         }}>
           {step.title}{step.status === 'coming-soon' ? ' · soon' : ''}
