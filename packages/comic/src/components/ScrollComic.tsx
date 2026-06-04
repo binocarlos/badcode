@@ -12,6 +12,7 @@ import { useTransitions } from '../engine/useTransitions'
 import { EngineContext, PageContext } from '../engine/PageContext'
 import type { TransitionInstance } from '../types'
 import type { PageProps } from './Page'
+import type { Phases } from '@badcode/scroll-timeline'
 import '../styles/comic.css'
 
 export interface ScrollComicProps {
@@ -50,8 +51,13 @@ export function ScrollComic({
   )
   const total = pageElements.length
 
-  const durations = useMemo(
-    () => pageElements.map((p) => p.props.scrollDuration ?? 1),
+  const phases = useMemo<Phases[]>(
+    () =>
+      pageElements.map((p) => {
+        if (p.props.phases) return p.props.phases
+        const d = p.props.scrollDuration ?? 1
+        return { enter: 0, hold: d, exit: 0 }
+      }),
     [pageElements],
   )
   const transitions = useMemo<(TransitionInstance | null)[]>(
@@ -59,7 +65,7 @@ export function ScrollComic({
     [pageElements],
   )
 
-  const { percents, currentPage, overall, totalHeight } = useScrollEngine(containerRef, durations)
+  const { percents, currentPage, overall, totalHeight } = useScrollEngine(containerRef, phases)
 
   const getLayer = useCallback((i: number) => layerRefs.current.get(i) ?? null, [])
   const { outgoingPage } = useTransitions(currentPage, transitions, getLayer)
