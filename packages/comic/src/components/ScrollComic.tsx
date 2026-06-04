@@ -56,7 +56,7 @@ export function ScrollComic({
       pageElements.map((p) => {
         if (p.props.phases) return p.props.phases
         const d = p.props.scrollDuration ?? 1
-        return { enter: 0, hold: d, exit: 0 }
+        return { enter: 0, hold: d > 0 ? d : 1, exit: 0 }
       }),
     [pageElements],
   )
