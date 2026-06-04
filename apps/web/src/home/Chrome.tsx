@@ -1,14 +1,16 @@
+// apps/web/src/home/Chrome.tsx
 import { useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { flyToT, autoplay } from './drivers'
+import { flyToStep, autoplay } from './drivers'
 import { useCameraController } from './cameraController'
+import type { TimelineLayout } from '@badcode/scroll-timeline'
 
 const btn: React.CSSProperties = {
   background: 'transparent', border: '1px solid var(--cyan)', color: 'var(--cyan)',
   font: 'inherit', fontSize: 12, padding: '6px 10px', cursor: 'pointer', letterSpacing: 1,
 }
 
-export function Chrome() {
+export function Chrome({ layout }: { layout: TimelineLayout }) {
   const ctrl = useCameraController()
   const [playing, setPlaying] = useState(false)
   const tween = useRef<ReturnType<typeof autoplay> | null>(null)
@@ -22,7 +24,7 @@ export function Chrome() {
     }
     ctrl.mode = 'travel'
     window.scrollTo(0, 0)
-    const tw = autoplay()
+    const tw = autoplay(layout)
     tw.eventCallback('onComplete', () => { setPlaying(false); tween.current = null })
     tween.current = tw
     setPlaying(true)
@@ -35,9 +37,8 @@ export function Chrome() {
         <div style={{ color: 'var(--grey)', fontSize: 11 }}>git push origin master</div>
       </div>
       <div style={{ position: 'absolute', top: 20, right: 24, display: 'flex', gap: 10, pointerEvents: 'auto' }}>
-        <button style={btn} onClick={() => { ctrl.mode = 'travel'; flyToT(0.235) }}>fork</button>
-        <button style={btn} onClick={() => { ctrl.mode = 'travel'; flyToT(0.49) }}>storyverse</button>
-        <button style={btn} onClick={() => { ctrl.mode = 'travel'; flyToT(1) }}>future proof</button>
+        <button style={btn} onClick={() => { ctrl.mode = 'travel'; flyToStep('storyverse', layout) }}>storyverse</button>
+        <button style={btn} onClick={() => { ctrl.mode = 'travel'; flyToStep('future-proof', layout) }}>future proof</button>
         <button style={btn} onClick={togglePlay}>{playing ? 'stop' : 'play'}</button>
         <Link to="/about" style={{ ...btn, display: 'inline-block' }}>about</Link>
       </div>

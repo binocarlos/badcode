@@ -1,27 +1,29 @@
+// apps/web/src/home/drivers.ts
 import gsap from 'gsap'
+import type { TimelineLayout } from '@badcode/scroll-timeline'
 
-/** Convert a normalized t into a page scrollY target. */
-function scrollTargetForT(t: number): number {
-  const max = document.documentElement.scrollHeight - window.innerHeight
-  return Math.min(1, Math.max(0, t)) * max
-}
-
-/** Cinematic waypoint: tween the page scroll to a target t (so the rig follows). */
-export function flyToT(t: number, duration = 1.6): gsap.core.Tween {
+/** Fly to a step's hold-start position — where the camera settles on that beat. */
+export function flyToStep(
+  id: string,
+  layout: TimelineLayout,
+  duration = 1.6,
+): gsap.core.Tween {
+  const step = layout.steps.find((s) => s.id === id)
+  const target = step ? step.holdStart : 0
   const proxy = { y: window.scrollY }
   return gsap.to(proxy, {
-    y: scrollTargetForT(t),
+    y: target,
     duration,
     ease: 'power2.inOut',
     onUpdate: () => window.scrollTo(0, proxy.y),
   })
 }
 
-/** Trailer/attract: sweep from start to end over `duration` seconds. */
-export function autoplay(duration = 18): gsap.core.Tween {
+/** Trailer/attract: sweep from the current scroll position to the end of the track. */
+export function autoplay(layout: TimelineLayout, duration = 18): gsap.core.Tween {
   const proxy = { y: window.scrollY }
   return gsap.to(proxy, {
-    y: () => document.documentElement.scrollHeight - window.innerHeight,
+    y: Math.max(0, layout.totalHeight - window.innerHeight),
     duration,
     ease: 'none',
     onUpdate: () => window.scrollTo(0, proxy.y),
