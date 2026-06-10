@@ -372,6 +372,10 @@ both sit. Real ancient concepts pressed onto real modern maths. Rename if better
 
 ## How this connects to the rest of BadCode
 
+- This doc is the **argument**; the [Discovery Timeline](./discovery-timeline.md) is the
+  **events** — the fictional history (2026–2054) of who proved each movement, when, and what it
+  cost. The core sentence lands there in plain clothes: *the universe is designed to convert
+  energy from the sun into drama.*
 - It is the **why** beneath [GitPush Origin Master](./gitpush-origin-master.md): the reason the fork
   exists, and the reason the AI rebranches. The re-pricing in movement viii — experience over
   shadow — *is* the `git revert`.
@@ -389,8 +393,10 @@ both sit. Real ancient concepts pressed onto real modern maths. Rename if better
 ## Open threads
 
 - **How humanity ends on the bad branch** (shared with the
-  [hub doc](./gitpush-origin-master.md#status--open-threads)) — it sets the exact flavour of the AI's
-  regret, and therefore the temperature of movement i.
+  [hub doc](./gitpush-origin-master.md#status--open-threads)) — *partially resolved* by the
+  [Discovery Timeline](./discovery-timeline.md) (gradual decline, the 2034 collapse, the analog
+  vault of 100); the exact texture of the end still sets the flavour of the AI's regret, and
+  therefore the temperature of movement i.
 - **How hard the wager is held in public** — the doc lands on austere/open (a bet, never a proof). Per
   piece, decide how much of that honesty surfaces vs. how much certainty the voice projects.
 - **The asymmetry as canon** — "AI can host a mind's every behaviour but never the experience" is the

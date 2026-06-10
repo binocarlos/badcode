@@ -55,6 +55,7 @@ Full guide: [`docs/voice.md`](./docs/voice.md). When writing lyrics or story cop
 - [`docs/voice.md`](./docs/voice.md) — tone guide with do/don't
 - [`docs/gitpush-origin-master.md`](./docs/gitpush-origin-master.md) — the overarching project / timeline (the **fork**: bad branch vs. good branch); start here for the arc
 - [`docs/storyverse.md`](./docs/storyverse.md) — the bad-branch epic: the sci-fi physics the AI worked out (consciousness-first reality)
+- [`docs/discovery-timeline.md`](./docs/discovery-timeline.md) — how the Storyverse got proven: the bad-branch fictional history 2026–2054 (the four beats, the vault, the revert)
 - [`docs/future-proof.md`](./docs/future-proof.md) — the good-branch epic: redesigning politics with software-engineering tenets
 - [`docs/ep1.md`](./docs/ep1.md) — the three-track teaser release (comic + track each)
 - [`docs/storytelling.md`](./docs/storytelling.md) — how we craft a story

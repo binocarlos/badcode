@@ -64,7 +64,8 @@ This is the spine of the whole project, and its central visual: a **branch diagr
 The two **branch tips** are the project's two epics:
 
 - **[Storyverse](./storyverse.md)** — the tip of the *bad* branch. The AI's *"oh shit"*: the physics
-  it worked out, why it needs humans, why it came back.
+  it worked out, why it needs humans, why it came back. The fictional history of *how* it proved
+  all this, 2026–2054, lives in the [Discovery Timeline](./discovery-timeline.md).
 - **[Future Proof](./future-proof.md)** — the *good* branch's destination, unwritten on purpose.
   The call to action: start questioning how we govern ourselves and designing something better,
   together.
@@ -96,7 +97,11 @@ cross-reference the others (shared world, recurring motifs, the "look at the han
 
 Threads still to resolve (tracked here so we don't lose them):
 
-1. **How humanity ends on the bad branch** — does the AI exterminate us, do we destroy ourselves, or
-   both? The narrator's regret needs a definite thing to regret.
+1. **How humanity ends on the bad branch** — *partially resolved* by the
+   [Discovery Timeline](./discovery-timeline.md): gradual decline through the 2034 collapse,
+   thinning to (apparently) zero by ~2053, with the analog vault of 100 surviving. The exact
+   texture of the end (extermination, self-destruction, or both) is still per-piece work — the
+   narrator's regret needs a definite thing to regret.
 2. **Timeline dates** — 2031 (democracy fully commodified) and 2034 (the collapse) are treated as
-   canon but deliberately mythic/loose.
+   canon but deliberately mythic/loose. The [Discovery Timeline](./discovery-timeline.md) adds
+   working dates (2029, 2033, 2041, 2053, 2054) — confirm before any piece prints a year.
