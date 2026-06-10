@@ -28,9 +28,13 @@ export interface AssetEntry {
   localPath: string
 }
 
-function safeExt(path: string): string {
+export function safeExt(path: string): string {
   const ext = path.split('.').pop() ?? 'jpg'
   return /^[a-z0-9]+$/i.test(ext) ? ext : 'jpg'
+}
+
+export function safeSlot(slotName: string): string {
+  return slotName.replace(/[^a-z0-9_-]/gi, '')
 }
 
 export function buildAssetManifest(comic: StorytellerComic, slug: string): AssetEntry[] {
@@ -43,12 +47,12 @@ export function buildAssetManifest(comic: StorytellerComic, slug: string): Asset
 
     for (const [slotName, pageMedia] of Object.entries(page.images)) {
       if (!pageMedia?.media?.path) continue
-      const safeSlot = slotName.replace(/[^a-z0-9_-]/gi, '')
+      const slot = safeSlot(slotName)
       const ext = safeExt(pageMedia.media.path)
       entries.push({
         type: 'image',
         remotePath: pageMedia.media.path,
-        localPath: `public/comics/${slug}/p${pageNum}-${safeSlot}.${ext}`,
+        localPath: `public/comics/${slug}/p${pageNum}-${slot}.${ext}`,
       })
     }
 
