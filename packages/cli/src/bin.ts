@@ -4,6 +4,8 @@ import { loadComic } from './loadComic'
 import { buildPrompt } from './prompt'
 import { push } from './push'
 import { status } from './status'
+import { pull } from './pull'
+import { generate } from './generate'
 import { GsutilBucket } from './bucket'
 import type { Target } from './target'
 import type { PromptResult } from './prompt'
@@ -66,6 +68,26 @@ program
       const latest = row.hasLatest ? 'latest✓' : 'latest✗'
       console.log(`${row.id.padEnd(18)} ${row.kind.padEnd(7)} v=${row.versions}  ${latest}`)
     }
+  })
+
+program
+  .command('pull')
+  .description('Pull a comic from Storyteller (badcode.tv) — downloads data + assets locally.')
+  .argument('<url>', 'Storyteller comic URL or comic UUID')
+  .option('-s, --slug <name>', 'override the auto-derived slug')
+  .action(async (url: string, opts: { slug?: string }) => {
+    const rootDir = process.cwd()
+    await pull(url, rootDir, opts.slug)
+  })
+
+program
+  .command('generate')
+  .description('Generate a badcode comic scaffold (TSX + meta) from a pulled comic.json.')
+  .argument('<slug>', 'comic slug (folder name under apps/web/src/comics)')
+  .option('-f, --force', 'overwrite existing generated files')
+  .action(async (slug: string, opts: { force?: boolean }) => {
+    const rootDir = process.cwd()
+    await generate(slug, rootDir, opts.force ?? false)
   })
 
 program.parseAsync(process.argv).catch((err: unknown) => {
