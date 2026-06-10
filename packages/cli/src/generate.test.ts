@@ -243,4 +243,41 @@ describe('generateTsx', () => {
     const diagnostics = (sourceFile as unknown as { parseDiagnostics: ts.Diagnostic[] }).parseDiagnostics
     expect(diagnostics.map(d => d.messageText)).toEqual([])
   })
+
+  it('emits a NarrationBox placeholder for a content-less page', () => {
+    const emptyPageConfig: StorytellerComicConfig = {
+      name: 'Empty',
+      description: '',
+      style: 'ink',
+      characters: [],
+      pages: [
+        { id: 'p1', layout: 'full', images: {}, text_bubbles: [] },
+      ],
+    }
+    const output = generateTsx(emptyPageConfig, 'empty')
+    expect(output).toContain('<NarrationBox')
+    expect(output).toContain("{'TODO: empty page'}")
+    expect(output).toContain('NarrationBox }') // present in the @badcode/comic import list
+    const sourceFile = ts.createSourceFile('x.tsx', output, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX)
+    const diagnostics = (sourceFile as unknown as { parseDiagnostics: ts.Diagnostic[] }).parseDiagnostics
+    expect(diagnostics.map(d => d.messageText)).toEqual([])
+  })
+
+  it('imports NarrationBox for an all-empty-pages comic', () => {
+    const allEmptyConfig: StorytellerComicConfig = {
+      name: 'All Empty',
+      description: '',
+      style: 'ink',
+      characters: [],
+      pages: [
+        { id: 'p1', layout: 'full', images: {}, text_bubbles: [] },
+        { id: 'p2', layout: 'full', images: {}, text_bubbles: [] },
+      ],
+    }
+    const output = generateTsx(allEmptyConfig, 'all-empty')
+    expect(output).toContain("import { ScrollComic, Page, NarrationBox } from '@badcode/comic'")
+    const sourceFile = ts.createSourceFile('x.tsx', output, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX)
+    const diagnostics = (sourceFile as unknown as { parseDiagnostics: ts.Diagnostic[] }).parseDiagnostics
+    expect(diagnostics.map(d => d.messageText)).toEqual([])
+  })
 })

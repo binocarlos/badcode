@@ -111,10 +111,16 @@ function renderPage(page: StorytellerPage, pageNum: number, slug: string, isFirs
   }
   lines.push(`${indent}  {/* TODO: pick background color */}`)
 
+  // Track whether any real JSX child (widget or bubble) is emitted — JSX comments
+  // don't count as children, and Page requires `children`, so a content-less page
+  // needs a visible placeholder to typecheck.
+  let hasChild = false
+
   // Widget — frame paths must mirror pull's buildAssetManifest naming exactly.
   const frames = page.animation?.frames?.filter(f => f.path) ?? []
   if (frames.length > 0) {
     usage.animationWidget = true
+    hasChild = true
     lines.push(`${indent}  <AnimationWidget`)
     lines.push(`${indent}    frames={[`)
     for (const frame of frames) {
@@ -129,6 +135,7 @@ function renderPage(page: StorytellerPage, pageNum: number, slug: string, isFirs
     const mainSlot = slots.includes('main') ? 'main' : slots[0]
     if (mainSlot) {
       usage.imageWidget = true
+      hasChild = true
       const ext = safeExt(page.images[mainSlot].media.path)
       lines.push(`${indent}  <ImageWidget src="/comics/${slug}/p${pageNum}-${safeSlot(mainSlot)}.${ext}" />`)
       const otherSlots = slots.filter(s => s !== mainSlot)
@@ -141,6 +148,15 @@ function renderPage(page: StorytellerPage, pageNum: number, slug: string, isFirs
   // Bubbles
   for (const bubble of page.text_bubbles) {
     lines.push(renderBubble(bubble, indent + '  ', usage))
+    hasChild = true
+  }
+
+  // Empty page — emit a placeholder child so the generated TSX typechecks and the
+  // page (and overall page count) is preserved rather than silently dropped.
+  if (!hasChild) {
+    usage.narrationBox = true
+    lines.push(`${indent}  {/* TODO: this page had no image/animation/text in Storyteller — replace this placeholder */}`)
+    lines.push(`${indent}  <NarrationBox x={50} y={50} appearAt={[0, 1]} fade>{'TODO: empty page'}</NarrationBox>`)
   }
 
   // Side panel placeholder
