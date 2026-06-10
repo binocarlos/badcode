@@ -1,6 +1,6 @@
 // packages/cli/src/pull.test.ts
 import { describe, it, expect } from 'vitest'
-import { extractComicId, toSlug, buildAssetManifest } from './pull'
+import { extractComicId, toSlug, buildAssetManifest, resolveAssetUrl } from './pull'
 import type { StorytellerComic } from './storyteller-types'
 
 describe('extractComicId', () => {
@@ -33,6 +33,24 @@ describe('toSlug', () => {
 
   it('collapses multiple dashes', () => {
     expect(toSlug('  hello   world  ')).toBe('hello-world')
+  })
+})
+
+describe('resolveAssetUrl', () => {
+  it('passes an absolute http(s) URL through unchanged', () => {
+    const url = 'https://storage.googleapis.com/badcode-storage/comics/x/page_1/main.jpg'
+    expect(resolveAssetUrl(url)).toBe(url)
+  })
+
+  it('prefixes a bucket-relative key with the GCS base', () => {
+    expect(resolveAssetUrl('comics/x/page_1/main.jpg')).toBe(
+      'https://storage.googleapis.com/badcode-storage/comics/x/page_1/main.jpg',
+    )
+  })
+
+  it('matches the protocol case-insensitively', () => {
+    const url = 'HTTPS://storage.googleapis.com/badcode-storage/comics/x/main.jpg'
+    expect(resolveAssetUrl(url)).toBe(url)
   })
 })
 

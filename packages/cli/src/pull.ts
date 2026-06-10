@@ -22,6 +22,11 @@ export function toSlug(name: string): string {
     .replace(/^-+|-+$/g, '')
 }
 
+/** Media paths from the API are sometimes absolute URLs, sometimes bucket-relative keys. */
+export function resolveAssetUrl(remotePath: string): string {
+  return /^https?:\/\//i.test(remotePath) ? remotePath : `${GCS_BASE}/${remotePath}`
+}
+
 export interface AssetEntry {
   type: 'image' | 'frame'
   remotePath: string
@@ -140,7 +145,7 @@ export async function pull(urlOrId: string, rootDir: string, slugOverride?: stri
   console.log(`Downloading ${manifest.length} assets...`)
 
   for (const entry of manifest) {
-    const url = `${GCS_BASE}/${entry.remotePath}`
+    const url = resolveAssetUrl(entry.remotePath)
     const dest = join(rootDir, entry.localPath)
     process.stdout.write(`  ${entry.localPath}...`)
     await downloadFile(url, dest)
