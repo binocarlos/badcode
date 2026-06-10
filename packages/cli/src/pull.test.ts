@@ -107,7 +107,7 @@ describe('buildAssetManifest', () => {
     expect(imageAssets[0]).toEqual({
       type: 'image',
       remotePath: 'comics/test/page_1/main.jpg',
-      localPath: 'public/comics/test-comic/p1-main.jpg',
+      localPath: 'apps/web/public/comics/test-comic/p1-main.jpg',
     })
   })
 
@@ -118,7 +118,7 @@ describe('buildAssetManifest', () => {
     expect(frameAssets[0]).toEqual({
       type: 'frame',
       remotePath: 'comics/test/page_2/frame_000.jpg',
-      localPath: 'public/comics/test-comic/p2-animation/frame-000.jpg',
+      localPath: 'apps/web/public/comics/test-comic/p2-animation/frame-000.jpg',
     })
   })
 })

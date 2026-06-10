@@ -57,7 +57,8 @@ export function buildAssetManifest(comic: StorytellerComic, slug: string): Asset
       entries.push({
         type: 'image',
         remotePath: pageMedia.media.path,
-        localPath: `public/comics/${slug}/p${pageNum}-${slot}.${ext}`,
+        // Assets land under apps/web/public so Vite serves them at /comics/<slug>/...
+        localPath: `apps/web/public/comics/${slug}/p${pageNum}-${slot}.${ext}`,
       })
     }
 
@@ -69,7 +70,7 @@ export function buildAssetManifest(comic: StorytellerComic, slug: string): Asset
         entries.push({
           type: 'frame',
           remotePath: frame.path,
-          localPath: `public/comics/${slug}/p${pageNum}-animation/frame-${frameNum}.${ext}`,
+          localPath: `apps/web/public/comics/${slug}/p${pageNum}-animation/frame-${frameNum}.${ext}`,
         })
       }
     }
