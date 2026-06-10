@@ -65,8 +65,9 @@ The two **branch tips** are the project's two epics:
 
 - **[Storyverse](./storyverse.md)** — the tip of the *bad* branch. The AI's *"oh shit"*: the physics
   it worked out, why it needs humans, why it came back.
-- **[Future Proof](./future-proof.md)** — the *good* branch's destination. The concrete redesign of
-  our political and economic system we should be making now.
+- **[Future Proof](./future-proof.md)** — the *good* branch's destination, unwritten on purpose.
+  The call to action: start questioning how we govern ourselves and designing something better,
+  together.
 
 ## The constellation
 
