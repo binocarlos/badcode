@@ -98,6 +98,10 @@ export async function assetsBuild(opts: AssetsBuildOptions): Promise<AssetManife
       await bucket.upload(localHigh, `${basePath}/${highKey}`, IMMUTABLE_CC)
       log(`built ${rel}`)
 
+      await rm(localSrc, { force: true })
+      await rm(localLow, { force: true })
+      await rm(localHigh, { force: true })
+
       return [rel, { thumbhash, low: lowKey, high: highKey, width, height }]
     })
 

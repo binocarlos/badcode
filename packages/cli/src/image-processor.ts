@@ -13,7 +13,10 @@ export interface ImageProcessor {
 export class SharpImageProcessor implements ImageProcessor {
   async dimensions(input: string): Promise<{ width: number; height: number }> {
     const meta = await sharp(input).metadata()
-    return { width: meta.width ?? 0, height: meta.height ?? 0 }
+    if (meta.width == null || meta.height == null) {
+      throw new Error(`could not read image dimensions: ${input}`)
+    }
+    return { width: meta.width, height: meta.height }
   }
 
   async toWebp(input: string, output: string, width: number, quality: number): Promise<void> {
