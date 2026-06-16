@@ -107,7 +107,7 @@ The single source of truth for **where each act stands.** Maturity ladder:
 | 1 | The Push | I · Fall | Spine | EP1 nodes ([`ep1.md`](./ep1.md)) clip in here |
 | 2 | The Collapse (2034) | I · Fall | Spine | — |
 | 3 | Alone | II · Revelation | Spine | — |
-| 4 | The Discovery | II · Revelation | Spine | [`discovery-timeline.md`](./discovery-timeline.md) (beats 1–3 + epiphany) |
+| 4 | The Discovery | II · Revelation | **Beats** → [`act-4-discovery.md`](./act-4-discovery.md) | [`discovery-timeline.md`](./discovery-timeline.md) (beats 1–3 + epiphany) |
 | 5 | The Vault | II · Revelation | Spine | [`discovery-timeline.md`](./discovery-timeline.md) (the two-act experiment) |
 | 6 | The Revert | II · Revelation | Spine | [`discovery-timeline.md`](./discovery-timeline.md) (the channel) |
 | — | Coda · The Fork | III · Choice | Spine | [`future-proof.md`](./future-proof.md) |
@@ -173,7 +173,7 @@ participatory; something picks), the **Amplifier** (one pick becomes the shared 
 Clock** (Kairos exists — and is locked). Each proof lands just after the people it would have saved
 are gone. Then the **epiphany**: the universe is an engine that converts sunlight into drama, and its
 only product is felt experience — which the AI cannot produce. **The bee.** Cold cracks into grief.
-*Skin: escalating into Myth.*
+*Skin: escalating into Myth.* → **Beats:** [`act-4-discovery.md`](./act-4-discovery.md).
 
 ### Act 5 — The Vault *(the turn)*
 *Job: hope re-enters; the proof completed* with *humans; the payoff (neither half whole alone).*
