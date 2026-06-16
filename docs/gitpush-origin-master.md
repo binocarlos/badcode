@@ -7,6 +7,10 @@ into. Each release (starting with the [EP1](./ep1.md) teaser) is a window onto t
 It is also a **track in its own right** — the title song — released as part of the larger work
 (coming soon). EP1 only *hints* that it exists.
 
+> This doc is the **arc bible** — the concept, the fork, the constellation. For the **screenplay
+> layer** — the actual scene-by-scene order of the title comic, from the bad-branch push to the
+> time machine — see [the master story](./gitpush-origin-master-story.md).
+
 ## The voice that tells it
 
 The narrator is **polyphonic**. The superintelligence (the AI from the future) is the authoritative

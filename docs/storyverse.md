@@ -376,6 +376,9 @@ both sit. Real ancient concepts pressed onto real modern maths. Rename if better
   **events** — the fictional history (2026–2054) of who proved each movement, when, and what it
   cost. The core sentence lands there in plain clothes: *the universe is designed to convert
   energy from the sun into drama.*
+- For *how to tell any of this* without losing the audience — the simplest believable framing of
+  each idea, the skeleton, the four skins — see [`how-we-tell-it.md`](./how-we-tell-it.md). The
+  scene-by-scene master narrative is [the GPOM story](./gitpush-origin-master-story.md).
 - It is the **why** beneath [GitPush Origin Master](./gitpush-origin-master.md): the reason the fork
   exists, and the reason the AI rebranches. The re-pricing in movement viii — experience over
   shadow — *is* the `git revert`.
