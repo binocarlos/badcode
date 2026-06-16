@@ -6,7 +6,10 @@ import { push } from './push'
 import { status } from './status'
 import { pull } from './pull'
 import { generate } from './generate'
-import { GsutilBucket } from './bucket'
+import { assetsBuild } from './assets-build'
+import { SharpImageProcessor } from './image-processor'
+import { readManifestIfExists, writeManifestFile } from './write-manifest'
+import { GsutilBucket, LATEST_CC } from './bucket'
 import type { Target } from './target'
 import type { PromptResult } from './prompt'
 
@@ -89,6 +92,38 @@ program
   .action(async (slug: string, opts: { force?: boolean }) => {
     const rootDir = process.cwd()
     await generate(slug, rootDir, opts.force ?? false)
+  })
+
+program
+  .command('assets-build')
+  .description('Generate low/high WebP variants + ThumbHash for every image under a bucket subfolder, and emit a manifest.')
+  .requiredOption('-s, --src <prefix>', 'bucket-relative source subfolder, e.g. comics-v2/gpom-ep1')
+  .requiredOption('-m, --manifest <path>', 'local path to write assets.manifest.json')
+  .option('-f, --force', 'rebuild variants even if they already exist')
+  .option('--dry-run', 'compute the manifest without uploading or processing')
+  .option('-c, --concurrency <n>', 'max images processed in parallel', '6')
+  .action(async (opts: { src: string; manifest: string; force?: boolean; dryRun?: boolean; concurrency: string }) => {
+    const bucket = new GsutilBucket()
+    const previous = await readManifestIfExists(opts.manifest)
+    const manifest = await assetsBuild({
+      bucket,
+      processor: new SharpImageProcessor(),
+      src: opts.src,
+      previous,
+      force: opts.force ?? false,
+      dryRun: opts.dryRun ?? false,
+      concurrency: Number(opts.concurrency),
+      log: (msg) => console.log(msg),
+    })
+
+    await writeManifestFile(opts.manifest, manifest)
+    console.log(`wrote ${Object.keys(manifest.assets).length} assets → ${opts.manifest}`)
+
+    if (!opts.dryRun) {
+      // Upload a copy of the just-written manifest into the bucket subfolder.
+      await bucket.upload(opts.manifest, `${manifest.basePath}/assets.manifest.json`, LATEST_CC)
+      console.log(`uploaded manifest copy → ${manifest.basePath}/assets.manifest.json`)
+    }
   })
 
 program.parseAsync(process.argv).catch((err: unknown) => {
