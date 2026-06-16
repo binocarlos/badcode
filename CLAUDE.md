@@ -34,6 +34,7 @@ Full guide: [`docs/voice.md`](./docs/voice.md). When writing lyrics or story cop
 | Path | What | Start here if… |
 | --- | --- | --- |
 | `docs/` | Vision, voice, story bible, method | …you need context |
+| `docs/suno-gpt/` | Suno-prompting toolkit (operating procedure + reference files) | …you're turning a song idea into a Suno prompt |
 | `ideas/` | Songs, stories, concepts in development (+ templates) | …you're capturing or developing an idea |
 | `packages/comic` | `@badcode/comic` — code-first comic rendering library | …you're building the viewer |
 | `apps/web` | The website (Vite + React + TS SPA) | …you're building pages/routes |
@@ -48,6 +49,10 @@ Full guide: [`docs/voice.md`](./docs/voice.md). When writing lyrics or story cop
 - **Add an idea:** copy a template from `ideas/templates/` into `ideas/songs|stories|concepts/`.
   See [`ideas/README.md`](./ideas/README.md). We develop ideas collaboratively before they become
   comics — don't bulk-import; curate so each one fits the GitPush Origin Master narrative.
+- **Make a Suno prompt:** type a song idea (a feeling, a reference, a GPOM beat) and the
+  **`suno-prompt`** skill (`.claude/skills/suno-prompt/`) turns it into a Suno style prompt,
+  exclude-styles list, and — on request — lyrics, in the BadCode voice. It runs on the toolkit in
+  [`docs/suno-gpt/`](./docs/suno-gpt/system-prompt.txt) and defaults to drum & bass.
 
 ## Deeper context
 

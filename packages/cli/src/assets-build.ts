@@ -1,6 +1,6 @@
-import { mkdtemp, rm, mkdir } from 'node:fs/promises'
+import { mkdtemp, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
-import { dirname, join } from 'node:path'
+import { join } from 'node:path'
 import type { AssetManifest, ImageVariant } from '@badcode/comic-manifest'
 import type { Bucket } from './bucket'
 import type { ImageProcessor } from './image-processor'
@@ -55,14 +55,14 @@ export async function assetsBuild(opts: AssetsBuildOptions): Promise<AssetManife
     .map((k) => relKey(basePath, k))
     .filter((rel) => classifyAsset(rel) !== 'skip')
 
-  let tmp: string | null = null
-  const ensureTmp = async (): Promise<string> => {
-    if (!tmp) tmp = await mkdtemp(join(tmpdir(), 'assets-build-'))
-    return tmp
+  let tmpDir: Promise<string> | null = null
+  const ensureTmp = (): Promise<string> => {
+    if (!tmpDir) tmpDir = mkdtemp(join(tmpdir(), 'assets-build-'))
+    return tmpDir
   }
 
   try {
-    const entries = await mapPool(rasterOrPass, concurrency, async (rel): Promise<[string, ImageVariant]> => {
+    const entries = await mapPool(rasterOrPass, concurrency, async (rel, index): Promise<[string, ImageVariant]> => {
       if (classifyAsset(rel) === 'passthrough') {
         log(`passthrough ${rel}`)
         return [rel, { thumbhash: '', low: rel, high: rel, width: 0, height: 0 }]
@@ -84,8 +84,7 @@ export async function assetsBuild(opts: AssetsBuildOptions): Promise<AssetManife
       }
 
       const dir = await ensureTmp()
-      const localSrc = join(dir, rel.replace(/\//g, '__'))
-      await mkdir(dirname(localSrc), { recursive: true })
+      const localSrc = join(dir, `src-${index}`)
       await bucket.download(`${basePath}/${rel}`, localSrc)
 
       const localLow = `${localSrc}.low.webp`
@@ -104,6 +103,6 @@ export async function assetsBuild(opts: AssetsBuildOptions): Promise<AssetManife
 
     return { basePath, assets: Object.fromEntries(entries) }
   } finally {
-    if (tmp) await rm(tmp, { recursive: true, force: true })
+    if (tmpDir) await rm(await tmpDir, { recursive: true, force: true })
   }
 }

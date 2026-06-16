@@ -110,4 +110,28 @@ describe('assetsBuild', () => {
     expect(bucket.upload).not.toHaveBeenCalled()
     expect(proc.toWebp).not.toHaveBeenCalled()
   })
+
+  it('downloads to distinct local destinations under concurrency (no filename collision)', async () => {
+    // These two keys flatten to the same name under the old `/` -> `__` scheme.
+    const bucket = fakeBucket({ keys: [`${SRC}/a/b__c.png`, `${SRC}/a/b/c.png`] })
+    const proc = fakeProcessor()
+    const manifest = await assetsBuild({ bucket, processor: proc, src: SRC, concurrency: 4 })
+
+    const calls = (bucket.download as any).mock.calls
+    expect(calls).toHaveLength(2)
+    const dests = calls.map((c: any[]) => c[1])
+    expect(new Set(dests).size).toBe(2) // distinct local destinations
+
+    expect(manifest.assets['a/b__c.png']).toBeDefined()
+    expect(manifest.assets['a/b/c.png']).toBeDefined()
+  })
+
+  it('propagates processing errors', async () => {
+    const bucket = fakeBucket({ keys: [`${SRC}/p1/main.png`] })
+    const proc = fakeProcessor()
+    proc.toWebp = vi.fn(async () => {
+      throw new Error('boom')
+    })
+    await expect(assetsBuild({ bucket, processor: proc, src: SRC })).rejects.toThrow('boom')
+  })
 })

@@ -9,5 +9,9 @@ build/
 .vite/
 coverage/
 .superpowers/
-.claude
+
+# Claude Code: share project config (skills, commands, settings.json) but keep
+# personal and ephemeral bits local.
+.claude/worktrees/
+.claude/settings.local.json
 
