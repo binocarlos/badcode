@@ -92,7 +92,7 @@ export async function assetsBuild(opts: AssetsBuildOptions): Promise<AssetManife
       const { width, height } = await processor.dimensions(localSrc)
       await processor.toWebp(localSrc, localLow, LOW_WIDTH, LOW_QUALITY)
       await processor.toWebp(localSrc, localHigh, HIGH_WIDTH, HIGH_QUALITY)
-      const thumbhash = await processor.thumbhashDataUri(localSrc)
+      const thumbhash = await processor.thumbhash(localSrc)
 
       await bucket.upload(localLow, `${basePath}/${lowKey}`, IMMUTABLE_CC)
       await bucket.upload(localHigh, `${basePath}/${highKey}`, IMMUTABLE_CC)

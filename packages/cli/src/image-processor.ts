@@ -1,13 +1,13 @@
 import sharp from 'sharp'
-import { rgbaToThumbHash, thumbHashToDataURL } from 'thumbhash'
+import { rgbaToThumbHash } from 'thumbhash'
 
 export interface ImageProcessor {
   /** Intrinsic pixel dimensions of the source image. */
   dimensions(input: string): Promise<{ width: number; height: number }>
   /** Resize to at most `width` px (never upscaling) and write a WebP to `output`. */
   toWebp(input: string, output: string, width: number, quality: number): Promise<void>
-  /** Compute a ThumbHash for the image and return it decoded as an image data-URI. */
-  thumbhashDataUri(input: string): Promise<string>
+  /** Compute a ThumbHash and return it as compact base64 of the raw hash bytes (~33 chars). Decode at runtime via thumbHashToDataURL. */
+  thumbhash(input: string): Promise<string>
 }
 
 export class SharpImageProcessor implements ImageProcessor {
@@ -26,7 +26,7 @@ export class SharpImageProcessor implements ImageProcessor {
       .toFile(output)
   }
 
-  async thumbhashDataUri(input: string): Promise<string> {
+  async thumbhash(input: string): Promise<string> {
     // ThumbHash requires the source no larger than 100x100.
     const { data, info } = await sharp(input)
       .resize(100, 100, { fit: 'inside', withoutEnlargement: true })
@@ -34,6 +34,6 @@ export class SharpImageProcessor implements ImageProcessor {
       .raw()
       .toBuffer({ resolveWithObject: true })
     const hash = rgbaToThumbHash(info.width, info.height, data)
-    return thumbHashToDataURL(hash)
+    return Buffer.from(hash).toString('base64')
   }
 }

@@ -19,7 +19,7 @@ function fakeProcessor(): ImageProcessor {
   return {
     dimensions: vi.fn(async () => ({ width: 1600, height: 900 })),
     toWebp: vi.fn(async () => {}),
-    thumbhashDataUri: vi.fn(async () => 'data:image/png;base64,HASH'),
+    thumbhash: vi.fn(async () => 'HASHB64'),
   }
 }
 
@@ -33,7 +33,7 @@ describe('assetsBuild', () => {
 
     expect(manifest.basePath).toBe(SRC)
     expect(manifest.assets['p1/main.png']).toEqual({
-      thumbhash: 'data:image/png;base64,HASH',
+      thumbhash: 'HASHB64',
       low: 'derived/p1/main.low.webp',
       high: 'derived/p1/main.high.webp',
       width: 1600,
@@ -97,7 +97,7 @@ describe('assetsBuild', () => {
     }
     const manifest = await assetsBuild({ bucket, processor: proc, src: SRC, previous, force: true })
 
-    expect(manifest.assets['p1/main.png'].thumbhash).toBe('data:image/png;base64,HASH')
+    expect(manifest.assets['p1/main.png'].thumbhash).toBe('HASHB64')
     expect(proc.toWebp).toHaveBeenCalledTimes(2)
   })
 

@@ -1,6 +1,6 @@
 /** Generated variants + placeholder for one image asset. Paths are basePath-relative. */
 export interface ImageVariant {
-  /** ThumbHash decoded to a data-URI. Empty string for passthrough assets (SVG/video). */
+  /** Compact base64 of the raw ThumbHash bytes (~33 chars), or empty string for passthrough assets (SVG/video). Decode to a data-URI at runtime via thumbHashToDataURL. */
   thumbhash: string
   /** basePath-relative key of the low-res WebP (~720w). For passthrough, the original key. */
   low: string

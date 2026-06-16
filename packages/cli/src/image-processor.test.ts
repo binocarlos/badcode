@@ -42,9 +42,11 @@ describe('SharpImageProcessor', () => {
     expect(meta.width).toBe(1200)
   })
 
-  it('produces a non-empty image data-URI from ThumbHash', async () => {
-    const uri = await proc.thumbhashDataUri(srcPng)
-    expect(uri.startsWith('data:image/')).toBe(true)
-    expect(uri.length).toBeGreaterThan(64)
+  it('produces a compact base64 ThumbHash (not a data-URI)', async () => {
+    const hash = await proc.thumbhash(srcPng)
+    expect(typeof hash).toBe('string')
+    expect(hash.length).toBeGreaterThan(0)
+    expect(hash.length).toBeLessThan(100) // raw ~25-byte hash → ~33 base64 chars, never KBs
+    expect(hash.startsWith('data:')).toBe(false)
   })
 })
