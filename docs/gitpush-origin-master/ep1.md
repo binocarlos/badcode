@@ -2,7 +2,7 @@
 
 **EP1** is exactly that: a short, three-track teaser — the first thing the world sees from BadCode.
 The name is deliberately plain (`EP1`, no clever title), because the point isn't to overclaim, it's
-to *hook*. EP1 sits beneath the overarching project, **[GitPush Origin Master](./gitpush-origin-master.md)** —
+to *hook*. EP1 sits beneath the overarching project, **[GitPush Origin Master](./README.md)** —
 the large timeline everything else hangs from.
 
 How we frame it publicly: **BadCode — EP1, from _GitPush Origin Master_ (coming soon).**

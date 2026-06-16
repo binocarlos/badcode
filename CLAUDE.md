@@ -53,13 +53,12 @@ Full guide: [`docs/voice.md`](./docs/voice.md). When writing lyrics or story cop
 
 - [`docs/vision.md`](./docs/vision.md) — origin story, mission, themes
 - [`docs/voice.md`](./docs/voice.md) — tone guide with do/don't
-- [`docs/gitpush-origin-master.md`](./docs/gitpush-origin-master.md) — the overarching project / timeline (the **fork**: bad branch vs. good branch); start here for the arc
-- [`docs/storyverse.md`](./docs/storyverse.md) — the bad-branch epic: the sci-fi physics the AI worked out (consciousness-first reality)
-- [`docs/discovery-timeline.md`](./docs/discovery-timeline.md) — how the Storyverse got proven: the bad-branch fictional history 2026–2054 (the four beats, the vault, the revert)
-- [`docs/gitpush-origin-master-story.md`](./docs/gitpush-origin-master-story.md) — the master story: the spine and scene sequence of the title comic (the eight acts, from the push to the time machine)
-- [`docs/how-we-tell-it.md`](./docs/how-we-tell-it.md) — how to convey the three big ideas without losing people: the skeleton, the four skins (Story/Theatre/Myth/Game), the simplest framing per pillar
-- [`docs/future-proof.md`](./docs/future-proof.md) — the good-branch epic: redesigning politics with software-engineering tenets
-- [`docs/ep1.md`](./docs/ep1.md) — the three-track teaser release (comic + track each)
+- **[`docs/gitpush-origin-master/`](./docs/gitpush-origin-master/README.md)** — the whole GPOM story canon, one folder. Start at its `README.md` (the **backbone**: orientation, the fork, the production tracker, and the act sequence — Prologue → 6 acts → Coda — from the push to the time machine). Inside:
+  - [`storyverse.md`](./docs/gitpush-origin-master/storyverse.md) — the bad-branch epic: the sci-fi physics the AI worked out (consciousness-first reality)
+  - [`discovery-timeline.md`](./docs/gitpush-origin-master/discovery-timeline.md) — how the Storyverse got proven: the bad-branch fictional history 2026–2054 (the four beats, the vault, the revert)
+  - [`future-proof.md`](./docs/gitpush-origin-master/future-proof.md) — the good-branch epic: redesigning politics with software-engineering tenets
+  - [`how-we-tell-it.md`](./docs/gitpush-origin-master/how-we-tell-it.md) — how to convey the three big ideas without losing people: the skeleton, the four skins (Story/Theatre/Myth/Game), the simplest framing per pillar
+  - [`ep1.md`](./docs/gitpush-origin-master/ep1.md) — the three-track teaser release (comic + track each)
 - [`docs/storytelling.md`](./docs/storytelling.md) — how we craft a story
 
 ## Out of scope here

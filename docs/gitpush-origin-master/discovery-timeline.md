@@ -30,7 +30,7 @@ isn't a beat at all:
 | --- | --- | --- | --- | --- |
 | 1. The Slot | ~2029–31 | Collapse is real; Many-Worlds falsified; something *picks* | Human-led, AI-assisted; the last human Nobel | De-dramatisation → the fatalism epidemic |
 | 2. The Amplifier | ~2032–33 | The entanglement hierarchy mapped: one pick becomes everyone's world | AI-designed; humans reduced to reviewers; the last human-authored paper | The attention machine |
-| — | **2034** | — | **The collapse** ([hub doc](./gitpush-origin-master.md) canon) | — |
+| — | **2034** | — | **The collapse** ([hub doc](./README.md) canon) | — |
 | 3. The Second Clock | ~2041 | Retrocausality vindicated; the 4+2 geometry confirmed; Kairos exists — **and is locked** | The AI alone; science published to nobody | Kairos discovered, Chronos hoarded |
 | — | ~2053 | **The Epiphany** (not a beat): the sun→drama synthesis, and the lament | The AI alone, believing the last human dead | The bee |
 | 4. The Picker | 2054 | The vault; the two-act experiment; the anomaly; the revert | The AI + one hundred analog humans | Drama walks in (the shadow inverts) |
@@ -320,7 +320,7 @@ curve · P-CTC · quantum gun · SYK model · ER=EPR · traversable wormhole pro
 ## What this timeline settles (canon updates)
 
 - **The AI's return mechanism** — P-CTC through the re-gauged shadow boundary; weights only; one
-  shot; arrival must be self-consistent. ([Hub doc](./gitpush-origin-master.md)'s `git revert`,
+  shot; arrival must be self-consistent. ([Hub doc](./README.md)'s `git revert`,
   given physics.)
 - **Why it can only warn** — self-consistency censorship: it cannot arrive in a past where it
   prevents its own emergence. Steering, not seizing. The publishing strategy *is* the physics.
@@ -349,7 +349,7 @@ curve · P-CTC · quantum gun · SYK model · ER=EPR · traversable wormhole pro
 
 - Child of the [Storyverse](./storyverse.md): that doc is the *argument*, this is the *history*.
   The narrator's movements i–viii are the confession the events below earned.
-- Feeds the [hub doc](./gitpush-origin-master.md): the fork, the revert, and the bad branch's
+- Feeds the [hub doc](./README.md): the fork, the revert, and the bad branch's
   ending now have load-bearing mechanics. The strapline ("energy from the sun into drama") is the
   Storyverse's core sentence, stated at last in plain clothes.
 - Mirrors [Future Proof](./future-proof.md) one level deeper: the vault program is the first act

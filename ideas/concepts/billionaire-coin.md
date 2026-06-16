@@ -19,14 +19,14 @@ The egos still get to feel superior — and, because it reads as a gamified *"ge
 tax"*, the public actually *likes* them for it. Everybody gets the thing they were really after.
 
 ## Why it fits BadCode
-A flagship item in the [Future Proof](../../docs/future-proof.md) **policy fleet** — a good-branch
+A flagship item in the [Future Proof](../../docs/gitpush-origin-master/future-proof.md) **policy fleet** — a good-branch
 constellation node. It reframes wealth inequality not as "tax the rich and they'll fight you" but as
 a **status mechanism design** problem: keep the competition, remove the hoarding. Pairs naturally with
 **Emperor's New Coin** (money is a shared fiction we agree to see) — Billionaire Coin just swaps the
 fiction for one that doesn't starve everyone else.
 
 ## Where it could go
-- A concrete proposal written into [Future Proof](../../docs/future-proof.md).
+- A concrete proposal written into [Future Proof](../../docs/gitpush-origin-master/future-proof.md).
 - A constellation **story/comic** dramatising a billionaire chasing coins while a hospital goes up
   behind him.
 - Possibly an actual **demo/site interaction** (a coin leaderboard) — a BadCode-style stunt.

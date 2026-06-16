@@ -1,6 +1,6 @@
 # How we tell it
 
-*Companion to [`storytelling.md`](./storytelling.md). That doc is **how to craft any BadCode
+*Companion to [`storytelling.md`](../storytelling.md). That doc is **how to craft any BadCode
 story** (concept + background, metaphor, beats, house image style). This doc is narrower and
 deeper: **how to convey the [Storyverse](./storyverse.md)'s three big ideas** — participatory
 reality, hierarchical entanglement, multi-dimensional time — without losing the audience in physics
@@ -132,7 +132,7 @@ trusts:
 
 - **Public surface (EP1, politics/economics):** wears almost no skin at all. Lead with the real,
   close, documentary mistakes. The metaphysics is *bedrock held in reserve.*
-- **The master arc ([GitPush Origin Master](./gitpush-origin-master-story.md)):** **Story** as the
+- **The master arc ([GitPush Origin Master](./README.md)):** **Story** as the
   spine, escalating into **Myth** for the deep reveal. **Game** dropped in as a device where a
   reader needs to *feel* participatory collapse fast.
 - **Earn it.** The metaphysics surfaces later and louder as the arc grows, never front-loaded. Same
@@ -142,6 +142,5 @@ trusts:
 
 - [`storyverse.md`](./storyverse.md) — the argument (in voice) and the physics receipts / bright line.
 - [`discovery-timeline.md`](./discovery-timeline.md) — how the three pillars get proven; the one lie.
-- [`gitpush-origin-master-story.md`](./gitpush-origin-master-story.md) — the master narrative these
-  tools serve.
-- [`storytelling.md`](./storytelling.md) — general craft and house image style.
+- [`README.md`](./README.md) — the master narrative (the backbone) these tools serve.
+- [`storytelling.md`](../storytelling.md) — general craft and house image style.

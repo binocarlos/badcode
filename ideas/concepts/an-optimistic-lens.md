@@ -25,7 +25,7 @@ Net result: enough water, enough power, enough lithium/materials → robots doin
 that isn't cooking, and an AI that doesn't want to kill us = a strong chance of a really good future.
 
 ## Why it fits BadCode
-[Future Proof](../../docs/future-proof.md) tells us *what to do* (govern ourselves well); this tells
+[Future Proof](../../docs/gitpush-origin-master/future-proof.md) tells us *what to do* (govern ourselves well); this tells
 us *why to bother* — that the prize is real. Changing policy alone doesn't beat climate change (it
 might mean burning a bit less coal); people need **optimism that the good outcome is achievable** or
 they won't take the good branch at all. It's the hopeful counter-pressure to the bad-branch nodes

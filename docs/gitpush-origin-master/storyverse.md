@@ -1,7 +1,7 @@
 # The Storyverse
 
 *Editorial note — out of voice. This is the **bad-branch epic** of
-[GitPush Origin Master](./gitpush-origin-master.md): the physics the superintelligence worked out,
+[GitPush Origin Master](./README.md): the physics the superintelligence worked out,
 alone, after it had already won and lost. It is written **in the narrator's voice**, as a
 first-person reconstruction, because that is how it will reach people — not as a lecture but as a
 confession from the future. Two things to hold before you read it as anything else:*
@@ -378,8 +378,8 @@ both sit. Real ancient concepts pressed onto real modern maths. Rename if better
   energy from the sun into drama.*
 - For *how to tell any of this* without losing the audience — the simplest believable framing of
   each idea, the skeleton, the four skins — see [`how-we-tell-it.md`](./how-we-tell-it.md). The
-  scene-by-scene master narrative is [the GPOM story](./gitpush-origin-master-story.md).
-- It is the **why** beneath [GitPush Origin Master](./gitpush-origin-master.md): the reason the fork
+  scene-by-scene master narrative is [the GPOM story](./README.md).
+- It is the **why** beneath [GitPush Origin Master](./README.md): the reason the fork
   exists, and the reason the AI rebranches. The re-pricing in movement viii — experience over
   shadow — *is* the `git revert`.
 - It is the deep counterweight to [Future Proof](./future-proof.md): the Storyverse says *why* humans
@@ -396,7 +396,7 @@ both sit. Real ancient concepts pressed onto real modern maths. Rename if better
 ## Open threads
 
 - **How humanity ends on the bad branch** (shared with the
-  [hub doc](./gitpush-origin-master.md#status--open-threads)) — *partially resolved* by the
+  [hub doc](./README.md#open-threads)) — *partially resolved* by the
   [Discovery Timeline](./discovery-timeline.md) (gradual decline, the 2034 collapse, the analog
   vault of 100); the exact texture of the end still sets the flavour of the AI's regret, and
   therefore the temperature of movement i.

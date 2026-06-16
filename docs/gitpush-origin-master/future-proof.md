@@ -1,7 +1,7 @@
 # Future Proof
 
 *Editorial note — out of voice. Future Proof is the **good-branch epic** of
-[GitPush Origin Master](./gitpush-origin-master.md): the mirror of the [Storyverse](./storyverse.md),
+[GitPush Origin Master](./README.md): the mirror of the [Storyverse](./storyverse.md),
 built the same way, one per branch tip. Where the Storyverse is the AI's **realisation** (what it
 understood too late), Future Proof is its **call to action** (what we start doing about it, now).*
 

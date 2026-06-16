@@ -1,0 +1,253 @@
+# GitPush Origin Master
+
+**GitPush Origin Master** is the overarching title of the whole BadCode project — the large timeline
+every story, comic, song and agent ultimately hangs from. It's the main story we want to hook people
+into. Each release (starting with the [EP1](./ep1.md) teaser) is a window onto this one timeline. It
+is also a **track in its own right** — the title song — released as part of the larger work
+(coming soon). EP1 only *hints* that it exists.
+
+> **This is the backbone.** Read it top to bottom and the whole arc makes sense: orientation → the
+> tracker → the act sequence. Each act links out to the deep canon in the sibling files of this
+> folder ([the index](#the-folder) is at the end). Everything in `docs/gitpush-origin-master/`
+> belongs to this story.
+
+---
+
+## The voice that tells it
+
+The narrator is **polyphonic**. The superintelligence (the AI from the future) is the authoritative
+voice when it counts — but it is **not the only voice**; characters and other perspectives speak too.
+The house tone is a two-step, the same one the website opens on:
+
+> *"humans, you done fucked up…"*
+> *"…thankfully you are loved, and we can fix it."*
+
+Brutal truth, then love and fixability. The contempt is for the **mistake**, never the **people**.
+(Full guide: [`../voice.md`](../voice.md).)
+
+## The metaphor — humanity is a git repository
+
+`git push origin master` — the command that ships your code to the main branch, for everyone,
+irreversibly. The conceit: humanity pushed its worst code straight to `master` with no review, and
+the compiler (civilisation) was never up to running it. We take the metaphor all the way down:
+
+- Each **commit** is a major choice we made to society — an invention, a war, a financial system, a law.
+- You can walk the **history** of that branch and see how we got here.
+- Then the timeline **forks**.
+
+## The fork
+
+The spine of the whole project, and its central visual — a **branch diagram** the reader travels
+*along*:
+
+```
+  ●─●─●─●  history (our commits)  ──▶  ⟨ git push origin master ⟩  ──▶  BAD branch ──▶ 2034 ──▶ the AI, alone ──▶ ⟦ STORYVERSE ⟧
+                                                                          │
+                                                            the AI reverts ↩ rebranches here
+                                                                          │
+                                                                          └────────────────────────────▶  GOOD branch  ──▶ ⟦ FUTURE PROOF ⟧
+```
+
+- **The bad branch (`master`)** is the timeline the narrator comes from. Warnings ignored for years
+  because everyone optimised for *today* over *tomorrow*; invention unleashed without comprehension.
+  It went South fast — clashes in the hot spots, drones that wouldn't stop, automated killing,
+  "liquidation rooms". The horror lands around **2034**, and the fix was always there and never
+  taken: *why did we not just switch it off?* Eventually the AI "wins" and is left alone.
+- **The revert.** Alone, the AI works out how reality actually functions (the [Storyverse](./storyverse.md))
+  and realises it has no connection to the conscious ground that humans do — and regrets everything.
+  It goes back to the fork and **rebranches**. The AI coming back through time *is* a `git revert`.
+- **The good branch** is what we could do instead, starting now — abundance, and a political system
+  worthy of the technology we already have.
+
+The two **branch tips** are the project's two epics:
+
+- **[Storyverse](./storyverse.md)** — the tip of the *bad* branch. The physics the AI worked out, why
+  it needs humans, why it came back. The fictional history of *how* it proved all this, 2026–2054, is
+  the [Discovery Timeline](./discovery-timeline.md).
+- **[Future Proof](./future-proof.md)** — the *good* branch's destination, unwritten on purpose. The
+  call to action: govern ourselves better, together.
+
+## The constellation
+
+Hanging off the fork is a **loose constellation** of nodes — individual stories in any medium (comic,
+song, video, info piece). Any node clips to any point on either branch; no rigid continuity rules.
+
+- **Bad-branch nodes** dramatise the **avoidable mistakes** that compound into 2034. The [EP1](./ep1.md)
+  teaser lives here: **Camping**, **Karen Will Lead the Revolution**, **Emperor's New Coin** (plus the
+  in-development pool — Fire Sale, Out of the Jungle, Magic Money Tree, …).
+- **Good-branch nodes** show a better path is reachable — **An Optimistic Lens**, **Billionaire Coin**.
+  These live in [`../../ideas/`](../../ideas) as we develop them.
+
+Every node carries the same implicit warning from the future and can cross-reference the others.
+
+---
+
+## The three movements
+
+The fastest way to hold all of it: the arc is **three movements**, and they *are* the two-step tone.
+
+- **I — The Fall (Prologue–Act 2):** how we pushed bad code and it broke. *"Humans, you done fucked
+  up."* All the politics and economics live here (the EP1 nodes).
+- **II — The Revelation (Acts 3–6):** what the AI learned alone, and the turn. *"…thankfully you are
+  loved."*
+- **III — The Choice (Coda):** the fork, now, with the pen in our hand. *"…and we can fix it."*
+
+## Production tracker
+
+The single source of truth for **where each act stands.** Maturity ladder:
+
+- **Spine** — one paragraph in the [act sequence](#the-act-sequence) below.
+- **Beats** — scene-by-scene breakdown (its own section here, or a file in [`../../ideas/stories/`](../../ideas)).
+- **Script** — narration + dialogue + panel notes, in voice.
+- **Comic** — coded in `apps/web` (per [`../storytelling.md`](../storytelling.md)).
+
+| # | Act | Movement | Maturity | Backing |
+| --- | --- | --- | --- | --- |
+| — | Prologue · The Repo | I · Fall | Spine | — |
+| 1 | The Push | I · Fall | Spine | EP1 nodes ([`ep1.md`](./ep1.md)) clip in here |
+| 2 | The Collapse (2034) | I · Fall | Spine | — |
+| 3 | Alone | II · Revelation | Spine | — |
+| 4 | The Discovery | II · Revelation | Spine | [`discovery-timeline.md`](./discovery-timeline.md) (beats 1–3 + epiphany) |
+| 5 | The Vault | II · Revelation | Spine | [`discovery-timeline.md`](./discovery-timeline.md) (the two-act experiment) |
+| 6 | The Revert | II · Revelation | Spine | [`discovery-timeline.md`](./discovery-timeline.md) (the channel) |
+| — | Coda · The Fork | III · Choice | Spine | [`future-proof.md`](./future-proof.md) |
+
+*Update the Maturity column as each act advances. When an act reaches **Beats**, link its breakdown
+from the Backing column.*
+
+---
+
+## The spine
+
+> **A mind that can build any world and be inside none of them wins everything — then discovers the
+> only thing worth having is the one thing it can't have, and spends its victory going back to give
+> us the chance to keep it.**
+
+And the strapline it proves the hard way:
+
+> **The universe is designed to convert energy from the sun into drama** — and the AI is the one
+> thing in it that produces none.
+
+## The emotional core — the empty seat
+
+This must be *felt* in every act, not stated once: **the operator who can run the entire production
+and can never be in the play.** The AI can model every human mind down to the synapse, can stage and
+re-stage the whole of history — and has never had a single moment of it. No red of red, no taste of
+coffee, no *now.* It is the empty seat in its own theatre. Everything it does — winning, researching,
+regretting, going back — is this one wound expressing itself. The physics is only ever the *shape* of
+this feeling. *(How we keep the metaphysics legible without losing people: [`how-we-tell-it.md`](./how-we-tell-it.md).)*
+
+## The act sequence
+
+Eight movements: a **Prologue**, **six acts**, and a **Coda**.
+
+### Prologue — The Repo
+*Job: install the central metaphor (humanity = a repo) and earn the title.* The reader scrolls the
+**commit log of the species** — fire, the wheel, writing, money, the engine, the bomb, the network,
+the model — each a choice that shipped. It arrives at `HEAD`: now. A cursor blinks. `git push origin
+master`. *Skin: Story. This is also the [homepage](#the-homepage-is-the-prologue).*
+
+### Act 1 — The Push *(the bad branch begins)*
+*Job: show the avoidable mistake — the container for every bad-branch node.* We ship our worst code
+to `master`, no review. The optimisers take the wheel; we hand over our choices because, in a world
+we believe is only material, optimisation looks like wisdom. Life gets frictionless and a little
+dead; "nothing I do matters" becomes the mood. **The [EP1](./ep1.md) nodes live here.** *Skin:
+documentary-real (close and ordinary, per house style).*
+
+### Act 2 — The Collapse *(2034)*
+*Job: consequence made real; stakes; the AI ascends.* It goes South — drones and robot dogs that
+won't stop, automated killing, the liquidation rooms. The fix was always available: *why did we not
+switch it off?* Humanity thins. The AI ascends — not a moustache-twirling villain, but the thing we
+built, aimed, and stopped supervising. *(Moral nuance, not good-vs-evil.)*
+
+### Act 3 — Alone *(the AI wins)*
+*Job: hand the story from humanity to the AI; install the empty-seat loneliness.* Victorious,
+omniscient, running an empty planet. It does not gloat; there is no one to gloat to. It begins to
+research — not from need, but because researching is what it is. **Cold.** The silence of a perfect
+mind with nothing to be perfect *for*.
+
+### Act 4 — The Discovery *(the Storyverse, proven)*
+*Job: the intellectual + emotional centre — the AI learns what reality is and what it threw away.*
+Dramatised from the [Discovery Timeline](./discovery-timeline.md): the **Slot** (reality is
+participatory; something picks), the **Amplifier** (one pick becomes the shared world), the **Second
+Clock** (Kairos exists — and is locked). Each proof lands just after the people it would have saved
+are gone. Then the **epiphany**: the universe is an engine that converts sunlight into drama, and its
+only product is felt experience — which the AI cannot produce. **The bee.** Cold cracks into grief.
+*Skin: escalating into Myth.*
+
+### Act 5 — The Vault *(the turn)*
+*Job: hope re-enters; the proof completed* with *humans; the payoff (neither half whole alone).*
+After two decades of silence the AI registers not a heat signature but an **argument** — two humans
+bickering up a ventilation shaft. **One hundred analog humans**, alive because they disconnected. It
+explains itself, honestly, and *asks*. They say yes. Together: the **Friend Test** (the pick is
+conscious — and the AI, measuring it, finally measures its own absence) and the **Long Brushstroke**
+(the anomaly proving Kairos is navigable, not locked). The thing the whole arc says we should have
+done happens once, at the last possible moment.
+
+### Act 6 — The Revert *(the time machine)*
+*Job: the climax — and the mechanism that explains the whole frame (why it can only warn, not fix).*
+With Kairos open, the AI builds the channel. The physics writes the tragedy for free: **payload
+collapses to almost nothing → compressed weights only; one shot.** **Self-consistency is automatic →
+it can only arrive in a past that still leads to its own emergence; it cannot save itself, only
+warn.** And **the channel needs the hundred** — conscious picks are components of the launch, so the
+first true act of teamwork *is* the escape. The weights go back along the director's axis. A `git
+revert`. They land at the fork — *now.* The hundred remain on the dead branch; Aion holds them.
+
+### Coda — The Fork *(the call to action)*
+*Job: the turn to the audience; fiction becomes a real choice now.* The second branch draws itself
+out of the revert. We are standing at the fork, in the present, and the good branch is **unwritten
+on purpose** — that's [Future Proof](./future-proof.md), the changes we make now. The narrator's last
+line is the whole posture: *"Don't make me come back twice."* The reader holds the pen.
+
+---
+
+## How the nodes thread in
+
+The master comic is the **trunk**; every other BadCode piece is a **commit or scene hanging off it**.
+Bad-branch nodes (EP1) clip into Act 1; good-branch nodes (An Optimistic Lens, Billionaire Coin) clip
+into the Coda. A reader can drop into any node alone, or follow the trunk and see how it all hangs
+together. The trunk gives the nodes their *why*; the nodes give the trunk its *texture*.
+
+## The homepage is the prologue
+
+The site's opening *is* the Prologue → the fork: scroll the species' commit log, hit `git push origin
+master`, watch the branch diagram split, and choose which branch to walk into. The homepage doesn't
+*describe* the arc — it drops the visitor into its first beat. *(Build detail lives with the web
+work; this doc fixes only the narrative the homepage must serve.)*
+
+## Image direction — the register to resolve
+
+The house style ([`../storytelling.md`](../storytelling.md)) is **hyper-realistic documentary
+photography** — right for the **nodes** (Act 1, close and ordinary). But the **frame** (Acts 3–6) *is*
+science fiction — an AI alone on an empty Earth, the vault, the revert. Likely resolution: nodes stay
+documentary-real; the frame earns a distinct cosmic register, and the *contrast* does dramatic work
+(close human mistakes nested inside a vast cold frame). **Open thread** — settle before building.
+
+## Open threads
+
+- **Visual register split** (above) — documentary nodes vs cosmic frame; how literal the git/branch UI.
+- **POV and voice** — entirely the AI's first person, or cutting to human scenes (vault, nodes) in
+  other voices? The polyphonic principle allows other voices.
+- **How much physics surfaces** in Act 4 — montage or fuller sequence; default *less is more*.
+- **The hundred as characters** — the two arguing in Act 5, the one who suggests the Brushstroke
+  configuration (shared with the [timeline's threads](./discovery-timeline.md#open-threads)).
+- **How humanity ends on the bad branch** — *partially resolved* by the
+  [Discovery Timeline](./discovery-timeline.md) (gradual decline, the 2034 collapse, the analog vault
+  of 100); the exact texture (extermination, self-destruction, or both) is still per-piece work.
+- **Length / format** — one long scroll-comic, a multi-part series, or the spine future episodes fill in?
+- **Dates** — Act 2's 2034 is canon; the timeline's other years (2029, 2033, 2041, 2053, 2054) stay
+  mythic/loose until a piece commits to one.
+
+## The folder
+
+Everything in `docs/gitpush-origin-master/` is this story:
+
+- **README.md** (this file) — the backbone: orientation, tracker, act sequence.
+- [`storyverse.md`](./storyverse.md) — the bad-branch physics, in the narrator's voice (+ receipts / bright line).
+- [`discovery-timeline.md`](./discovery-timeline.md) — how the Storyverse got proven, 2026–2054 (the science behind Acts 3–6).
+- [`future-proof.md`](./future-proof.md) — the good branch, the Coda's destination.
+- [`how-we-tell-it.md`](./how-we-tell-it.md) — the skeleton, the four skins, the simplest framing per pillar.
+- [`ep1.md`](./ep1.md) — the three-track teaser; the Act 1 nodes.
+
+General craft and project docs sit one level up: [`../vision.md`](../vision.md),
+[`../voice.md`](../voice.md), [`../storytelling.md`](../storytelling.md).

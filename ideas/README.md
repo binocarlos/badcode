@@ -5,7 +5,7 @@ from a scribble to something we can actually ship as a comic or a track.
 
 > **Status:** this is a deliberately empty **holding place**. We are migrating and curating content
 > from older brainstorm material *together, by hand*, so that every item earns its place in the
-> [GitPush Origin Master](../docs/gitpush-origin-master.md) narrative. Don't bulk-import.
+> [GitPush Origin Master](../docs/gitpush-origin-master/README.md) narrative. Don't bulk-import.
 
 ## Layout
 
