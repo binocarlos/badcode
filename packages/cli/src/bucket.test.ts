@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { GsutilBucket, IMMUTABLE_CC, LATEST_CC, GS_BUCKET } from './bucket'
 
 describe('GsutilBucket', () => {
@@ -58,5 +58,40 @@ describe('GsutilBucket', () => {
       `gs://${GS_BUCKET}/comics/demo/pages/p1/main.v3.png`,
       `gs://${GS_BUCKET}/comics/demo/pages/p1/main.latest.png`,
     ])
+  })
+})
+
+describe('GsutilBucket.listKeys', () => {
+  it('lists full bucket-relative keys recursively, dropping directory lines', async () => {
+    const run = vi.fn(async () =>
+      [
+        `gs://${GS_BUCKET}/comics-v2/ep1/:`,
+        `gs://${GS_BUCKET}/comics-v2/ep1/p1/main.png`,
+        `gs://${GS_BUCKET}/comics-v2/ep1/p1/`,
+        `gs://${GS_BUCKET}/comics-v2/ep1/p2/main.jpg`,
+        ``,
+      ].join('\n'),
+    )
+    const bucket = new GsutilBucket(run)
+    const keys = await bucket.listKeys('comics-v2/ep1')
+    expect(run).toHaveBeenCalledWith(['ls', '-r', `gs://${GS_BUCKET}/comics-v2/ep1/**`])
+    expect(keys).toEqual(['comics-v2/ep1/p1/main.png', 'comics-v2/ep1/p2/main.jpg'])
+  })
+
+  it('returns [] when nothing matches', async () => {
+    const run = vi.fn(async () => {
+      throw new Error('CommandException: One or more URLs matched no objects.')
+    })
+    const bucket = new GsutilBucket(run)
+    expect(await bucket.listKeys('comics-v2/empty')).toEqual([])
+  })
+})
+
+describe('GsutilBucket.download', () => {
+  it('cp from the bucket key to a local file', async () => {
+    const run = vi.fn(async () => '')
+    const bucket = new GsutilBucket(run)
+    await bucket.download('comics-v2/ep1/p1/main.png', '/tmp/main.png')
+    expect(run).toHaveBeenCalledWith(['cp', `gs://${GS_BUCKET}/comics-v2/ep1/p1/main.png`, '/tmp/main.png'])
   })
 })

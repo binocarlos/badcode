@@ -19,6 +19,10 @@ export interface Bucket {
   upload(localFile: string, key: string, cacheControl: string): Promise<void>
   /** Copy one bucket-relative key to another with the given Cache-Control. */
   copy(srcKey: string, destKey: string, cacheControl: string): Promise<void>
+  /** Download a bucket-relative key to a local file path. */
+  download(key: string, localFile: string): Promise<void>
+  /** Recursively list full bucket-relative keys under a prefix (directories excluded). */
+  listKeys(prefix: string): Promise<string[]>
 }
 
 const defaultRunner: GsutilRunner = async (args) => {
@@ -49,5 +53,24 @@ export class GsutilBucket implements Bucket {
 
   async copy(srcKey: string, destKey: string, cacheControl: string): Promise<void> {
     await this.run(['-h', `Cache-Control:${cacheControl}`, 'cp', `gs://${GS_BUCKET}/${srcKey}`, `gs://${GS_BUCKET}/${destKey}`])
+  }
+
+  async download(key: string, localFile: string): Promise<void> {
+    await this.run(['cp', `gs://${GS_BUCKET}/${key}`, localFile])
+  }
+
+  async listKeys(prefix: string): Promise<string[]> {
+    let out: string
+    try {
+      out = await this.run(['ls', '-r', `gs://${GS_BUCKET}/${prefix}/**`])
+    } catch {
+      return [] // gsutil exits non-zero when nothing matches
+    }
+    const root = `gs://${GS_BUCKET}/`
+    return out
+      .split('\n')
+      .map((line) => line.trim())
+      .filter((line) => line.startsWith(root) && !line.endsWith('/') && !line.endsWith(':'))
+      .map((line) => line.slice(root.length))
   }
 }

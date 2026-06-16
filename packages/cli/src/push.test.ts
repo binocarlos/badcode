@@ -21,6 +21,8 @@ function fakeBucket(existing: string[]) {
     copy: async (src, dest, cc) => {
       calls.copy.push([src, dest, cc])
     },
+    download: async () => {},
+    listKeys: async () => [],
   }
   return { bucket, calls }
 }

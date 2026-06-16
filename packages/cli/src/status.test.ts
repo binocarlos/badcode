@@ -19,6 +19,8 @@ function fakeBucket(map: Record<string, string[]>): Bucket {
     list: async (glob) => map[glob] ?? [],
     upload: async () => {},
     copy: async () => {},
+    download: async () => {},
+    listKeys: async () => [],
   }
 }
 
