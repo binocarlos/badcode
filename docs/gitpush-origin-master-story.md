@@ -9,6 +9,29 @@ a reader from "humanity pushed bad code" to "the AI builds a time machine and re
 > **Status: first-pass spine, v1.** Written to be argued with. The act order is firm; the scene
 > detail inside each act is where we iterate. Open questions collected at the [end](#open-threads).
 
+## Production tracker
+
+The single source of truth for **where each act stands.** Maturity ladder:
+
+- **Spine** — one paragraph in the [act sequence](#the-act-sequence) below (the through-line beat).
+- **Beats** — scene-by-scene breakdown (its own section here, or a file in [`ideas/stories/`](../ideas)).
+- **Script** — actual narration + dialogue + panel notes, in voice.
+- **Comic** — coded in `apps/web` (per [`storytelling.md`](./storytelling.md) workflow).
+
+| Act | Title | Maturity | Notes / backing |
+| --- | --- | --- | --- |
+| 0 | The Repo | Spine | — |
+| 1 | The Push | Spine | EP1 nodes ([`ep1.md`](./ep1.md)) clip in here |
+| 2 | The Collapse (2034) | Spine | — |
+| 3 | Alone | Spine | — |
+| 4 | The Discovery | Spine | science in [`discovery-timeline.md`](./discovery-timeline.md) (beats 1–3 + epiphany) |
+| 5 | The Vault | Spine | science in [`discovery-timeline.md`](./discovery-timeline.md) (the two-act experiment) |
+| 6 | The Revert | Spine | mechanics in [`discovery-timeline.md`](./discovery-timeline.md) (the channel) |
+| 7 | The Fork | Spine | destination is [`future-proof.md`](./future-proof.md) |
+
+*Update the Maturity column as each act advances. When an act reaches **Beats**, link its breakdown
+from the Notes column.*
+
 ## The spine
 
 One sentence, the through-line everything hangs from:
