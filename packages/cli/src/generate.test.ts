@@ -1,7 +1,7 @@
 // packages/cli/src/generate.test.ts
 import { describe, it, expect } from 'vitest'
 import ts from 'typescript'
-import { generateMeta, generateTsx, htmlToText, toPascalCase } from './generate'
+import { clampFontSize, generateMeta, generateTsx, htmlToText, toPascalCase } from './generate'
 import type { StorytellerComicConfig } from './storyteller-types'
 
 const sampleConfig: StorytellerComicConfig = {
@@ -58,6 +58,35 @@ const sampleConfig: StorytellerComicConfig = {
     },
   ],
 }
+
+describe('clampFontSize', () => {
+  it('floors tiny relative values to 10px (so text is not invisible)', () => {
+    expect(clampFontSize(1.2)).toBe(10)
+    expect(clampFontSize(1.8)).toBe(10)
+  })
+  it('caps large values at 24px', () => {
+    expect(clampFontSize(30)).toBe(24)
+  })
+  it('passes through reasonable px values', () => {
+    expect(clampFontSize(16)).toBe(16)
+  })
+})
+
+describe('generateTsx font size', () => {
+  it('emits a clamped fontSize for a tiny storyteller font_size', () => {
+    const cfg: StorytellerComicConfig = {
+      name: 'F', description: '', style: '', characters: [],
+      pages: [{
+        id: 'p1', layout: 'full',
+        images: { main: { id: 'i', media: { id: 'm', prompt: '', media_type: 'image', path: 'comics/x/main.jpg' } } },
+        text_bubbles: [{ id: 'b', type: 'speech', text: 'Hi', x: 10, y: 10, font_size: 1.2 }],
+      }],
+    }
+    const out = generateTsx(cfg, 'f')
+    expect(out).toContain('fontSize={10}')
+    expect(out).not.toContain('fontSize={1.2}')
+  })
+})
 
 describe('htmlToText', () => {
   it('strips tags and keeps text', () => {

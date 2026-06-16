@@ -149,10 +149,10 @@ export function CampingKaiComic() {
         {/* TODO: pick an effect — zoom, grayscale, pan, zoomInOut, scale */}
         {/* TODO: pick background color */}
         <ImageWidget src="https://storage.googleapis.com/badcode-storage/comics/a17f2cc4-1efb-4cb9-a6d9-0912e4c18662/pages/0f4216c3-b682-4650-bd37-ee076f03078a/main/4ed70055-2e6f-4705-94dd-a25306602c5b.png" />
-        <SpeechBubble x={68.81140259197325} y={51.19844576564767} appearAt={[0, 0.6]} fade tail="none" fontSize={1.2}>
+        <SpeechBubble x={68.81140259197325} y={51.19844576564767} appearAt={[0, 0.6]} fade tail="none" fontSize={10}>
           {'Tarquin, the deal you just closed is worth millions!\n\nHow do you do it?'}
         </SpeechBubble>
-        <SpeechBubble x={70.21582357859532} y={21.883338795000235} appearAt={[0.5, 1]} fade tail="none" fontSize={1.2}>
+        <SpeechBubble x={70.21582357859532} y={21.883338795000235} appearAt={[0.5, 1]} fade tail="none" fontSize={10}>
           {'Charles, it\'s easy!\n\nYou just have to have a "Winning Mentality" (tm)'}
         </SpeechBubble>
         {/* TODO: add SidePanelText with narrative content */}
@@ -167,13 +167,13 @@ export function CampingKaiComic() {
         {/* TODO: pick an effect — zoom, grayscale, pan, zoomInOut, scale */}
         {/* TODO: pick background color */}
         <ImageWidget src="https://storage.googleapis.com/badcode-storage/comics/a17f2cc4-1efb-4cb9-a6d9-0912e4c18662/pages/page_5/main/483f4a65-37be-4180-b255-015252796489.jpg" />
-        <SpeechBubble x={74.46436036789298} y={17.15275502083236} appearAt={[0.65, 1]} fade type="thought" tail="none" fontSize={1.2}>
+        <SpeechBubble x={74.46436036789298} y={17.15275502083236} appearAt={[0.65, 1]} fade type="thought" tail="none" fontSize={10}>
           {'He is so cool...'}
         </SpeechBubble>
-        <SpeechBubble x={44.647522993311036} y={49.40077711717616} appearAt={[0, 0.4]} fade tail="none" fontSize={1.2}>
+        <SpeechBubble x={44.647522993311036} y={49.40077711717616} appearAt={[0, 0.4]} fade tail="none" fontSize={10}>
           {'What are you up to this weekend mate?'}
         </SpeechBubble>
-        <SpeechBubble x={31.086695234113716} y={48.40129207434109} appearAt={[0.4, 1]} fade tail="none" fontSize={1.2}>
+        <SpeechBubble x={31.086695234113716} y={48.40129207434109} appearAt={[0.4, 1]} fade tail="none" fontSize={10}>
           {'I\'m off to an ayahuasca retreat in Wales!\nThere are parts of my personality I am keen to get to know more.'}
         </SpeechBubble>
         {/* TODO: add SidePanelText with narrative content */}
@@ -445,7 +445,7 @@ export function CampingKaiComic() {
         {/* TODO: pick an effect — zoom, grayscale, pan, zoomInOut, scale */}
         {/* TODO: pick background color */}
         <ImageWidget src="https://storage.googleapis.com/badcode-storage/comics/a17f2cc4-1efb-4cb9-a6d9-0912e4c18662/pages/page_9/main/696780a8-6859-4af0-9ce7-6394447e8b2a.png" />
-        <SpeechBubble x={21.321070234113712} y={83.85609287954684} appearAt={[0.7, 1]} fade type="thought" tail="none" fontSize={1.7999999999999998}>
+        <SpeechBubble x={21.321070234113712} y={83.85609287954684} appearAt={[0.7, 1]} fade type="thought" tail="none" fontSize={10}>
           {'Woaa, who is this guy?'}
         </SpeechBubble>
         {/* TODO: add SidePanelText with narrative content */}
@@ -597,10 +597,10 @@ export function CampingKaiComic() {
         {/* TODO: pick an effect — zoom, grayscale, pan, zoomInOut, scale */}
         {/* TODO: pick background color */}
         <ImageWidget src="https://storage.googleapis.com/badcode-storage/comics/a17f2cc4-1efb-4cb9-a6d9-0912e4c18662/pages/unknown_page/main/5d4b972f-19cd-4b98-9fed-9b29befb2e96.png" />
-        <SpeechBubble x={54.0956835284281} y={29.153597678011327} appearAt={[0.1, 0.5]} fade type="thought" tail="none" fontSize={1.7999999999999998}>
+        <SpeechBubble x={54.0956835284281} y={29.153597678011327} appearAt={[0.1, 0.5]} fade type="thought" tail="none" fontSize={10}>
           {'Look at the state of that tent!'}
         </SpeechBubble>
-        <SpeechBubble x={55.769230769230774} y={74.4183324750714} appearAt={[0.5, 0.9]} fade type="thought" tail="top-left" fontSize={1.7999999999999998}>
+        <SpeechBubble x={55.769230769230774} y={74.4183324750714} appearAt={[0.5, 0.9]} fade type="thought" tail="top-left" fontSize={10}>
           {'Fucking drug addicts - they need to get off their arse and do some bloody work!'}
         </SpeechBubble>
         {/* TODO: add SidePanelText with narrative content */}
@@ -615,10 +615,10 @@ export function CampingKaiComic() {
         {/* TODO: pick an effect — zoom, grayscale, pan, zoomInOut, scale */}
         {/* TODO: pick background color */}
         <ImageWidget src="https://storage.googleapis.com/badcode-storage/comics/a17f2cc4-1efb-4cb9-a6d9-0912e4c18662/pages/page_9/main/696780a8-6859-4af0-9ce7-6394447e8b2a.png" />
-        <SpeechBubble x={21.321070234113712} y={84.00589860025279} appearAt={[0, 0.5]} fade type="thought" tail="none" fontSize={1.7999999999999998}>
+        <SpeechBubble x={21.321070234113712} y={84.00589860025279} appearAt={[0, 0.5]} fade type="thought" tail="none" fontSize={10}>
           {'Fucking rich twat'}
         </SpeechBubble>
-        <SpeechBubble x={81.75428511705685} y={66.23519498150836} appearAt={[0.5, 1]} fade type="thought" tail="bottom-left" fontSize={1.7999999999999998}>
+        <SpeechBubble x={81.75428511705685} y={66.23519498150836} appearAt={[0.5, 1]} fade type="thought" tail="bottom-left" fontSize={10}>
           {'I bet he just spent 20 grand\nat the dentist'}
         </SpeechBubble>
         {/* TODO: add SidePanelText with narrative content */}

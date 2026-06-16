@@ -13,6 +13,16 @@ export function toPascalCase(slug: string): string {
   return /^[0-9]/.test(name) ? `C${name}` : name
 }
 
+/**
+ * Storyteller stores bubble font_size as a pixel value but tolerates tiny/relative
+ * values (e.g. 1.2); at render time it clamps to [10, 24]px. We emit a px number to
+ * SpeechBubble's `fontSize`, so match Storyteller's clamp — otherwise a value like
+ * 1.2 becomes 1.2px and the text is invisible.
+ */
+export function clampFontSize(size: number): number {
+  return Math.min(Math.max(size, 10), 24)
+}
+
 function charKey(name: string): string {
   return name.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/_+$/, '')
 }
@@ -86,7 +96,7 @@ function renderBubble(bubble: StorytellerTextBubble, indent: string, usage: Usag
   props.push(`tail="${mapTailDirection(bubble.direction)}"`)
   if (bubble.background_color) props.push(`background="${bubble.background_color}"`)
   if (bubble.text_color) props.push(`textColor="${bubble.text_color}"`)
-  if (bubble.font_size) props.push(`fontSize={${bubble.font_size}}`)
+  if (bubble.font_size != null) props.push(`fontSize={${clampFontSize(bubble.font_size)}}`)
 
   return `${indent}<SpeechBubble ${props.join(' ')}>\n${indent}  {'${esc(htmlToText(bubble.text))}'}\n${indent}</SpeechBubble>`
 }

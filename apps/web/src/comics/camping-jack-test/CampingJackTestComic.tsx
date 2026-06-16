@@ -137,7 +137,7 @@ export function CampingJackTestComic() {
         {/* TODO: pick an effect — zoom, grayscale, pan, zoomInOut, scale */}
         {/* TODO: pick background color */}
         <ImageWidget src="https://storage.googleapis.com/badcode-storage/comics/bebf53aa-05a0-400a-a189-058e190963ed/pages/1ffe4f06-1c84-42e4-8fd8-ba4d8045e4b5/main/1.png" />
-        <SpeechBubble x={34.448160535117054} y={34.420205046580215} appearAt={[0, 1]} fade tail="none" fontSize={1.4}>
+        <SpeechBubble x={34.448160535117054} y={34.420205046580215} appearAt={[0, 1]} fade tail="none" fontSize={10}>
           {'Let\'s circle back to synergise our bandwidth…'}
         </SpeechBubble>
         {/* TODO: add SidePanelText with narrative content */}
@@ -152,10 +152,10 @@ export function CampingJackTestComic() {
         {/* TODO: pick an effect — zoom, grayscale, pan, zoomInOut, scale */}
         {/* TODO: pick background color */}
         <ImageWidget src="https://storage.googleapis.com/badcode-storage/comics/bebf53aa-05a0-400a-a189-058e190963ed/pages/0f4216c3-b682-4650-bd37-ee076f03078a/main/2.png" />
-        <SpeechBubble x={54.0956835284281} y={72.77046954730584} appearAt={[0, 0.6]} fade tail="none" fontSize={1.7999999999999998}>
+        <SpeechBubble x={54.0956835284281} y={72.77046954730584} appearAt={[0, 0.6]} fade tail="none" fontSize={10}>
           {'Tarquin, as per, you\'ve done it again, old boy.\n\nHow do you do it?'}
         </SpeechBubble>
-        <SpeechBubble x={50.48338210702341} y={21.75566105112801} appearAt={[0.5, 1]} fade tail="bottom" fontSize={1.5999999999999999}>
+        <SpeechBubble x={50.48338210702341} y={21.75566105112801} appearAt={[0.5, 1]} fade tail="bottom" fontSize={10}>
           {'Charles, it\'s easy!\n\nYou just have to have a "Winning Mentality" (tm)'}
         </SpeechBubble>
         {/* TODO: add SidePanelText with narrative content */}
@@ -170,13 +170,13 @@ export function CampingJackTestComic() {
         {/* TODO: pick an effect — zoom, grayscale, pan, zoomInOut, scale */}
         {/* TODO: pick background color */}
         <ImageWidget src="https://storage.googleapis.com/badcode-storage/comics/bebf53aa-05a0-400a-a189-058e190963ed/pages/page_5/main/3.png" />
-        <SpeechBubble x={64.76536371237458} y={19.680726557745423} appearAt={[0.65, 1]} fade type="thought" tail="none" fontSize={1.5999999999999999}>
+        <SpeechBubble x={64.76536371237458} y={19.680726557745423} appearAt={[0.65, 1]} fade type="thought" tail="none" fontSize={10}>
           {'He is so cool...'}
         </SpeechBubble>
-        <SpeechBubble x={18.475647993311036} y={55.43747951874912} appearAt={[0, 0.4]} fade tail="none" fontSize={1.5999999999999999}>
+        <SpeechBubble x={18.475647993311036} y={55.43747951874912} appearAt={[0, 0.4]} fade tail="none" fontSize={10}>
           {'What are you up to this weekend mate?'}
         </SpeechBubble>
-        <SpeechBubble x={48.4779995819398} y={72.06024450699492} appearAt={[0.4, 1]} fade tail="top" fontSize={1.5999999999999999}>
+        <SpeechBubble x={48.4779995819398} y={72.06024450699492} appearAt={[0.4, 1]} fade tail="top" fontSize={10}>
           {'I\'m off to an ayahuasca retreat in Wales!\nThere are parts of my personality I am keen to get to know more.'}
         </SpeechBubble>
         {/* TODO: add SidePanelText with narrative content */}
@@ -476,13 +476,13 @@ export function CampingJackTestComic() {
             'https://storage.googleapis.com/badcode-storage/comics/bebf53aa-05a0-400a-a189-058e190963ed/pages/page_5/animation/bb54fef3-331e-432d-a296-32f529c6c4c3/frame_281.jpg',
           ]}
         />
-        <SpeechBubble x={64.76536371237458} y={19.680726557745423} appearAt={[0.65, 1]} fade type="thought" tail="none" fontSize={1.5999999999999999}>
+        <SpeechBubble x={64.76536371237458} y={19.680726557745423} appearAt={[0.65, 1]} fade type="thought" tail="none" fontSize={10}>
           {'He is so cool...'}
         </SpeechBubble>
-        <SpeechBubble x={18.475647993311036} y={55.43747951874912} appearAt={[0, 0.4]} fade tail="none" fontSize={1.5999999999999999}>
+        <SpeechBubble x={18.475647993311036} y={55.43747951874912} appearAt={[0, 0.4]} fade tail="none" fontSize={10}>
           {'What are you up to this weekend mate?'}
         </SpeechBubble>
-        <SpeechBubble x={48.4779995819398} y={72.06024450699492} appearAt={[0.4, 1]} fade tail="top" fontSize={1.5999999999999999}>
+        <SpeechBubble x={48.4779995819398} y={72.06024450699492} appearAt={[0.4, 1]} fade tail="top" fontSize={10}>
           {'I\'m off to an ayahuasca retreat in Wales!\nThere are parts of my personality I am keen to get to know more.'}
         </SpeechBubble>
         {/* TODO: add SidePanelText with narrative content */}
@@ -1261,7 +1261,7 @@ export function CampingJackTestComic() {
         {/* TODO: pick an effect — zoom, grayscale, pan, zoomInOut, scale */}
         {/* TODO: pick background color */}
         <ImageWidget src="https://storage.googleapis.com/badcode-storage/comics/a17f2cc4-1efb-4cb9-a6d9-0912e4c18662/pages/page_9/main/696780a8-6859-4af0-9ce7-6394447e8b2a.png" />
-        <SpeechBubble x={21.321070234113712} y={83.85609287954684} appearAt={[0.7, 1]} fade type="thought" tail="none" fontSize={1.9999999999999998}>
+        <SpeechBubble x={21.321070234113712} y={83.85609287954684} appearAt={[0.7, 1]} fade type="thought" tail="none" fontSize={10}>
           {'Why make my day worse than it has to be…'}
         </SpeechBubble>
         {/* TODO: add SidePanelText with narrative content */}
@@ -1413,10 +1413,10 @@ export function CampingJackTestComic() {
         {/* TODO: pick an effect — zoom, grayscale, pan, zoomInOut, scale */}
         {/* TODO: pick background color */}
         <ImageWidget src="https://storage.googleapis.com/badcode-storage/comics/a17f2cc4-1efb-4cb9-a6d9-0912e4c18662/pages/unknown_page/main/5d4b972f-19cd-4b98-9fed-9b29befb2e96.png" />
-        <SpeechBubble x={60.1157504180602} y={20.91428303918356} appearAt={[0.1, 0.5]} fade type="thought" tail="none" fontSize={2.4}>
+        <SpeechBubble x={60.1157504180602} y={20.91428303918356} appearAt={[0.1, 0.5]} fade type="thought" tail="none" fontSize={10}>
           {'Thanks for taking up two parking spaces with that charming tattered tent. You should have gotten the tent I purchased; it even has a cigar holder.'}
         </SpeechBubble>
-        <SpeechBubble x={56.77257525083612} y={80.26075558260382} appearAt={[0.5, 0.9]} fade type="thought" tail="top-left" fontSize={1.9999999999999998}>
+        <SpeechBubble x={56.77257525083612} y={80.26075558260382} appearAt={[0.5, 0.9]} fade type="thought" tail="top-left" fontSize={10}>
           {'Why do people give their hard-earned cash to this putrid rat? He’ll just shoot it up his arm anyway. Get a job, you piece of…'}
         </SpeechBubble>
         {/* TODO: add SidePanelText with narrative content */}
@@ -1431,7 +1431,7 @@ export function CampingJackTestComic() {
         {/* TODO: pick an effect — zoom, grayscale, pan, zoomInOut, scale */}
         {/* TODO: pick background color */}
         <ImageWidget src="https://storage.googleapis.com/badcode-storage/comics/a17f2cc4-1efb-4cb9-a6d9-0912e4c18662/pages/page_9/main/696780a8-6859-4af0-9ce7-6394447e8b2a.png" />
-        <SpeechBubble x={69.89835911371237} y={47.15369130658677} appearAt={[0, 0.5]} fade type="thought" tail="none" fontSize={2.1999999999999997}>
+        <SpeechBubble x={69.89835911371237} y={47.15369130658677} appearAt={[0, 0.5]} fade type="thought" tail="none" fontSize={10}>
           {'Since day one of being here, the guilt of being in the way of real people never fades. That being said, at least acknowledge that we are both being rained on by the same shitty weather; you are not blind to the elements that we cannot control.'}
         </SpeechBubble>
         {/* TODO: add SidePanelText with narrative content */}
@@ -1446,7 +1446,7 @@ export function CampingJackTestComic() {
         {/* TODO: pick an effect — zoom, grayscale, pan, zoomInOut, scale */}
         {/* TODO: pick background color */}
         <ImageWidget src="https://storage.googleapis.com/badcode-storage/comics/a17f2cc4-1efb-4cb9-a6d9-0912e4c18662/pages/page_9/main/696780a8-6859-4af0-9ce7-6394447e8b2a.png" />
-        <SpeechBubble x={24.99869356187291} y={41.31126819905435} appearAt={[0, 0.5]} fade type="thought" tail="none" fontSize={2.1999999999999997}>
+        <SpeechBubble x={24.99869356187291} y={41.31126819905435} appearAt={[0, 0.5]} fade type="thought" tail="none" fontSize={10}>
           {'Luck, simulation theory or God, whatever your poison, mine is down the gullet of this bottleneck, it causes the interminable amount of throbbing guilt to fade to black. Plus, it\'s gluten-free.'}
         </SpeechBubble>
         {/* TODO: add SidePanelText with narrative content */}
@@ -1461,7 +1461,7 @@ export function CampingJackTestComic() {
         {/* TODO: pick an effect — zoom, grayscale, pan, zoomInOut, scale */}
         {/* TODO: pick background color */}
         <ImageWidget src="https://storage.googleapis.com/badcode-storage/comics/bebf53aa-05a0-400a-a189-058e190963ed/pages/86a29151-f433-41e9-a274-ec6dc77a9025/main/8.png" />
-        <SpeechBubble x={18.893708193979933} y={39.06418238846496} appearAt={[0, 0.5]} fade type="thought" tail="none" fontSize={2.1999999999999997}>
+        <SpeechBubble x={18.893708193979933} y={39.06418238846496} appearAt={[0, 0.5]} fade type="thought" tail="none" fontSize={10}>
           {'I remember 2008 like it was yesterday, the day of the car crash, I miss my wife so much I… I… I shudder every time I see those stupid wank tanks. Her face, those lifeless eyes… God let me forget these horrors. Amen.'}
         </SpeechBubble>
         {/* TODO: add SidePanelText with narrative content */}
@@ -1769,7 +1769,7 @@ export function CampingJackTestComic() {
         {/* TODO: pick an effect — zoom, grayscale, pan, zoomInOut, scale */}
         {/* TODO: pick background color */}
         <ImageWidget src="https://storage.googleapis.com/badcode-storage/comics/bebf53aa-05a0-400a-a189-058e190963ed/pages/7b94c5c0-4736-481d-81cc-6234462ddabe/main/5.png" />
-        <SpeechBubble x={63.54515050167224} y={22.2859416693975} fade tail="none" fontSize={1.7999999999999998}>
+        <SpeechBubble x={63.54515050167224} y={22.2859416693975} fade tail="none" fontSize={10}>
           {'I\'m Moonwhisper Ascending. I am here to cleanse my soul, also to do research for my new book called "The Wound That Teaches."'}
         </SpeechBubble>
         {/* TODO: add SidePanelText with narrative content */}
@@ -1784,7 +1784,7 @@ export function CampingJackTestComic() {
         {/* TODO: pick an effect — zoom, grayscale, pan, zoomInOut, scale */}
         {/* TODO: pick background color */}
         <ImageWidget src="https://storage.googleapis.com/badcode-storage/comics/bebf53aa-05a0-400a-a189-058e190963ed/pages/0d81079e-b9b4-44c6-9cd0-fdc2c414077d/main/5.png" />
-        <SpeechBubble x={36.2876254180602} y={21.986330227985583} appearAt={[0, 0.5]} fade type="thought" tail="none" fontSize={1.5999999999999999}>
+        <SpeechBubble x={36.2876254180602} y={21.986330227985583} appearAt={[0, 0.5]} fade type="thought" tail="none" fontSize={10}>
           {'I should have brought Daddy’s hunting rifle…'}
         </SpeechBubble>
         {/* TODO: add SidePanelText with narrative content */}
@@ -1799,7 +1799,7 @@ export function CampingJackTestComic() {
         {/* TODO: pick an effect — zoom, grayscale, pan, zoomInOut, scale */}
         {/* TODO: pick background color */}
         <ImageWidget src="https://storage.googleapis.com/badcode-storage/comics/ae0cc252-f855-4a51-b99f-65e22c883c26/pages/a887461b-f96b-43c3-a388-bbffb3ff4eaa/main/6.png" />
-        <SpeechBubble x={15.466920986622073} y={75.01755535789523} fade type="thought" tail="none" fontSize={1.5999999999999999}>
+        <SpeechBubble x={15.466920986622073} y={75.01755535789523} fade type="thought" tail="none" fontSize={10}>
           {'Fuck me, that kicked in quick!'}
         </SpeechBubble>
         {/* TODO: add SidePanelText with narrative content */}
@@ -2009,7 +2009,7 @@ export function CampingJackTestComic() {
             'https://storage.googleapis.com/badcode-storage/comics/bebf53aa-05a0-400a-a189-058e190963ed/pages/page_21/animation/a58adcad-39d0-4c83-b20b-00a4a5024a03/frame_191.jpg',
           ]}
         />
-        <SpeechBubble x={15.466920986622073} y={75.01755535789523} fade type="thought" tail="none" fontSize={1.5999999999999999}>
+        <SpeechBubble x={15.466920986622073} y={75.01755535789523} fade type="thought" tail="none" fontSize={10}>
           {'Fuck me, that kicked in quick!'}
         </SpeechBubble>
         {/* TODO: add SidePanelText with narrative content */}
@@ -2231,7 +2231,7 @@ export function CampingJackTestComic() {
             'https://storage.googleapis.com/badcode-storage/comics/bebf53aa-05a0-400a-a189-058e190963ed/pages/page_20/animation/fc842fc9-cf52-433d-a919-688a264d9c6c/frame_191.jpg',
           ]}
         />
-        <SpeechBubble x={15.466920986622073} y={75.01755535789523} fade type="thought" tail="none" fontSize={1.5999999999999999}>
+        <SpeechBubble x={15.466920986622073} y={75.01755535789523} fade type="thought" tail="none" fontSize={10}>
           {'Fuck me, that kicked in quick!'}
         </SpeechBubble>
         {/* TODO: add SidePanelText with narrative content */}
