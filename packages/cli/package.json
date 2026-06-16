@@ -13,8 +13,11 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@badcode/comic-manifest": "*",
     "@badcode/comic-meta": "*",
-    "commander": "^12.1.0"
+    "commander": "^12.1.0",
+    "sharp": "^0.33.5",
+    "thumbhash": "^0.1.1"
   },
   "devDependencies": {
     "@types/node": "^22.10.0",
