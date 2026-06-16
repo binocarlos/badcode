@@ -151,7 +151,7 @@ Create `packages/comic-manifest/src/index.ts`:
 ```ts
 /** Generated variants + placeholder for one image asset. Paths are basePath-relative. */
 export interface ImageVariant {
-  /** ThumbHash decoded to a data-URI. Empty string for passthrough assets (SVG/video). */
+  /** Compact base64 of the raw ThumbHash bytes (~33 chars), or empty string for passthrough assets (SVG/video). Decode to a data-URI at runtime via thumbHashToDataURL. */
   thumbhash: string
   /** basePath-relative key of the low-res WebP (~720w). For passthrough, the original key. */
   low: string
@@ -517,15 +517,15 @@ Create `packages/cli/src/image-processor.ts`:
 
 ```ts
 import sharp from 'sharp'
-import { rgbaToThumbHash, thumbHashToDataURL } from 'thumbhash'
+import { rgbaToThumbHash } from 'thumbhash'
 
 export interface ImageProcessor {
   /** Intrinsic pixel dimensions of the source image. */
   dimensions(input: string): Promise<{ width: number; height: number }>
   /** Resize to at most `width` px (never upscaling) and write a WebP to `output`. */
   toWebp(input: string, output: string, width: number, quality: number): Promise<void>
-  /** Compute a ThumbHash for the image and return it decoded as an image data-URI. */
-  thumbhashDataUri(input: string): Promise<string>
+  /** Compute a ThumbHash and return it as compact base64 of the raw hash bytes (~33 chars). Decode at runtime via thumbHashToDataURL. */
+  thumbhash(input: string): Promise<string>
 }
 
 export class SharpImageProcessor implements ImageProcessor {
@@ -541,7 +541,7 @@ export class SharpImageProcessor implements ImageProcessor {
       .toFile(output)
   }
 
-  async thumbhashDataUri(input: string): Promise<string> {
+  async thumbhash(input: string): Promise<string> {
     // ThumbHash requires the source no larger than 100x100.
     const { data, info } = await sharp(input)
       .resize(100, 100, { fit: 'inside', withoutEnlargement: true })
@@ -549,7 +549,7 @@ export class SharpImageProcessor implements ImageProcessor {
       .raw()
       .toBuffer({ resolveWithObject: true })
     const hash = rgbaToThumbHash(info.width, info.height, data)
-    return thumbHashToDataURL(hash)
+    return Buffer.from(hash).toString('base64')
   }
 }
 ```
@@ -801,7 +801,7 @@ export async function assetsBuild(opts: AssetsBuildOptions): Promise<AssetManife
       const { width, height } = await processor.dimensions(localSrc)
       await processor.toWebp(localSrc, localLow, LOW_WIDTH, LOW_QUALITY)
       await processor.toWebp(localSrc, localHigh, HIGH_WIDTH, HIGH_QUALITY)
-      const thumbhash = await processor.thumbhashDataUri(localSrc)
+      const thumbhash = await processor.thumbhash(localSrc)
 
       await bucket.upload(localLow, `${basePath}/${lowKey}`, IMMUTABLE_CC)
       await bucket.upload(localHigh, `${basePath}/${highKey}`, IMMUTABLE_CC)
@@ -1079,4 +1079,4 @@ git commit -m "chore(camping-jack-test): generate asset manifest + WebP variants
 
 **Type consistency:** `AssetManifest`/`ImageVariant` defined in Task 1 are imported unchanged in Tasks 5 & 6. `Bucket` gains `download`/`listKeys` in Task 2 and the fake in Task 5 implements them. `ImageProcessor` methods (`dimensions`, `toWebp`, `thumbhashDataUri`) match between Task 4 (impl + interface) and Task 5 (fake). `variantKey(rel, tier)` signature matches between Task 3 and Task 5. `writeManifestFile`/`readManifestIfExists` match between Task 6 impl, its test, and `bin.ts`. ✓
 
-**Note for Plan 2 (runtime):** `@badcode/comic` will depend on `@badcode/comic-manifest` and implement `createComic(manifest)` / `resolve(relKey)` that absolutizes `low`/`high` to `${BUCKET_BASE_URL}/${basePath}/${variant}` (BUCKET base from `@badcode/comic-meta`), returning the `ImageAsset` descriptor the widgets consume. The `thumbhash` field is already a ready-to-use data-URI.
+**Note for Plan 2 (runtime):** `@badcode/comic` will depend on `@badcode/comic-manifest` and implement `createComic(manifest)` / `resolve(relKey)` that absolutizes `low`/`high` to `${BUCKET_BASE_URL}/${basePath}/${variant}` (BUCKET base from `@badcode/comic-meta`), returning the `ImageAsset` descriptor the widgets consume. The `thumbhash` field is a compact base64 hash the runtime decodes via thumbHashToDataURL.

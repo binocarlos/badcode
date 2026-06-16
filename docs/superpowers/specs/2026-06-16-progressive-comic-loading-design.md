@@ -31,7 +31,8 @@ scale (Apple's well-known AirPods animation is 65 frames; this comic has 3,540).
   15.2 MB drop to ~1.7 MB as WebP (~90%). Decode cost (compressed → bitmap) is the
   true bottleneck for sequences, which is why canvas + pre-decoded bitmaps wins.
 - **ThumbHash** (vs BlurHash) for instant placeholders: better quality at similar
-  size, alpha support, and it embeds as a ~25-byte hash → a data-URI with zero
+  size, alpha support, and the manifest stores just the compact ~25-byte hash
+  (base64, ~33 chars) which the runtime decodes to a data-URI client-side — zero
   extra network requests.
 - **Sharp** is the standard offline/build-time resizer; it powers `vite-imagetools`
   et al. We use it directly because our assets live on GCS, not in the local build.
@@ -87,11 +88,11 @@ The pipeline emits a manifest describing every image it found:
 {
   "basePath": "comics-v2/gpom-ep1",
   "assets": {
-    "p1/main.png":      { "thumbhash": "data:image/png;base64,…",
+    "p1/main.png":      { "thumbhash": "1QcSHQRnh493V4dIh4eXh1h4kJUI", // compact base64 of raw hash; decode client-side
                           "low":  "derived/p1/main.low.webp",
                           "high": "derived/p1/main.high.webp",
                           "width": 1600, "height": 900 },
-    "p7/anim/f000.jpg": { "thumbhash": "data:…", "low": "…", "high": "…",
+    "p7/anim/f000.jpg": { "thumbhash": "…", "low": "…", "high": "…",
                           "width": 1920, "height": 1080 },
     "p7/anim/f001.jpg": { /* … */ }
     // …every image, keyed by its path within the subfolder
@@ -111,7 +112,7 @@ Descriptor types (live in `@badcode/comic`, not `comic-meta`):
 
 ```ts
 type ImageAsset = {
-  thumb:  string   // data-URI from ThumbHash ('' if not yet generated)
+  thumb:  string   // compact base64 ThumbHash, decoded to a data-URI at runtime ('' if not yet generated)
   low:    string   // absolute GCS URL (~720w WebP)
   high:   string   // absolute GCS URL (~1920w WebP)
   width:  number
@@ -144,7 +145,8 @@ Steps:
    path scan — no comic-ID resolution.
 2. For each image: **Sharp** → `low` (720w WebP, q≈70) + `high` (1920w WebP, q≈80),
    capturing intrinsic width/height; **ThumbHash** computed from a ~100px downscale
-   → decoded to a data-URI string.
+   → stored as compact base64 of the raw hash bytes (~33 chars), decoded to a
+   data-URI at runtime.
 3. **Upload** variants back under the same subfolder in a `derived/` prefix (keeps
    originals clean).
 4. **Emit** `manifest.json` to `--manifest` (committed to the repo) and a copy to
@@ -178,8 +180,8 @@ New modules in `@badcode/comic`:
 Receives one `ImageAsset` and renders a three-stage stack inside its layer, each
 stage fading in when ready:
 
-1. **ThumbHash** (instant) — decoded from the embedded data-URI to a blurred
-   bitmap, painted immediately. Never a black frame.
+1. **ThumbHash** (instant) — the compact hash is decoded client-side to a data-URI
+   and painted as a blurred bitmap immediately. Never a black frame.
 2. **Low** (~720w WebP) — fetched on mount; fades over the thumb once
    `img.decode()` resolves (decode off the display path).
 3. **High** (~1920w WebP) — fetched when the page becomes *current*; swaps over low
