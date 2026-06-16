@@ -1,5 +1,8 @@
 import type { ComponentType } from 'react'
 import { CampingComic } from '../comics/camping/CampingComic'
+import { CampingKaiComic } from '../comics/camping-kai/CampingKaiComic'
+import { KarenJackTestComic } from '../comics/karen-jack-test/KarenJackTestComic'
+import { CampingJackTestComic } from '../comics/camping-jack-test/CampingJackTestComic'
 import { homeSteps } from './timeline'
 
 export type ComicResolution =
@@ -10,12 +13,20 @@ export type ComicResolution =
 /** Live comics: slug → component. Add an entry here when a comic ships. */
 const liveComics: Record<string, ComponentType> = {
   camping: CampingComic,
+  // Imported-from-Storyteller comics — browsable by direct URL (/comics/<slug>),
+  // not yet placed as beats in the home timeline.
+  'camping-kai': CampingKaiComic,
+  'karen-jack-test': KarenJackTestComic,
+  'camping-jack-test': CampingJackTestComic,
 }
 
 export function resolveComic(slug: string): ComicResolution {
-  const node = homeSteps.find((n) => n.route === `/comics/${slug}`)
-  if (!node) return { kind: 'not-found' }
   const Component = liveComics[slug]
-  if (node.status === 'live' && Component) return { kind: 'live', title: node.title, Component }
+  const node = homeSteps.find((n) => n.route === `/comics/${slug}`)
+  // A registered live component renders directly, even if it has no timeline beat.
+  if (Component && (!node || node.status === 'live')) {
+    return { kind: 'live', title: node?.title ?? slug, Component }
+  }
+  if (!node) return { kind: 'not-found' }
   return { kind: 'stub', title: node.title }
 }
