@@ -8,14 +8,20 @@ export interface TransitionDriverState {
   isTransitioning: boolean
 }
 
-function resetLayer(el: HTMLElement | null) {
+export function resetLayer(el: HTMLElement | null) {
   if (!el) return
   el.getAnimations().forEach((a) => a.cancel())
   el.style.opacity = ''
   el.style.transform = ''
   el.style.filter = ''
   el.style.clipPath = ''
-  el.style.zIndex = ''
+  // NB: do NOT clear zIndex here. Cancelling the fade snaps the outgoing layer's
+  // opacity back to 1 for the frame before React hides it; z-ordering is what keeps
+  // it behind the incoming page during that frame. Clearing the inline zIndex drops
+  // both layers to `auto` (React skips the DOM write because its zIndex prop is
+  // unchanged), so they paint in DOM order — and scrolling up that puts the OLD page
+  // on top for one frame. That is the end-of-transition flicker. zIndex is owned by
+  // React via PageContext (current = 2, outgoing = 1); leave it alone.
 }
 
 /**
