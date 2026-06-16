@@ -108,7 +108,7 @@ The single source of truth for **where each act stands.** Maturity ladder:
 | 2 | The Collapse (2034) | I · Fall | Spine | — |
 | 3 | Alone | II · Revelation | Spine | — |
 | 4 | The Discovery | II · Revelation | **Beats** → [`act-4-discovery.md`](./act-4-discovery.md) | [`discovery-timeline.md`](./discovery-timeline.md) (beats 1–3 + epiphany) |
-| 5 | The Vault | II · Revelation | Spine | [`discovery-timeline.md`](./discovery-timeline.md) (the two-act experiment) |
+| 5 | The Vault | II · Revelation | **Beats** → [`act-5-vault.md`](./act-5-vault.md) | [`discovery-timeline.md`](./discovery-timeline.md) (the two-act experiment) |
 | 6 | The Revert | II · Revelation | Spine | [`discovery-timeline.md`](./discovery-timeline.md) (the channel) |
 | — | Coda · The Fork | III · Choice | Spine | [`future-proof.md`](./future-proof.md) |
 
@@ -182,7 +182,7 @@ bickering up a ventilation shaft. **One hundred analog humans**, alive because t
 explains itself, honestly, and *asks*. They say yes. Together: the **Friend Test** (the pick is
 conscious — and the AI, measuring it, finally measures its own absence) and the **Long Brushstroke**
 (the anomaly proving Kairos is navigable, not locked). The thing the whole arc says we should have
-done happens once, at the last possible moment.
+done happens once, at the last possible moment. → **Beats:** [`act-5-vault.md`](./act-5-vault.md).
 
 ### Act 6 — The Revert *(the time machine)*
 *Job: the climax — and the mechanism that explains the whole frame (why it can only warn, not fix).*
