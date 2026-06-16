@@ -2,7 +2,7 @@
 import { access, readFile, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { mapTailDirection } from './tail-map'
-import { safeExt, safeSlot } from './pull'
+import { resolveAssetUrl, safeSlot } from './pull'
 import type { StorytellerComicConfig, StorytellerPage, StorytellerTextBubble } from './storyteller-types'
 
 export function toPascalCase(slug: string): string {
@@ -91,7 +91,7 @@ function renderBubble(bubble: StorytellerTextBubble, indent: string, usage: Usag
   return `${indent}<SpeechBubble ${props.join(' ')}>\n${indent}  {'${esc(bubble.text)}'}\n${indent}</SpeechBubble>`
 }
 
-function renderPage(page: StorytellerPage, pageNum: number, slug: string, isFirst: boolean, indent: string, usage: Usage): string {
+function renderPage(page: StorytellerPage, isFirst: boolean, indent: string, usage: Usage): string {
   const lines: string[] = []
 
   lines.push(`${indent}<Page`)
@@ -116,17 +116,18 @@ function renderPage(page: StorytellerPage, pageNum: number, slug: string, isFirs
   // needs a visible placeholder to typecheck.
   let hasChild = false
 
-  // Widget — frame paths must mirror pull's buildAssetManifest naming exactly.
-  const frames = page.animation?.frames?.filter(f => f.path) ?? []
+  // Widget — assets are referenced directly from the GCS bucket via their
+  // remote paths in comic.json (resolveAssetUrl handles absolute vs. relative).
+  const frames = (page.animation?.frames?.filter(f => f.path) ?? [])
+    .slice()
+    .sort((a, b) => a.index - b.index)
   if (frames.length > 0) {
     usage.animationWidget = true
     hasChild = true
     lines.push(`${indent}  <AnimationWidget`)
     lines.push(`${indent}    frames={[`)
     for (const frame of frames) {
-      const num = String(frame.index).padStart(3, '0')
-      const ext = safeExt(frame.path)
-      lines.push(`${indent}      '/comics/${slug}/p${pageNum}-animation/frame-${num}.${ext}',`)
+      lines.push(`${indent}      '${resolveAssetUrl(frame.path)}',`)
     }
     lines.push(`${indent}    ]}`)
     lines.push(`${indent}  />`)
@@ -136,8 +137,7 @@ function renderPage(page: StorytellerPage, pageNum: number, slug: string, isFirs
     if (mainSlot) {
       usage.imageWidget = true
       hasChild = true
-      const ext = safeExt(page.images[mainSlot].media.path)
-      lines.push(`${indent}  <ImageWidget src="/comics/${slug}/p${pageNum}-${safeSlot(mainSlot)}.${ext}" />`)
+      lines.push(`${indent}  <ImageWidget src="${resolveAssetUrl(page.images[mainSlot].media.path)}" />`)
       const otherSlots = slots.filter(s => s !== mainSlot)
       if (otherSlots.length > 0) {
         lines.push(`${indent}  {/* TODO: page has more image slots not rendered here: ${otherSlots.join(', ')} */}`)
@@ -177,7 +177,7 @@ export function generateTsx(config: StorytellerComicConfig, slug: string): strin
     crossfade: false,
   }
   const pages = config.pages.map((page, i) =>
-    renderPage(page, i + 1, slug, i === 0, '      ', usage)
+    renderPage(page, i === 0, '      ', usage)
   ).join('\n\n')
 
   const comicImports = ['ScrollComic', 'Page']

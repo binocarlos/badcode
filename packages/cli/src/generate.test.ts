@@ -86,7 +86,7 @@ describe('generateTsx', () => {
     const output = generateTsx(sampleConfig, 'test-comic')
     expect(output).toContain('export function TestComicComic()')
     expect(output).toContain('<ScrollComic')
-    expect(output).toContain('<ImageWidget src="/comics/test-comic/p1-main.jpg"')
+    expect(output).toContain('<ImageWidget src="https://storage.googleapis.com/badcode-storage/comics/test/page_1/main.jpg"')
     expect(output).toContain('<SpeechBubble')
     expect(output).toContain('x={30}')
     expect(output).toContain('y={60}')
@@ -112,7 +112,7 @@ describe('generateTsx', () => {
     expect(output).toContain('crossfade()')
   })
 
-  it('derives animation frame paths from frame.index and the real extension', () => {
+  it('emits remote bucket URLs for animation frames in ascending index order', () => {
     const animConfig: StorytellerComicConfig = {
       name: 'Anim',
       description: '',
@@ -130,9 +130,9 @@ describe('generateTsx', () => {
             transition_prompt: '',
             status: 'done',
             frames: [
+              { index: 3, path: 'comics/anim/page_1/frame_3.png', url: '' },
               { index: 1, path: 'comics/anim/page_1/frame_1.png', url: '' },
               { index: 2, path: 'comics/anim/page_1/frame_2.png', url: '' },
-              { index: 3, path: 'comics/anim/page_1/frame_3.png', url: '' },
             ],
           },
         },
@@ -140,11 +140,75 @@ describe('generateTsx', () => {
     }
     const output = generateTsx(animConfig, 'anim-test')
     expect(output).toContain('<AnimationWidget')
-    expect(output).toContain("'/comics/anim-test/p1-animation/frame-001.png'")
-    expect(output).toContain("'/comics/anim-test/p1-animation/frame-002.png'")
-    expect(output).toContain("'/comics/anim-test/p1-animation/frame-003.png'")
-    expect(output).not.toContain('frame-000')
-    expect(output).not.toContain('.jpg')
+    expect(output).toContain("'https://storage.googleapis.com/badcode-storage/comics/anim/page_1/frame_1.png'")
+    expect(output).toContain("'https://storage.googleapis.com/badcode-storage/comics/anim/page_1/frame_2.png'")
+    expect(output).toContain("'https://storage.googleapis.com/badcode-storage/comics/anim/page_1/frame_3.png'")
+    // ascending frame.index order regardless of array order
+    const i1 = output.indexOf('frame_1.png')
+    const i2 = output.indexOf('frame_2.png')
+    const i3 = output.indexOf('frame_3.png')
+    expect(i1).toBeLessThan(i2)
+    expect(i2).toBeLessThan(i3)
+  })
+
+  it('skips animation frames with no path', () => {
+    const animConfig: StorytellerComicConfig = {
+      name: 'Anim',
+      description: '',
+      style: 'ink',
+      characters: [],
+      pages: [
+        {
+          id: 'p1',
+          layout: 'full',
+          images: {},
+          text_bubbles: [],
+          animation: {
+            method: 'frames',
+            frame_count: 2,
+            transition_prompt: '',
+            status: 'done',
+            frames: [
+              { index: 1, path: 'comics/anim/page_1/frame_1.png', url: '' },
+              { index: 2, path: '', url: '' },
+            ],
+          },
+        },
+      ],
+    }
+    const output = generateTsx(animConfig, 'anim-test')
+    expect(output).toContain("'https://storage.googleapis.com/badcode-storage/comics/anim/page_1/frame_1.png'")
+    expect(output).not.toContain('frame_2')
+  })
+
+  it('emits an absolute image path unchanged (no double-prefix)', () => {
+    const absConfig: StorytellerComicConfig = {
+      name: 'Abs',
+      description: '',
+      style: 'ink',
+      characters: [],
+      pages: [
+        {
+          id: 'p1',
+          layout: 'full',
+          images: {
+            main: {
+              id: 'img1',
+              media: {
+                id: 'm1',
+                prompt: 'x',
+                media_type: 'image',
+                path: 'https://storage.googleapis.com/badcode-storage/x/main.png',
+              },
+            },
+          },
+          text_bubbles: [],
+        },
+      ],
+    }
+    const output = generateTsx(absConfig, 'abs')
+    expect(output).toContain('<ImageWidget src="https://storage.googleapis.com/badcode-storage/x/main.png"')
+    expect(output).not.toContain('badcode-storage/https')
   })
 
   it('emits bubble text as a string expression with proper escapes', () => {
