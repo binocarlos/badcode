@@ -19,6 +19,20 @@ function resetLayer(el: HTMLElement | null) {
 }
 
 /**
+ * Whether moving from page `from` to `to` should be an instant cut rather than an
+ * animated transition. Cut when there is no transition (or a zero-duration one),
+ * or when the reader has jumped more than one page — replaying a transition for a
+ * page already scrolled past flashes a stale image over the current one.
+ */
+export function isInstantCut(
+  from: number,
+  to: number,
+  transition: TransitionInstance | null,
+): boolean {
+  return !transition || transition.duration === 0 || Math.abs(to - from) !== 1
+}
+
+/**
  * Watches the current page and, when it changes, runs the incoming page's
  * transition between the outgoing and incoming layer elements (Web Animation
  * API). Holds an in-flight lock and, on completion, catches up if the page moved
@@ -37,8 +51,16 @@ export function useTransitions(
   currentRef.current = currentPage
   const lastRef = useRef(0)
   const runningRef = useRef(false)
+  const mountedRef = useRef(true)
   const [tick, setTick] = useState(0)
   const [outgoing, setOutgoing] = useState<number | null>(null)
+
+  useEffect(() => {
+    mountedRef.current = true
+    return () => {
+      mountedRef.current = false
+    }
+  }, [])
 
   useEffect(() => {
     if (runningRef.current) return
@@ -49,9 +71,11 @@ export function useTransitions(
     const transition = transitions[to] ?? null
     const direction = to > from ? 'forward' : 'backward'
 
-    // Instant cut: just advance.
-    if (!transition || transition.duration === 0) {
+    // Instant cut: advance without animating, and make sure no outgoing page
+    // lingers (a multi-page jump must not leave an intermediate page painted).
+    if (isInstantCut(from, to, transition)) {
       lastRef.current = to
+      setOutgoing(null)
       if (currentRef.current !== to) setTick((t) => t + 1)
       return
     }
@@ -59,7 +83,6 @@ export function useTransitions(
     runningRef.current = true
     lastRef.current = to
     setOutgoing(from)
-    let cancelled = false
 
     ;(async () => {
       // Let React commit the outgoing/incoming layers before measuring refs.
@@ -70,7 +93,7 @@ export function useTransitions(
         incoming.style.zIndex = '2'
         if (out) out.style.zIndex = '1'
         try {
-          await transition.run(out, incoming, direction)
+          await transition!.run(out, incoming, direction)
         } catch {
           /* animation cancelled — fall through to reset */
         }
@@ -78,16 +101,15 @@ export function useTransitions(
       resetLayer(out)
       resetLayer(incoming)
       runningRef.current = false
-      if (!cancelled) {
+      // Always clear the outgoing page once the animation ends — even if the
+      // reader scrolled on mid-transition. Leaving it set keeps the previous
+      // page painted under the current one (the scroll "flicker"). The catch-up
+      // tick then reconciles to wherever the reader actually is now.
+      if (mountedRef.current) {
         setOutgoing(null)
-        // Caught more page changes while animating — run again.
         if (currentRef.current !== lastRef.current) setTick((t) => t + 1)
       }
     })()
-
-    return () => {
-      cancelled = true
-    }
   }, [currentPage, tick, transitions, getLayer])
 
   return { outgoingPage: outgoing, isTransitioning: outgoing !== null }
