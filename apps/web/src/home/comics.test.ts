@@ -17,4 +17,10 @@ describe('resolveComic', () => {
   it('resolves an unknown slug to not-found', () => {
     expect(resolveComic('does-not-exist').kind).toBe('not-found')
   })
+
+  it('resolves an imported comic with no timeline beat to a live component', () => {
+    const r = resolveComic('karen-jack-test')
+    expect(r.kind).toBe('live')
+    if (r.kind === 'live') expect(typeof r.Component).toBe('function')
+  })
 })
