@@ -70,7 +70,7 @@ function renderBubble(bubble: StorytellerTextBubble, indent: string, usage: Usag
       props.push(`appearAt={[${bubble.start_percent}, ${bubble.end_percent}]}`)
     }
     props.push('fade')
-    return `${indent}<NarrationBox ${props.join(' ')}>\n${indent}  {'${esc(bubble.text)}'}\n${indent}</NarrationBox>`
+    return `${indent}<NarrationBox ${props.join(' ')}>\n${indent}  {'${esc(htmlToText(bubble.text))}'}\n${indent}</NarrationBox>`
   }
 
   usage.speechBubble = true
@@ -88,7 +88,7 @@ function renderBubble(bubble: StorytellerTextBubble, indent: string, usage: Usag
   if (bubble.text_color) props.push(`textColor="${bubble.text_color}"`)
   if (bubble.font_size) props.push(`fontSize={${bubble.font_size}}`)
 
-  return `${indent}<SpeechBubble ${props.join(' ')}>\n${indent}  {'${esc(bubble.text)}'}\n${indent}</SpeechBubble>`
+  return `${indent}<SpeechBubble ${props.join(' ')}>\n${indent}  {'${esc(htmlToText(bubble.text))}'}\n${indent}</SpeechBubble>`
 }
 
 function renderPage(page: StorytellerPage, isFirst: boolean, indent: string, usage: Usage): string {
@@ -258,4 +258,57 @@ export async function generate(slug: string, rootDir: string, force = false): Pr
 
 function esc(s: string): string {
   return s.replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/\n/g, '\\n').replace(/\r/g, '\\r')
+}
+
+/**
+ * Convert Storyteller rich-text HTML (every bubble's `text` field) into clean
+ * plain text suitable for emitting into a JSX string literal. esc() handles
+ * JS-literal escaping afterwards, so we keep literal apostrophes/quotes/unicode.
+ */
+export function htmlToText(html: string): string {
+  let text = html
+    // Block/break boundaries → newline
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<\/(p|div|li)>/gi, '\n')
+    // Opening block tags → remove (no newline)
+    .replace(/<(p|div|li)(\s[^>]*)?>/gi, '')
+    // Strip all remaining tags
+    .replace(/<[^>]+>/g, '')
+
+  // Numeric entities (decimal + hex)
+  text = text
+    .replace(/&#x([0-9a-f]+);/gi, (_, hex) => String.fromCodePoint(parseInt(hex, 16)))
+    .replace(/&#(\d+);/g, (_, dec) => String.fromCodePoint(parseInt(dec, 10)))
+
+  // Named entities (&amp; handled last to avoid double-decoding)
+  const named: Record<string, string> = {
+    '&quot;': '"',
+    '&apos;': "'",
+    '&#39;': "'",
+    '&lt;': '<',
+    '&gt;': '>',
+    '&nbsp;': ' ',
+    '&rsquo;': '’',
+    '&lsquo;': '‘',
+    '&ldquo;': '“',
+    '&rdquo;': '”',
+    '&mdash;': '—',
+    '&ndash;': '–',
+    '&hellip;': '…',
+  }
+  for (const [entity, char] of Object.entries(named)) {
+    text = text.split(entity).join(char)
+  }
+  text = text.split('&amp;').join('&')
+
+  // Whitespace cleanup
+  text = text
+    .replace(/[ \t]+/g, ' ')
+    .split('\n')
+    .map(line => line.trim())
+    .join('\n')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim()
+
+  return text
 }

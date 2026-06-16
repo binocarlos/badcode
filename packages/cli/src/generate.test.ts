@@ -1,7 +1,7 @@
 // packages/cli/src/generate.test.ts
 import { describe, it, expect } from 'vitest'
 import ts from 'typescript'
-import { generateMeta, generateTsx, toPascalCase } from './generate'
+import { generateMeta, generateTsx, htmlToText, toPascalCase } from './generate'
 import type { StorytellerComicConfig } from './storyteller-types'
 
 const sampleConfig: StorytellerComicConfig = {
@@ -58,6 +58,22 @@ const sampleConfig: StorytellerComicConfig = {
     },
   ],
 }
+
+describe('htmlToText', () => {
+  it('strips tags and keeps text', () => {
+    const out = htmlToText('<p><strong>Tarquin</strong>, worth <strong>millions!</strong></p>')
+    expect(out).toBe('Tarquin, worth millions!')
+    expect(out).not.toContain('<')
+  })
+
+  it('decodes named entities with &amp; last', () => {
+    expect(htmlToText('&quot;Bebas&quot; &amp; &rsquo;x')).toBe('"Bebas" & ’x')
+  })
+
+  it('turns <br> into a newline', () => {
+    expect(htmlToText('a<br>b')).toContain('a\nb')
+  })
+})
 
 describe('toPascalCase', () => {
   it('converts kebab-case to PascalCase', () => {
@@ -231,7 +247,7 @@ describe('generateTsx', () => {
             {
               id: 'b1',
               type: 'speech',
-              text: "Don't <stop> {now}",
+              text: "Don't &lt;stop&gt; {now}",
               x: 10,
               y: 10,
               start_percent: 0,
@@ -303,6 +319,45 @@ describe('generateTsx', () => {
       ],
     }
     const output = generateTsx(mixedConfig, 'mixed')
+    const sourceFile = ts.createSourceFile('x.tsx', output, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX)
+    const diagnostics = (sourceFile as unknown as { parseDiagnostics: ts.Diagnostic[] }).parseDiagnostics
+    expect(diagnostics.map(d => d.messageText)).toEqual([])
+  })
+
+  it('converts rich-text HTML bubble content to clean text', () => {
+    const htmlConfig: StorytellerComicConfig = {
+      name: 'Html',
+      description: '',
+      style: 'ink',
+      characters: [],
+      pages: [
+        {
+          id: 'p1',
+          layout: 'full',
+          images: {
+            main: {
+              id: 'img1',
+              media: { id: 'm1', prompt: 'x', media_type: 'image', path: 'comics/h/page_1/main.jpg' },
+            },
+          },
+          text_bubbles: [
+            {
+              id: 'b1',
+              type: 'speech',
+              text: '<p><span style="font-size: 14pt; font-family: &quot;Bebas Neue&quot;, sans-serif;">Hello &amp; bye</span></p>',
+              x: 10,
+              y: 10,
+              start_percent: 0,
+              end_percent: 1,
+            },
+          ],
+        },
+      ],
+    }
+    const output = generateTsx(htmlConfig, 'html')
+    expect(output).toContain("{'Hello & bye'}")
+    expect(output).not.toContain('<span')
+    expect(output).not.toContain('<p')
     const sourceFile = ts.createSourceFile('x.tsx', output, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX)
     const diagnostics = (sourceFile as unknown as { parseDiagnostics: ts.Diagnostic[] }).parseDiagnostics
     expect(diagnostics.map(d => d.messageText)).toEqual([])
