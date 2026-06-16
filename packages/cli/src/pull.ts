@@ -118,7 +118,12 @@ async function downloadFile(url: string, dest: string): Promise<void> {
   await writeFile(dest, buffer)
 }
 
-export async function pull(urlOrId: string, rootDir: string, slugOverride?: string): Promise<string> {
+export async function pull(
+  urlOrId: string,
+  rootDir: string,
+  slugOverride?: string,
+  downloadAssets = false,
+): Promise<string> {
   const comicId = extractComicId(urlOrId)
   const baseUrl = 'https://badcode.tv'
   const { username, password } = loadEnv(rootDir)
@@ -143,20 +148,25 @@ export async function pull(urlOrId: string, rootDir: string, slugOverride?: stri
   console.log(`Wrote comic.json to ${comicDir}/`)
 
   const manifest = buildAssetManifest(comic, slug)
-  console.log(`Downloading ${manifest.length} assets...`)
-
-  for (const entry of manifest) {
-    const url = resolveAssetUrl(entry.remotePath)
-    const dest = join(rootDir, entry.localPath)
-    process.stdout.write(`  ${entry.localPath}...`)
-    await downloadFile(url, dest)
-    console.log(' done')
-  }
-
   const pages = comic.config.pages?.length ?? 0
   const images = manifest.filter(e => e.type === 'image').length
   const frames = manifest.filter(e => e.type === 'frame').length
-  console.log(`\nPulled "${comic.config.name}": ${pages} pages, ${images} images, ${frames} animation frames`)
+
+  if (downloadAssets) {
+    console.log(`Downloading ${manifest.length} assets...`)
+    for (const entry of manifest) {
+      const url = resolveAssetUrl(entry.remotePath)
+      const dest = join(rootDir, entry.localPath)
+      process.stdout.write(`  ${entry.localPath}...`)
+      await downloadFile(url, dest)
+      console.log(' done')
+    }
+    console.log(`\nPulled "${comic.config.name}": ${pages} pages, ${images} images, ${frames} animation frames`)
+  } else {
+    console.log(`\nPulled config for "${comic.config.name}": ${pages} pages, ${images} images, ${frames} animation frames`)
+    console.log(`Assets were NOT downloaded — they are served directly from the bucket (${GCS_BASE}).`)
+    console.log(`Re-run with --assets to also download them locally.`)
+  }
 
   return slug
 }

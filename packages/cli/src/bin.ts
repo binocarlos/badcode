@@ -72,12 +72,13 @@ program
 
 program
   .command('pull')
-  .description('Pull a comic from Storyteller (badcode.tv) — downloads data + assets locally.')
+  .description('Pull a comic from Storyteller (badcode.tv) — fetches comic.json; assets are served from the bucket.')
   .argument('<url>', 'Storyteller comic URL or comic UUID')
   .option('-s, --slug <name>', 'override the auto-derived slug')
-  .action(async (url: string, opts: { slug?: string }) => {
+  .option('-a, --assets', 'also download asset files locally (default: reference them from the bucket)')
+  .action(async (url: string, opts: { slug?: string; assets?: boolean }) => {
     const rootDir = process.cwd()
-    await pull(url, rootDir, opts.slug)
+    await pull(url, rootDir, opts.slug, opts.assets ?? false)
   })
 
 program
