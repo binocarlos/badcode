@@ -21,6 +21,8 @@ export interface Bucket {
   copy(srcKey: string, destKey: string, cacheControl: string): Promise<void>
   /** Download a bucket-relative key to a local file path. */
   download(key: string, localFile: string): Promise<void>
+  /** Download many bucket-relative keys into a local directory, in parallel (`gsutil -m`). */
+  downloadMany(keys: string[], destDir: string): Promise<void>
   /** Recursively list full bucket-relative keys under a prefix (directories excluded). */
   listKeys(prefix: string): Promise<string[]>
 }
@@ -57,6 +59,11 @@ export class GsutilBucket implements Bucket {
 
   async download(key: string, localFile: string): Promise<void> {
     await this.run(['cp', `gs://${GS_BUCKET}/${key}`, localFile])
+  }
+
+  async downloadMany(keys: string[], destDir: string): Promise<void> {
+    if (keys.length === 0) return
+    await this.run(['-m', 'cp', ...keys.map((k) => `gs://${GS_BUCKET}/${k}`), destDir])
   }
 
   async listKeys(prefix: string): Promise<string[]> {

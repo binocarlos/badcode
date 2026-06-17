@@ -11,6 +11,7 @@ function fakeBucket(over: Partial<Bucket> & { keys?: string[] }): Bucket {
     copy: vi.fn(async () => {}),
     upload: vi.fn(async () => {}),
     download: vi.fn(async () => {}),
+    downloadMany: vi.fn(async () => {}),
     listKeys: vi.fn(async () => over.keys ?? []),
     ...over,
   } as Bucket

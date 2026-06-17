@@ -95,3 +95,18 @@ describe('GsutilBucket.download', () => {
     expect(run).toHaveBeenCalledWith(['cp', `gs://${GS_BUCKET}/comics-v2/ep1/p1/main.png`, '/tmp/main.png'])
   })
 })
+
+describe('GsutilBucket.downloadMany', () => {
+  it('parallel-cp (-m) all keys into a destination directory', async () => {
+    const run = vi.fn(async () => '')
+    const bucket = new GsutilBucket(run)
+    await bucket.downloadMany(['a/f0.jpg', 'a/f1.jpg'], '/tmp/d')
+    expect(run).toHaveBeenCalledWith(['-m', 'cp', `gs://${GS_BUCKET}/a/f0.jpg`, `gs://${GS_BUCKET}/a/f1.jpg`, '/tmp/d'])
+  })
+
+  it('no-ops on an empty key list', async () => {
+    const run = vi.fn(async () => '')
+    await new GsutilBucket(run).downloadMany([], '/tmp/d')
+    expect(run).not.toHaveBeenCalled()
+  })
+})

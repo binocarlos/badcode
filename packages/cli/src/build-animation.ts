@@ -1,5 +1,5 @@
-import { mkdir, rm } from 'node:fs/promises'
-import { join } from 'node:path'
+import { mkdir, rm, rename } from 'node:fs/promises'
+import { basename, join } from 'node:path'
 import type { VideoAsset, Rendition } from '@badcode/comic-manifest'
 import type { Bucket } from './bucket'
 import type { ImageProcessor } from './image-processor'
@@ -43,12 +43,18 @@ export async function buildAnimation(anim: AnimationFolder, deps: AnimationDeps)
     meta = await video.probe(localSource)
     frameCount = meta.frameCount
   } else {
+    const rawDir = `${stem}.raw`
     const framesDir = `${stem}.frames`
+    await mkdir(rawDir, { recursive: true })
     await mkdir(framesDir, { recursive: true })
-    cleanup.push(framesDir)
+    cleanup.push(rawDir, framesDir)
+    // One parallel batch download (was one serial gsutil cp per frame — the dominant cost).
+    await bucket.downloadMany(anim.frames.map((f) => `${basePath}/${f}`), rawDir)
+    // Rename to a zero-padded sequential pattern ffmpeg can read in order
+    // (anim.frames is already sorted by frame number).
     for (let i = 0; i < anim.frames.length; i++) {
       const n = String(i + 1).padStart(5, '0')
-      await bucket.download(`${basePath}/${anim.frames[i]}`, join(framesDir, `frame_${n}.jpg`))
+      await rename(join(rawDir, basename(anim.frames[i])), join(framesDir, `frame_${n}.jpg`))
     }
     await video.framesToVideo(join(framesDir, 'frame_%05d.jpg'), FRAMES_FPS, localSource)
     frameCount = anim.frames.length

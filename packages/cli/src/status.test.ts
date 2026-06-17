@@ -20,6 +20,7 @@ function fakeBucket(map: Record<string, string[]>): Bucket {
     upload: async () => {},
     copy: async () => {},
     download: async () => {},
+    downloadMany: async () => {},
     listKeys: async () => [],
   }
 }
