@@ -76,10 +76,12 @@ export function ScrollComic({
   }, [])
   const engineValue = useMemo(() => ({ registerLayer }), [registerLayer])
 
-  // Rolling window: current ± 1, plus the outgoing page during a transition.
+  // Rolling window: current ± 2 (preloads two pages ahead/behind to beat fast-scroll),
+  // plus the outgoing page during a transition. Only current + outgoing are *visible*;
+  // the rest are mounted-but-hidden so their assets fetch early.
   const windowIndices = useMemo(() => {
     const set = new Set<number>()
-    for (const i of [currentPage - 1, currentPage, currentPage + 1]) {
+    for (let i = currentPage - 2; i <= currentPage + 2; i++) {
       if (i >= 0 && i < total) set.add(i)
     }
     if (outgoingPage != null && outgoingPage >= 0 && outgoingPage < total) set.add(outgoingPage)
