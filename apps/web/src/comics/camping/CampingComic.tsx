@@ -86,40 +86,28 @@ export function CampingComic() {
         {/* TODO: add SidePanelText with narrative content */}
       </Page>
 
+      {/* Merged: a02 played once across two dialogue beats (was two consecutive pages → double-play). */}
       <Page
-        phases={{ enter: 0, hold: 1.4, exit: 0 }}
-        scrollDuration={1.4}
+        phases={{ enter: 0, hold: 2.8, exit: 0 }}
+        scrollDuration={2.8}
         transition={crossfade()}
         background="#0a0f1c"
       >
-        {/* TODO: pick an effect — zoom, grayscale, pan, zoomInOut, scale */}
-        {/* TODO: pick background color */}
         <AnimationWidget animation={comic.resolveAnimation('anim/a02')} />
-        <SpeechBubble x={64.76536371237458} y={19.680726557745423} appearAt={[0.65, 1]} fade type="thought" tail="none" fontSize={10}>
-          {'He is so cool...'}
-        </SpeechBubble>
-        <SpeechBubble x={18.475647993311036} y={55.43747951874912} appearAt={[0, 0.4]} fade tail="none" fontSize={10}>
+        {/* beat 1 (first half) */}
+        <SpeechBubble x={18.475647993311036} y={55.43747951874912} appearAt={[0, 0.2]} fade tail="none" fontSize={10}>
           {'What are you up to this weekend mate?'}
         </SpeechBubble>
-        <SpeechBubble x={48.4779995819398} y={72.06024450699492} appearAt={[0.4, 1]} fade tail="top" fontSize={10}>
+        <SpeechBubble x={48.4779995819398} y={72.06024450699492} appearAt={[0.2, 0.5]} fade tail="top" fontSize={10}>
           {'I\'m off to an ayahuasca retreat in Wales!\nThere are parts of my personality I am keen to get to know more.'}
         </SpeechBubble>
-        {/* TODO: add SidePanelText with narrative content */}
-      </Page>
-
-      <Page
-        phases={{ enter: 0, hold: 1.4, exit: 0 }}
-        scrollDuration={1.4}
-        transition={crossfade()}
-        background="#0a0f1c"
-      >
-        {/* TODO: pick an effect — zoom, grayscale, pan, zoomInOut, scale */}
-        {/* TODO: pick background color */}
-        <AnimationWidget animation={comic.resolveAnimation('anim/a02')} />
-        <SpeechBubble x={35.785953177257525} y={52.54669725200131} fade type="thought" tail="none">
+        <SpeechBubble x={64.76536371237458} y={19.680726557745423} appearAt={[0.33, 0.5]} fade type="thought" tail="none" fontSize={10}>
+          {'He is so cool...'}
+        </SpeechBubble>
+        {/* beat 2 (second half) */}
+        <SpeechBubble x={35.785953177257525} y={52.54669725200131} appearAt={[0.5, 1]} fade type="thought" tail="none">
           {'Another week of impressing these morons, a chimp could do what they do. This retreat cannot come soon enough. When will this end? Why is it always up to me?'}
         </SpeechBubble>
-        {/* TODO: add SidePanelText with narrative content */}
       </Page>
 
       <Page
@@ -383,31 +371,17 @@ export function CampingComic() {
         {/* TODO: add SidePanelText with narrative content */}
       </Page>
 
+      {/* Merged: a09 played once (was two consecutive pages → double-play). */}
       <Page
-        phases={{ enter: 0, hold: 1.4, exit: 0 }}
-        scrollDuration={1.4}
+        phases={{ enter: 0, hold: 2.8, exit: 0 }}
+        scrollDuration={2.8}
         transition={crossfade()}
         background="#0a0f1c"
       >
-        {/* TODO: pick an effect — zoom, grayscale, pan, zoomInOut, scale */}
-        {/* TODO: pick background color */}
-        <AnimationWidget animation={comic.resolveAnimation('anim/a09')} />
-        {/* TODO: add SidePanelText with narrative content */}
-      </Page>
-
-      <Page
-        phases={{ enter: 0, hold: 1.4, exit: 0 }}
-        scrollDuration={1.4}
-        transition={crossfade()}
-        background="#0a0f1c"
-      >
-        {/* TODO: pick an effect — zoom, grayscale, pan, zoomInOut, scale */}
-        {/* TODO: pick background color */}
         <AnimationWidget animation={comic.resolveAnimation('anim/a09')} />
         <SpeechBubble x={61.62207357859531} y={35.01942792940406} fade tail="none">
           {'Tarquin, I\'ve come back here to warn you, you must change your ways, there is no time to fuck around, AI is coming, you fool! Unburden yourself from the judgment of your elbow-patch afflicted peers and take action. For our sake!'}
         </SpeechBubble>
-        {/* TODO: add SidePanelText with narrative content */}
       </Page>
 
       <Page

@@ -251,34 +251,20 @@ export function KarenComic() {
         {/* TODO: add SidePanelText with narrative content */}
       </Page>
 
+      {/* Merged: a04 played once (was two consecutive pages → double-play). */}
       <Page
-        phases={{ enter: 0, hold: 1.4, exit: 0 }}
-        scrollDuration={1.4}
+        phases={{ enter: 0, hold: 2.8, exit: 0 }}
+        scrollDuration={2.8}
         transition={crossfade()}
         background="#0a0f1c"
       >
-        {/* TODO: pick an effect — zoom, grayscale, pan, zoomInOut, scale */}
-        {/* TODO: pick background color */}
         <AnimationWidget animation={comic.resolveAnimation('anim/a04')} />
-        {/* TODO: add SidePanelText with narrative content */}
-      </Page>
-
-      <Page
-        phases={{ enter: 0, hold: 1.4, exit: 0 }}
-        scrollDuration={1.4}
-        transition={crossfade()}
-        background="#0a0f1c"
-      >
-        {/* TODO: pick an effect — zoom, grayscale, pan, zoomInOut, scale */}
-        {/* TODO: pick background color */}
-        <AnimationWidget animation={comic.resolveAnimation('anim/a04')} />
-        <SpeechBubble x={25.08361204013378} y={38.76457094705304} fade tail="none">
+        <SpeechBubble x={25.08361204013378} y={38.76457094705304} appearAt={[0, 0.55]} fade tail="none">
           {'The fuck was that shi...'}
         </SpeechBubble>
-        <SpeechBubble x={79.68227424749163} y={74.11872103365947} fade tail="none">
+        <SpeechBubble x={79.68227424749163} y={74.11872103365947} appearAt={[0.45, 1]} fade tail="none">
           {'Trust me I got plan, but that can wait I need a few sleeping pills another glass of the good stuff.'}
         </SpeechBubble>
-        {/* TODO: add SidePanelText with narrative content */}
       </Page>
 
       <Page
