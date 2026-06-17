@@ -1,0 +1,563 @@
+{
+  "basePath": "comics-v2/camping-jack-test",
+  "assets": {
+    "img/i01.jpg": {
+      "thumbhash": "nOcRDIJ3d4d/h3eHd3Z5YI0Htw==",
+      "low": "derived/img/i01.low.webp",
+      "high": "derived/img/i01.high.webp",
+      "width": 1920,
+      "height": 1080
+    },
+    "img/i02.png": {
+      "thumbhash": "5PcRBICJt6h/iYV4eIY1Y08Dxg==",
+      "low": "derived/img/i02.low.webp",
+      "high": "derived/img/i02.high.webp",
+      "width": 5504,
+      "height": 3072
+    },
+    "img/i03.png": {
+      "thumbhash": "4fcJDIL4eCZ7h4Z6dYWYdY8q9w==",
+      "low": "derived/img/i03.low.webp",
+      "high": "derived/img/i03.high.webp",
+      "width": 5504,
+      "height": 3072
+    },
+    "img/i04.png": {
+      "thumbhash": "4fcJDIL4eCZ7h4Z6dYWYdo8q9w==",
+      "low": "derived/img/i04.low.webp",
+      "high": "derived/img/i04.high.webp",
+      "width": 5504,
+      "height": 3072
+    },
+    "img/i05.png": {
+      "thumbhash": "1+cNBIJomGefdnh3h4cLuI0gyQ==",
+      "low": "derived/img/i05.low.webp",
+      "high": "derived/img/i05.high.webp",
+      "width": 2752,
+      "height": 1536
+    },
+    "img/i06.png": {
+      "thumbhash": "1ecFDIJmBYSqZXrBhmR9v/fkjA==",
+      "low": "derived/img/i06.low.webp",
+      "high": "derived/img/i06.high.webp",
+      "width": 2752,
+      "height": 1536
+    },
+    "img/i07.png": {
+      "thumbhash": "mecNDIKoh3iPeId5eIgIeYVwZw==",
+      "low": "derived/img/i07.low.webp",
+      "high": "derived/img/i07.high.webp",
+      "width": 5504,
+      "height": 3072
+    },
+    "img/i08.jpg": {
+      "thumbhash": "0dcRDIBol3ePeId8d3mXcHxq9g==",
+      "low": "derived/img/i08.low.webp",
+      "high": "derived/img/i08.high.webp",
+      "width": 1928,
+      "height": 1072
+    },
+    "img/i09.jpg": {
+      "thumbhash": "kucRDIBYl2ePeId8d3l3gHtH9w==",
+      "low": "derived/img/i09.low.webp",
+      "high": "derived/img/i09.high.webp",
+      "width": 1928,
+      "height": 1072
+    },
+    "img/i10.png": {
+      "thumbhash": "UigGDIIJZ5d1ioh1hHcHYnUAdw==",
+      "low": "derived/img/i10.low.webp",
+      "high": "derived/img/i10.high.webp",
+      "width": 5504,
+      "height": 3072
+    },
+    "img/i11.png": {
+      "thumbhash": "UigGDIIJZ5d1ioh1hHcHYnUAdw==",
+      "low": "derived/img/i11.low.webp",
+      "high": "derived/img/i11.high.webp",
+      "width": 5504,
+      "height": 3072
+    },
+    "img/i12.png": {
+      "thumbhash": "UigGDIIJZ5d1ioh1hHcHYnUAdw==",
+      "low": "derived/img/i12.low.webp",
+      "high": "derived/img/i12.high.webp",
+      "width": 5504,
+      "height": 3072
+    },
+    "img/i13.png": {
+      "thumbhash": "0+cJFIJLKlafmWaXaKd2YDYFWA==",
+      "low": "derived/img/i13.low.webp",
+      "high": "derived/img/i13.high.webp",
+      "width": 2752,
+      "height": 1536
+    },
+    "img/i14.png": {
+      "thumbhash": "GQgKFIQiclt/VoeIiIkGYEoAlw==",
+      "low": "derived/img/i14.low.webp",
+      "high": "derived/img/i14.high.webp",
+      "width": 5504,
+      "height": 3072
+    },
+    "img/i15.png": {
+      "thumbhash": "1SgKJIgKV3qYeImIiHXaiZ+M+A==",
+      "low": "derived/img/i15.low.webp",
+      "high": "derived/img/i15.high.webp",
+      "width": 5504,
+      "height": 3072
+    },
+    "img/i16.png": {
+      "thumbhash": "1ecNDII4qHafdnl4h4iagJYDdw==",
+      "low": "derived/img/i16.low.webp",
+      "high": "derived/img/i16.high.webp",
+      "width": 2752,
+      "height": 1536
+    },
+    "img/i17.png": {
+      "thumbhash": "l+cJBIBXdnhvd4d5h4pqcKMDFQ==",
+      "low": "derived/img/i17.low.webp",
+      "high": "derived/img/i17.high.webp",
+      "width": 5504,
+      "height": 3072
+    },
+    "img/i18.png": {
+      "thumbhash": "l/cJDIJAiGdbhYd2iXo/utVgSw==",
+      "low": "derived/img/i18.low.webp",
+      "high": "derived/img/i18.high.webp",
+      "width": 5504,
+      "height": 3072
+    },
+    "img/i19.png": {
+      "thumbhash": "XPcNDII7eoefd4aZh3mAcgYnZQ==",
+      "low": "derived/img/i19.low.webp",
+      "high": "derived/img/i19.high.webp",
+      "width": 5504,
+      "height": 3072
+    },
+    "img/i20.png": {
+      "thumbhash": "nPcNDICJWJifhoh9iHpFVHAgBQ==",
+      "low": "derived/img/i20.low.webp",
+      "high": "derived/img/i20.high.webp",
+      "width": 5504,
+      "height": 3072
+    },
+    "img/i21.png": {
+      "thumbhash": "nfcNDIKJV4ifhoh8h3koYoAgJg==",
+      "low": "derived/img/i21.low.webp",
+      "high": "derived/img/i21.high.webp",
+      "width": 5504,
+      "height": 3072
+    },
+    "img/i22.png": {
+      "thumbhash": "nwcSFIR5V5iPiHZ7eHgZYJgBlg==",
+      "low": "derived/img/i22.low.webp",
+      "high": "derived/img/i22.high.webp",
+      "width": 5504,
+      "height": 3072
+    },
+    "img/i23.png": {
+      "thumbhash": "nfcNDIKJV3ifhoh9iHk3YoABJg==",
+      "low": "derived/img/i23.low.webp",
+      "high": "derived/img/i23.high.webp",
+      "width": 5504,
+      "height": 3072
+    },
+    "img/i24.png": {
+      "thumbhash": "0vcFDIIaZpafZnmJdoq1cGkKhw==",
+      "low": "derived/img/i24.low.webp",
+      "high": "derived/img/i24.high.webp",
+      "width": 5504,
+      "height": 3072
+    },
+    "img/i25.png": {
+      "thumbhash": "kfcFDIIamlafhHqZeIeWcHcIdw==",
+      "low": "derived/img/i25.low.webp",
+      "high": "derived/img/i25.high.webp",
+      "width": 5504,
+      "height": 3072
+    },
+    "img/i26.jpeg": {
+      "thumbhash": "lPcJDII6eIifhnmJiIiGgHkHlw==",
+      "low": "derived/img/i26.low.webp",
+      "high": "derived/img/i26.high.webp",
+      "width": 5504,
+      "height": 3072
+    },
+    "img/i27.jpeg": {
+      "thumbhash": "EvgFDII2iWifWIk8tZtlgFQHOQ==",
+      "low": "derived/img/i27.low.webp",
+      "high": "derived/img/i27.high.webp",
+      "width": 5504,
+      "height": 3072
+    },
+    "img/i28.jpeg": {
+      "thumbhash": "EwgGDIJIeWZ7WIhvhYmHgIMJRw==",
+      "low": "derived/img/i28.low.webp",
+      "high": "derived/img/i28.high.webp",
+      "width": 5504,
+      "height": 3072
+    },
+    "img/i29.png": {
+      "thumbhash": "2PcJDIBMQJmKdneKdojgyAidmw==",
+      "low": "derived/img/i29.low.webp",
+      "high": "derived/img/i29.high.webp",
+      "width": 5504,
+      "height": 3072
+    },
+    "img/i30.png": {
+      "thumbhash": "2AcKDIAtMJiuVYaIh5jytkpvuQ==",
+      "low": "derived/img/i30.low.webp",
+      "high": "derived/img/i30.high.webp",
+      "width": 5504,
+      "height": 3072
+    },
+    "img/i31.png": {
+      "thumbhash": "m+cRDIKod3d/eIeKiIkIeHWAZw==",
+      "low": "derived/img/i31.low.webp",
+      "high": "derived/img/i31.high.webp",
+      "width": 5504,
+      "height": 3072
+    },
+    "img/i32.jpeg": {
+      "thumbhash": "2/cJDIKAd2lviHd7h5dvhfVVaA==",
+      "low": "derived/img/i32.low.webp",
+      "high": "derived/img/i32.high.webp",
+      "width": 5504,
+      "height": 3072
+    },
+    "img/i33.jpeg": {
+      "thumbhash": "UwgGBIC8WnOvm4urdmd4j6lwig==",
+      "low": "derived/img/i33.low.webp",
+      "high": "derived/img/i33.high.webp",
+      "width": 5504,
+      "height": 3072
+    }
+  },
+  "animations": {
+    "anim/a01": {
+      "thumbhash": "nOcRDIJ3d4d/h3eHd3Z4YI0Gtw==",
+      "poster": "derived/anim/a01.poster.webp",
+      "renditions": [
+        {
+          "height": 480,
+          "width": 854,
+          "proxy": "derived/anim/a01.480.mp4"
+        },
+        {
+          "height": 720,
+          "width": 1280,
+          "proxy": "derived/anim/a01.720.mp4"
+        },
+        {
+          "height": 1080,
+          "width": 1920,
+          "proxy": "derived/anim/a01.1080.mp4"
+        }
+      ],
+      "width": 1920,
+      "height": 1080,
+      "frameCount": 96,
+      "fps": 24
+    },
+    "anim/a02": {
+      "thumbhash": "zvcFFILEQntUl2qAuJX3c3U/Vw==",
+      "poster": "derived/anim/a02.poster.webp",
+      "renditions": [
+        {
+          "height": 480,
+          "width": 854,
+          "proxy": "derived/anim/a02.480.mp4"
+        },
+        {
+          "height": 720,
+          "width": 1280,
+          "proxy": "derived/anim/a02.720.mp4"
+        },
+        {
+          "height": 1080,
+          "width": 1920,
+          "proxy": "derived/anim/a02.1080.mp4"
+        }
+      ],
+      "width": 3840,
+      "height": 2160,
+      "frameCount": 282,
+      "fps": 24
+    },
+    "anim/a03": {
+      "thumbhash": "1ecFDIInRGWneHjAh2eMr9j3ig==",
+      "poster": "derived/anim/a03.poster.webp",
+      "renditions": [
+        {
+          "height": 480,
+          "width": 864,
+          "proxy": "derived/anim/a03.480.mp4"
+        },
+        {
+          "height": 720,
+          "width": 1294,
+          "proxy": "derived/anim/a03.720.mp4"
+        },
+        {
+          "height": 1080,
+          "width": 1942,
+          "proxy": "derived/anim/a03.1080.mp4"
+        }
+      ],
+      "width": 1928,
+      "height": 1072,
+      "frameCount": 242,
+      "fps": 24
+    },
+    "anim/a04": {
+      "thumbhash": "1OcFDIJmBISqZXnAhmSNv+j1mw==",
+      "poster": "derived/anim/a04.poster.webp",
+      "renditions": [
+        {
+          "height": 480,
+          "width": 854,
+          "proxy": "derived/anim/a04.480.mp4"
+        },
+        {
+          "height": 720,
+          "width": 1280,
+          "proxy": "derived/anim/a04.720.mp4"
+        },
+        {
+          "height": 1080,
+          "width": 1920,
+          "proxy": "derived/anim/a04.1080.mp4"
+        }
+      ],
+      "width": 3840,
+      "height": 2160,
+      "frameCount": 192,
+      "fps": 24
+    },
+    "anim/a05": {
+      "thumbhash": "1OcFDIJmBISqZnnQhmR9v/j0iw==",
+      "poster": "derived/anim/a05.poster.webp",
+      "renditions": [
+        {
+          "height": 480,
+          "width": 864,
+          "proxy": "derived/anim/a05.480.mp4"
+        },
+        {
+          "height": 720,
+          "width": 1294,
+          "proxy": "derived/anim/a05.720.mp4"
+        },
+        {
+          "height": 1080,
+          "width": 1942,
+          "proxy": "derived/anim/a05.1080.mp4"
+        }
+      ],
+      "width": 1928,
+      "height": 1072,
+      "frameCount": 122,
+      "fps": 24
+    },
+    "anim/a06": {
+      "thumbhash": "0ecRDIBol3ePeId8d3mYcHx59g==",
+      "poster": "derived/anim/a06.poster.webp",
+      "renditions": [
+        {
+          "height": 480,
+          "width": 864,
+          "proxy": "derived/anim/a06.480.mp4"
+        },
+        {
+          "height": 720,
+          "width": 1294,
+          "proxy": "derived/anim/a06.720.mp4"
+        },
+        {
+          "height": 1080,
+          "width": 1942,
+          "proxy": "derived/anim/a06.1080.mp4"
+        }
+      ],
+      "width": 1928,
+      "height": 1072,
+      "frameCount": 242,
+      "fps": 24
+    },
+    "anim/a07": {
+      "thumbhash": "0+cJFIRLKlafmWWXaKd1YDYGZw==",
+      "poster": "derived/anim/a07.poster.webp",
+      "renditions": [
+        {
+          "height": 480,
+          "width": 854,
+          "proxy": "derived/anim/a07.480.mp4"
+        },
+        {
+          "height": 720,
+          "width": 1280,
+          "proxy": "derived/anim/a07.720.mp4"
+        },
+        {
+          "height": 1080,
+          "width": 1920,
+          "proxy": "derived/anim/a07.1080.mp4"
+        }
+      ],
+      "width": 1920,
+      "height": 1080,
+      "frameCount": 192,
+      "fps": 24
+    },
+    "anim/a08": {
+      "thumbhash": "1dcFHIpJCyXLqkaTaspAYwI2Rg==",
+      "poster": "derived/anim/a08.poster.webp",
+      "renditions": [
+        {
+          "height": 480,
+          "width": 854,
+          "proxy": "derived/anim/a08.480.mp4"
+        },
+        {
+          "height": 720,
+          "width": 1280,
+          "proxy": "derived/anim/a08.720.mp4"
+        },
+        {
+          "height": 1080,
+          "width": 1920,
+          "proxy": "derived/anim/a08.1080.mp4"
+        }
+      ],
+      "width": 3840,
+      "height": 2160,
+      "frameCount": 192,
+      "fps": 24
+    },
+    "anim/a09": {
+      "thumbhash": "0+cJFIRLKlafmWWXaKd1YDYGZw==",
+      "poster": "derived/anim/a09.poster.webp",
+      "renditions": [
+        {
+          "height": 480,
+          "width": 854,
+          "proxy": "derived/anim/a09.480.mp4"
+        },
+        {
+          "height": 720,
+          "width": 1280,
+          "proxy": "derived/anim/a09.720.mp4"
+        },
+        {
+          "height": 1080,
+          "width": 1920,
+          "proxy": "derived/anim/a09.1080.mp4"
+        }
+      ],
+      "width": 1920,
+      "height": 1080,
+      "frameCount": 192,
+      "fps": 24
+    },
+    "anim/a10": {
+      "thumbhash": "l+cJBIBHdnhvd4d5h4pqYKIEBg==",
+      "poster": "derived/anim/a10.poster.webp",
+      "renditions": [
+        {
+          "height": 480,
+          "width": 854,
+          "proxy": "derived/anim/a10.480.mp4"
+        },
+        {
+          "height": 720,
+          "width": 1280,
+          "proxy": "derived/anim/a10.720.mp4"
+        },
+        {
+          "height": 1080,
+          "width": 1920,
+          "proxy": "derived/anim/a10.1080.mp4"
+        }
+      ],
+      "width": 3840,
+      "height": 2160,
+      "frameCount": 192,
+      "fps": 24
+    },
+    "anim/a11": {
+      "thumbhash": "nwcSFISJV5iPiHZ7eHgZYJgBlg==",
+      "poster": "derived/anim/a11.poster.webp",
+      "renditions": [
+        {
+          "height": 480,
+          "width": 854,
+          "proxy": "derived/anim/a11.480.mp4"
+        },
+        {
+          "height": 720,
+          "width": 1280,
+          "proxy": "derived/anim/a11.720.mp4"
+        },
+        {
+          "height": 1080,
+          "width": 1920,
+          "proxy": "derived/anim/a11.1080.mp4"
+        }
+      ],
+      "width": 3840,
+      "height": 2160,
+      "frameCount": 192,
+      "fps": 24
+    },
+    "anim/a12": {
+      "thumbhash": "2vcNDIB1eoiPh3eLd3pvc+cHlw==",
+      "poster": "derived/anim/a12.poster.webp",
+      "renditions": [
+        {
+          "height": 480,
+          "width": 854,
+          "proxy": "derived/anim/a12.480.mp4"
+        },
+        {
+          "height": 720,
+          "width": 1280,
+          "proxy": "derived/anim/a12.720.mp4"
+        },
+        {
+          "height": 1080,
+          "width": 1920,
+          "proxy": "derived/anim/a12.1080.mp4"
+        }
+      ],
+      "width": 3840,
+      "height": 2160,
+      "frameCount": 192,
+      "fps": 24
+    },
+    "anim/a13": {
+      "thumbhash": "WfcFBIAGdVeJZ3mRiIx4jzugYQ==",
+      "poster": "derived/anim/a13.poster.webp",
+      "renditions": [
+        {
+          "height": 480,
+          "width": 854,
+          "proxy": "derived/anim/a13.480.mp4"
+        },
+        {
+          "height": 720,
+          "width": 1280,
+          "proxy": "derived/anim/a13.720.mp4"
+        },
+        {
+          "height": 1080,
+          "width": 1920,
+          "proxy": "derived/anim/a13.1080.mp4"
+        }
+      ],
+      "width": 3840,
+      "height": 2160,
+      "frameCount": 316,
+      "fps": 24
+    }
+  }
+}
