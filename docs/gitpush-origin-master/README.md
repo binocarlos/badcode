@@ -105,7 +105,7 @@ The single source of truth for **where each act stands.** Maturity ladder:
 | --- | --- | --- | --- | --- |
 | — | Prologue · The Repo | I · Fall | **Beats** | [`prologue-repo.md`](./prologue-repo.md) |
 | 1 | The Push | I · Fall | **Beats** → [`act-1-push.md`](./act-1-push.md) | EP1 nodes ([`ep1.md`](./ep1.md)) clip in here |
-| 2 | The Collapse (2034) | I · Fall | Spine | — |
+| 2 | The Collapse (2034) | I · Fall | **Beats** → [`act-2-collapse.md`](./act-2-collapse.md) | [`discovery-timeline.md`](./discovery-timeline.md) (the 2034 collapse + decline shadow) |
 | 3 | Alone | II · Revelation | Spine | — |
 | 4 | The Discovery | II · Revelation | **Beats** → [`act-4-discovery.md`](./act-4-discovery.md) | [`discovery-timeline.md`](./discovery-timeline.md) (beats 1–3 + epiphany) |
 | 5 | The Vault | II · Revelation | **Beats** → [`act-5-vault.md`](./act-5-vault.md) | [`discovery-timeline.md`](./discovery-timeline.md) (the two-act experiment) |
