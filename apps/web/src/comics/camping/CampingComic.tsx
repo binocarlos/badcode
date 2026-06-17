@@ -9,27 +9,15 @@ const comic = createComic(manifest)
 export function CampingComic() {
   return (
     <ScrollComic progressBar pageIndicator scrollHint>
+      {/* Opener: the building clip plays once (was a still of frame_17 then the same
+          clip from frame 0 → a visible jump/replay). */}
       <Page
-        phases={{ enter: 0, hold: 1.4, exit: 0 }}
-        scrollDuration={1.4}
+        phases={{ enter: 0, hold: 2.8, exit: 0 }}
+        scrollDuration={2.8}
         effect={zoom({ amount: 1.3 })}
         background="#0a0f1c"
       >
-        {/* TODO: pick background color */}
-        <ImageWidget src={comic.resolve('img/i01.jpg')} />
-        {/* TODO: add SidePanelText with narrative content */}
-      </Page>
-
-      <Page
-        phases={{ enter: 0, hold: 1.4, exit: 0 }}
-        scrollDuration={1.4}
-        transition={crossfade()}
-        background="#0a0f1c"
-      >
-        {/* TODO: pick an effect — zoom, grayscale, pan, zoomInOut, scale */}
-        {/* TODO: pick background color */}
         <AnimationWidget animation={comic.resolveAnimation('anim/a01')} />
-        {/* TODO: add SidePanelText with narrative content */}
       </Page>
 
       <Page
