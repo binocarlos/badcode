@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>BadCode spike — scroll-scrub video (WebCodecs vs &lt;video&gt;.currentTime)</title>
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #0a0f1c; color: #e7ecf5; font: 14px/1.45 ui-monospace, SFMono-Regular, Menlo, monospace; }
+
+  /* The pinned viewer */
+  .stage {
+    position: sticky; top: 0; height: 100vh; height: 100svh;
+    display: grid; grid-template-rows: auto 1fr; gap: 8px; padding: 10px;
+  }
+  canvas { width: 100%; height: 100%; min-height: 0; object-fit: contain; background: #000; border-radius: 8px; }
+  video { display: none; }
+
+  .panel { display: grid; gap: 8px; }
+  .modes { display: flex; flex-wrap: wrap; gap: 6px; }
+  button {
+    font: inherit; padding: 6px 10px; border-radius: 6px; cursor: pointer;
+    background: #18233f; color: #cdd7ee; border: 1px solid #2c3a5e;
+  }
+  button.active { background: #2d4a8a; border-color: #4f73c4; color: #fff; }
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 4px 16px; }
+  .stat b { color: #7fa8ff; font-weight: 600; }
+  .hint { color: #8c9bbd; font-size: 12px; }
+  .fps-good { color: #5fe39a; } .fps-bad { color: #ff7a7a; } .fps-mid { color: #ffd166; }
+  .err { color: #ff7a7a; white-space: pre-wrap; }
+
+  /* The tall scroll track that drives progress 0..1 */
+  .scroll-track { height: 700vh; }
+  .scroll-track .marker { position: sticky; top: 50vh; text-align: center; color: #44507a; }
+</style>
+</head>
+<body>
+
+<div class="stage">
+  <div class="panel">
+    <div class="modes" id="modes">
+      <button data-mode="naive" data-src="short.mp4">Naive · original 1080p (1 keyframe)</button>
+      <button data-mode="naive" data-src="proxy-allkey.mp4">Naive · 480p all-keyframe</button>
+      <button data-mode="webcodecs" data-src="proxy-gop12.mp4" class="active">WebCodecs · 480p gop12 (decode→canvas)</button>
+      <button data-mode="webcodecs" data-src="short.mp4">WebCodecs · original 1080p</button>
+      <button data-mode="windowed" data-src="long.mp4">WebCodecs · LONG 576f windowed+LRU</button>
+    </div>
+    <div class="stats" id="stats"></div>
+    <div class="hint">Scroll the page to scrub. Watch <b>paint FPS</b> while scrolling fast, and <b>decoded</b> while WebCodecs loads (scrub during decode to see progressive fill-in). Compare smoothness + the file sizes printed below.</div>
+    <div class="err" id="err"></div>
+  </div>
+  <canvas id="canvas" width="960" height="540"></canvas>
+  <video id="video" muted playsinline preload="auto"></video>
+</div>
+
+<div class="scroll-track">
+  <div class="marker">↓ scroll to scrub ↓</div>
+</div>
+
+<script type="module">
+const KNOWN_SIZES = { 'short.mp4': '11.5 MB', 'proxy-allkey.mp4': '1.79 MB', 'proxy-gop12.mp4': '0.94 MB' }
+
+const canvas = document.getElementById('canvas')
+const ctx = canvas.getContext('2d')
+const video = document.getElementById('video')
+const statsEl = document.getElementById('stats')
+const errEl = document.getElementById('err')
+const modesEl = document.getElementById('modes')
+
+const state = {
+  mode: 'webcodecs', src: 'proxy-gop12.mp4',
+  frames: [],            // ImageBitmap[] in presentation order (webcodecs)
+  frameCount: 0,         // total expected frames
+  decoded: 0,            // decoded so far
+  duration: 0,           // seconds (naive)
+  lastDrawnIndex: -1,
+  ttfb: 0, ttfFrame: 0, ttAllDecoded: 0, t0: 0,
+  paintTimes: [],        // timestamps of recent canvas paints (for FPS)
+  generation: 0,         // bumps on mode switch to cancel stale async work
+  // windowed-mode state:
+  samples: [],           // demuxed EncodedVideoChunk inputs {type,timestamp,duration,data}
+  gopStarts: [],         // frame indices that are keyframes
+  cache: new Map(),      // idx -> ImageBitmap (only a window is resident)
+  cachedGops: [],        // gopStart values in insertion order (for LRU)
+  decodeCursor: 0,       // running output index during a GOP decode
+  decodingGop: null,     // gopStart currently being decoded, or null
+  desired: 0,            // target frame index from scroll
+}
+const MAX_GOPS_RESIDENT = 12  // ~144 frames ≈ ~225MB at 854x480; the LRU cap
+
+function fail(e) { errEl.textContent = 'ERROR: ' + (e && e.stack || e) ; console.error(e) }
+function progress() {
+  const max = document.documentElement.scrollHeight - window.innerHeight
+  return max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0
+}
+function notePaint() {
+  const now = performance.now()
+  state.paintTimes.push(now)
+  while (state.paintTimes.length && now - state.paintTimes[0] > 1000) state.paintTimes.shift()
+}
+function fps() { return state.paintTimes.length }
+
+function renderStats() {
+  const f = fps()
+  const cls = f >= 50 ? 'fps-good' : f >= 24 ? 'fps-mid' : 'fps-bad'
+  const rows = [
+    ['mode', state.mode],
+    ['source', `${state.src} (${KNOWN_SIZES[state.src] || '?'})`],
+    ['paint FPS', `<span class="${cls}">${f}</span>`],
+    ['frames', state.mode === 'webcodecs' ? `${state.decoded}/${state.frameCount || '?'}`
+              : state.mode === 'windowed' ? `${state.frameCount || '?'} total`
+              : `~${Math.round(state.duration*24)} @24fps`],
+    ['resident', state.mode === 'windowed' ? `${state.cache.size} frames / ${state.cachedGops.length} GOPs (cap ${MAX_GOPS_RESIDENT})` : 'n/a'],
+    ['current frame', state.lastDrawnIndex < 0 ? '–' : state.lastDrawnIndex],
+    ['time to 1st frame', state.ttfFrame ? `${state.ttfFrame|0} ms` : '…'],
+    ['time to decode all', state.ttAllDecoded ? `${state.ttAllDecoded|0} ms` : (state.mode==='webcodecs'?'…':'n/a')],
+  ]
+  statsEl.innerHTML = rows.map(([k,v]) => `<div class="stat"><b>${k}:</b> ${v}</div>`).join('')
+}
+setInterval(renderStats, 200)
+
+// ---- NAIVE: <video>.currentTime driven by scroll, painted via requestVideoFrameCallback ----
+function startNaive(gen) {
+  video.src = state.src
+  state.duration = 0
+  video.onloadedmetadata = () => {
+    if (gen !== state.generation) return
+    state.duration = video.duration
+    canvas.width = video.videoWidth; canvas.height = video.videoHeight
+    if (!state.ttfFrame) state.ttfFrame = performance.now() - state.t0
+    seekToScroll()
+  }
+  const onFrame = () => {
+    if (gen !== state.generation) return
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height)
+    notePaint()
+    state.lastDrawnIndex = Math.round((video.currentTime / (state.duration||1)) * (Math.round(state.duration*24)-1))
+    if ('requestVideoFrameCallback' in video) video.requestVideoFrameCallback(onFrame)
+  }
+  if ('requestVideoFrameCallback' in video) video.requestVideoFrameCallback(onFrame)
+  else { errEl.textContent = 'requestVideoFrameCallback unavailable — naive paint FPS may read low.'; const loop=()=>{ if(gen!==state.generation)return; onFrame(); requestAnimationFrame(loop)}; }
+  video.load()
+}
+function seekToScroll() {
+  if (state.duration > 0) video.currentTime = progress() * state.duration
+}
+
+// ---- WEBCODECS: demux (mp4box) -> VideoDecoder -> ImageBitmap[] -> canvas index ----
+async function startWebCodecs(gen) {
+  if (!('VideoDecoder' in window)) { errEl.textContent = 'WebCodecs (VideoDecoder) not supported in this browser.'; return }
+  const MP4Box = (await import('https://esm.sh/mp4box@0.5.2')).default
+  if (gen !== state.generation) return
+
+  const mp4 = MP4Box.createFile()
+  let decoder
+  state.frames = []; state.decoded = 0; state.frameCount = 0
+
+  function descriptionFor(track) {
+    const trak = mp4.getTrackById(track.id)
+    for (const entry of trak.mdia.minf.stbl.stsd.entries) {
+      const box = entry.avcC || entry.hvcC || entry.vpcC || entry.av1C
+      if (box) {
+        const stream = new MP4Box.DataStream(undefined, 0, MP4Box.DataStream.BIG_ENDIAN)
+        box.write(stream)
+        return new Uint8Array(stream.buffer, 8) // strip the 8-byte box header
+      }
+    }
+    throw new Error('no codec description box found (avcC/hvcC/…)')
+  }
+
+  mp4.onError = (e) => fail('mp4box: ' + e)
+  mp4.onReady = (info) => {
+    if (gen !== state.generation) return
+    const track = info.videoTracks[0]
+    state.frameCount = track.nb_samples
+    const [w, h] = [track.video.width, track.video.height]
+    // Store frames downscaled to <=854w to bound memory (a real proxy is already small).
+    const scale = Math.min(1, 854 / w)
+    canvas.width = Math.round(w * scale); canvas.height = Math.round(h * scale)
+
+    decoder = new VideoDecoder({
+      output: (frame) => {
+        const idx = state.decoded++
+        createImageBitmap(frame, { resizeWidth: canvas.width, resizeHeight: canvas.height, resizeQuality: 'medium' })
+          .then((bmp) => {
+            frame.close()
+            if (gen !== state.generation) { bmp.close(); return }
+            state.frames[idx] = bmp
+            if (idx === 0 && !state.ttfFrame) { state.ttfFrame = performance.now() - state.t0; drawIndexForScroll(gen) }
+            if (state.decoded === state.frameCount && !state.ttAllDecoded) state.ttAllDecoded = performance.now() - state.t0
+            // Progressive: if the user is parked near this freshly-decoded frame, refresh.
+            drawIndexForScroll(gen)
+          }).catch(fail)
+      },
+      error: fail,
+    })
+    decoder.configure({ codec: track.codec, codedWidth: w, codedHeight: h, description: descriptionFor(track) })
+
+    mp4.onSamples = (id, user, samples) => {
+      if (gen !== state.generation) return
+      for (const s of samples) {
+        decoder.decode(new EncodedVideoChunk({
+          type: s.is_sync ? 'key' : 'delta',
+          timestamp: (s.cts * 1e6) / s.timescale,
+          duration: (s.duration * 1e6) / s.timescale,
+          data: s.data,
+        }))
+      }
+    }
+    mp4.setExtractionOptions(track.id, null, { nbSamples: Infinity })
+    mp4.start()
+  }
+
+  // Stream the file into mp4box.
+  state.ttfb = 0
+  const resp = await fetch(state.src)
+  if (gen !== state.generation) return
+  state.ttfb = performance.now() - state.t0
+  const buf = await resp.arrayBuffer()
+  if (gen !== state.generation) return
+  buf.fileStart = 0
+  mp4.appendBuffer(buf)
+  mp4.flush()
+}
+
+function drawIndexForScroll(gen) {
+  if (gen !== state.generation || state.mode !== 'webcodecs') return
+  const n = state.frameCount || state.frames.length
+  if (!n) return
+  const want = Math.round(progress() * (n - 1))
+  // nearest decoded frame at or before want, else nearest after (progressive fill-in)
+  let pick = -1
+  for (let i = want; i >= 0; i--) if (state.frames[i]) { pick = i; break }
+  if (pick < 0) for (let i = want + 1; i < n; i++) if (state.frames[i]) { pick = i; break }
+  if (pick < 0) return
+  if (pick === state.lastDrawnIndex) return
+  ctx.drawImage(state.frames[pick], 0, 0, canvas.width, canvas.height)
+  state.lastDrawnIndex = pick
+  notePaint()
+}
+
+// ---- WINDOWED WebCodecs: demux-all (compressed), decode GOPs on demand, LRU-evict bitmaps ----
+async function startWindowed(gen) {
+  if (!('VideoDecoder' in window)) { errEl.textContent = 'WebCodecs (VideoDecoder) not supported.'; return }
+  const MP4Box = (await import('https://esm.sh/mp4box@0.5.2')).default
+  if (gen !== state.generation) return
+
+  const mp4 = MP4Box.createFile()
+  let decoder = null
+  state.samples = []; state.gopStarts = []; state.cache = new Map(); state.cachedGops = []
+  state.decodeCursor = 0; state.decodingGop = null
+
+  function descriptionFor(track) {
+    const trak = mp4.getTrackById(track.id)
+    for (const entry of trak.mdia.minf.stbl.stsd.entries) {
+      const box = entry.avcC || entry.hvcC || entry.vpcC || entry.av1C
+      if (box) {
+        const ds = new MP4Box.DataStream(undefined, 0, MP4Box.DataStream.BIG_ENDIAN)
+        box.write(ds); return new Uint8Array(ds.buffer, 8)
+      }
+    }
+    throw new Error('no codec description box found')
+  }
+
+  mp4.onError = (e) => fail('mp4box: ' + e)
+  mp4.onReady = (info) => {
+    if (gen !== state.generation) return
+    const track = info.videoTracks[0]
+    state.frameCount = track.nb_samples
+    const w = track.video.width, h = track.video.height
+    const scale = Math.min(1, 854 / w)
+    canvas.width = Math.round(w * scale); canvas.height = Math.round(h * scale)
+
+    decoder = new VideoDecoder({
+      output: (frame) => {
+        const idx = state.decodeCursor++
+        createImageBitmap(frame, { resizeWidth: canvas.width, resizeHeight: canvas.height, resizeQuality: 'medium' })
+          .then((bmp) => {
+            frame.close()
+            if (gen !== state.generation) { bmp.close(); return }
+            state.cache.set(idx, bmp)
+            if (!state.ttfFrame) { state.ttfFrame = performance.now() - state.t0 }
+            if (idx === state.desired) drawNearest(state.desired)
+          }).catch(fail)
+      },
+      error: fail,
+    })
+    decoder.configure({ codec: track.codec, codedWidth: w, codedHeight: h, description: descriptionFor(track) })
+    state._decoder = decoder
+
+    mp4.onSamples = (id, user, samples) => {
+      if (gen !== state.generation) return
+      for (const s of samples) {
+        if (s.is_sync) state.gopStarts.push(s.number)
+        state.samples[s.number] = {
+          type: s.is_sync ? 'key' : 'delta',
+          timestamp: (s.cts * 1e6) / s.timescale,
+          duration: (s.duration * 1e6) / s.timescale,
+          data: new Uint8Array(s.data), // copy: own the bytes for on-demand replay
+        }
+      }
+    }
+    mp4.setExtractionOptions(track.id, null, { nbSamples: Infinity })
+    mp4.start()
+    // After demux completes we don't auto-decode; the scroll driver pulls GOPs on demand.
+    setTimeout(() => { if (gen === state.generation) tickWindowed(gen) }, 0)
+  }
+
+  const resp = await fetch(state.src)
+  if (gen !== state.generation) return
+  const buf = await resp.arrayBuffer()
+  if (gen !== state.generation) return
+  buf.fileStart = 0
+  mp4.appendBuffer(buf); mp4.flush()
+}
+
+function gopBoundsFor(target) {
+  const starts = state.gopStarts
+  let gs = starts[0] ?? 0, gi = 0
+  for (let i = 0; i < starts.length; i++) { if (starts[i] <= target) { gs = starts[i]; gi = i } else break }
+  const ge = (gi + 1 < starts.length) ? starts[gi + 1] - 1 : state.frameCount - 1
+  return [gs, ge]
+}
+
+function evictGops() {
+  while (state.cachedGops.length > MAX_GOPS_RESIDENT) {
+    const old = state.cachedGops.shift()
+    const [gs, ge] = gopBoundsFor(old)
+    for (let i = gs; i <= ge; i++) { const b = state.cache.get(i); if (b) { b.close(); state.cache.delete(i) } }
+  }
+}
+
+async function decodeGop(gen, gs, ge) {
+  if (gen !== state.generation || !state._decoder) return
+  if (state.cachedGops.includes(gs)) return
+  if (state.decodingGop !== null) return // serialize; driver will re-request
+  state.decodingGop = gs
+  state.decodeCursor = gs
+  try {
+    for (let i = gs; i <= ge; i++) state._decoder.decode(new EncodedVideoChunk(state.samples[i]))
+    await state._decoder.flush()
+  } catch (e) { fail(e) }
+  if (gen !== state.generation) return
+  state.cachedGops.push(gs); evictGops()
+  state.decodingGop = null
+  tickWindowed(gen) // desired may have moved while we decoded
+}
+
+function drawNearest(target) {
+  let pick = -1
+  for (let i = target; i >= 0; i--) if (state.cache.has(i)) { pick = i; break }
+  if (pick < 0) for (let i = target + 1; i < state.frameCount; i++) if (state.cache.has(i)) { pick = i; break }
+  if (pick < 0 || pick === state.lastDrawnIndex) return
+  ctx.drawImage(state.cache.get(pick), 0, 0, canvas.width, canvas.height)
+  state.lastDrawnIndex = pick; notePaint()
+}
+
+function tickWindowed(gen) {
+  if (gen !== state.generation || state.mode !== 'windowed' || !state.frameCount) return
+  state.desired = Math.round(progress() * (state.frameCount - 1))
+  drawNearest(state.desired)
+  const [gs, ge] = gopBoundsFor(state.desired)
+  if (!state.cachedGops.includes(gs)) decodeGop(gen, gs, ge)
+}
+
+// ---- scroll wiring (rAF-throttled) ----
+let ticking = false
+function onScroll() {
+  if (ticking) return
+  ticking = true
+  requestAnimationFrame(() => {
+    ticking = false
+    if (state.mode === 'naive') seekToScroll()
+    else if (state.mode === 'windowed') tickWindowed(state.generation)
+    else drawIndexForScroll(state.generation)
+  })
+}
+window.addEventListener('scroll', onScroll, { passive: true })
+window.addEventListener('resize', onScroll, { passive: true })
+
+// ---- mode switching ----
+function switchTo(mode, src, btn) {
+  state.generation++
+  const gen = state.generation
+  // reset
+  errEl.textContent = ''
+  for (const b of state.frames) try { b && b.close() } catch {}
+  for (const b of state.cache.values()) try { b && b.close() } catch {}
+  try { if (state._decoder && state._decoder.state !== 'closed') state._decoder.close() } catch {}
+  state._decoder = null
+  state.frames = []; state.decoded = 0; state.frameCount = 0
+  state.cache = new Map(); state.cachedGops = []; state.samples = []; state.gopStarts = []
+  state.decodingGop = null; state.decodeCursor = 0; state.desired = 0
+  state.lastDrawnIndex = -1; state.ttfFrame = 0; state.ttAllDecoded = 0; state.duration = 0
+  state.paintTimes = []
+  state.mode = mode; state.src = src
+  state.t0 = performance.now()
+  try { video.pause() } catch {}
+  video.removeAttribute('src'); video.load()
+  ctx.clearRect(0, 0, canvas.width, canvas.height)
+  ;[...modesEl.children].forEach(b => b.classList.toggle('active', b === btn))
+  if (mode === 'naive') startNaive(gen)
+  else if (mode === 'windowed') startWindowed(gen).catch(fail)
+  else startWebCodecs(gen).catch(fail)
+}
+
+modesEl.addEventListener('click', (e) => {
+  const btn = e.target.closest('button'); if (!btn) return
+  switchTo(btn.dataset.mode, btn.dataset.src, btn)
+})
+
+// boot with the default (WebCodecs gop12)
+switchTo('webcodecs', 'proxy-gop12.mp4', modesEl.querySelector('.active'))
+</script>
+</body>
+</html>
