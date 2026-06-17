@@ -110,7 +110,7 @@ The single source of truth for **where each act stands.** Maturity ladder:
 | 4 | The Discovery | II · Revelation | **Beats** → [`act-4-discovery.md`](./act-4-discovery.md) | [`discovery-timeline.md`](./discovery-timeline.md) (beats 1–3 + epiphany) |
 | 5 | The Vault | II · Revelation | **Beats** → [`act-5-vault.md`](./act-5-vault.md) | [`discovery-timeline.md`](./discovery-timeline.md) (the two-act experiment) |
 | 6 | The Revert | II · Revelation | **Beats** → [`act-6-revert.md`](./act-6-revert.md) | [`discovery-timeline.md`](./discovery-timeline.md) (the channel) |
-| — | Coda · The Fork | III · Choice | Spine | [`future-proof.md`](./future-proof.md) |
+| — | Coda · The Fork | III · Choice | **Beats** → [`coda-fork.md`](./coda-fork.md) | [`future-proof.md`](./future-proof.md) (the good branch, unwritten on purpose) |
 
 *Update the Maturity column as each act advances. When an act reaches **Beats**, link its breakdown
 from the Backing column.*
