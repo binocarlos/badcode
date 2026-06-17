@@ -37,3 +37,7 @@ export { panelPresets, resolvePanelBackground, type PanelPreset } from './styles
 //   import { zoom } from '@badcode/comic/effects'
 //   import { crossfade } from '@badcode/comic/transitions'
 //   import { scrollIn, pause } from '@badcode/comic/text'
+
+// Asset resolver
+export { createComic, DEFAULT_BASE_URL } from './assets/createComic'
+export type { Comic, ResolvedImage, ResolvedRendition, ResolvedAnimation } from './assets/types'

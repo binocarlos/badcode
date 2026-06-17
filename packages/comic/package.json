@@ -14,14 +14,21 @@
     "./text": "./src/text/index.ts"
   },
   "scripts": {
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
   },
   "peerDependencies": {
     "react": "^18.3.0",
     "react-dom": "^18.3.0"
   },
   "dependencies": {
+    "@badcode/comic-manifest": "*",
     "@badcode/scroll-timeline": "*",
-    "roughjs": "^4.6.6"
+    "mp4box": "^0.5.2",
+    "roughjs": "^4.6.6",
+    "thumbhash": "^0.1.1"
+  },
+  "devDependencies": {
+    "vitest": "^2.1.8"
   }
 }
