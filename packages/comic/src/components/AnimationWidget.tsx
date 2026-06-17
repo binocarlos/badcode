@@ -33,6 +33,8 @@ function LegacyFrames({ frames, alt, objectPosition, fit }: Required<Pick<Animat
 
 function VideoScrub({ animation, fit, objectPosition }: { animation: ResolvedAnimation; fit?: CSSProperties['objectFit']; objectPosition?: string }) {
   const progress = useScrollProgress()
+  const progressRef = useRef(progress)
+  progressRef.current = progress
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const sourceRef = useRef<VideoSource | null>(null)
 
@@ -69,19 +71,26 @@ function VideoScrub({ animation, fit, objectPosition }: { animation: ResolvedAni
     }
   }, [animation])
 
-  // Draw on every progress change.
+  // Continuous draw loop: paints the current frame as soon as the source loads (so the
+  // top of the page shows frame 0, not just the ThumbHash), repaints as GOPs decode, and
+  // follows scrubbing. VideoSource.draw is a no-op when the frame hasn't changed, so this
+  // is cheap when idle.
   useEffect(() => {
     const canvas = canvasRef.current
-    const src = sourceRef.current
     if (!canvas) return
     const ctx = canvas.getContext('2d')
     if (!ctx) return
-    if (canvas.width !== animation.width || canvas.height !== animation.height) {
-      canvas.width = animation.width
-      canvas.height = animation.height
+    canvas.width = animation.width
+    canvas.height = animation.height
+    let raf = 0
+    const loop = () => {
+      const src = sourceRef.current
+      if (src) src.draw(ctx, frameIndexFor(progressRef.current, animation.frameCount), canvas.width, canvas.height)
+      raf = requestAnimationFrame(loop)
     }
-    src?.draw(ctx, frameIndexFor(progress, animation.frameCount), canvas.width, canvas.height)
-  })
+    raf = requestAnimationFrame(loop)
+    return () => cancelAnimationFrame(raf)
+  }, [animation])
 
   return (
     <canvas

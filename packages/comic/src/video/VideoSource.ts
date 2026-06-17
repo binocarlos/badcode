@@ -20,6 +20,7 @@ export class VideoSource {
   private decodeCursor = 0
   private decodingGop: number | null = null
   private closed = false
+  private lastDrawn = -1
   ready = false
 
   constructor(private readonly url: string, public readonly frameCount: number) {}
@@ -108,7 +109,11 @@ export class VideoSource {
   draw(ctx: CanvasRenderingContext2D, target: number, w: number, h: number): void {
     if (!this.ready) return
     const pick = nearestCached((i) => this.cache.has(i), target, this.frameCount)
-    if (pick >= 0) ctx.drawImage(this.cache.get(pick) as ImageBitmap, 0, 0, w, h)
+    // Only blit when the chosen frame changed — keeps a continuous rAF draw loop cheap when idle.
+    if (pick >= 0 && pick !== this.lastDrawn) {
+      ctx.drawImage(this.cache.get(pick) as ImageBitmap, 0, 0, w, h)
+      this.lastDrawn = pick
+    }
     const [gs, ge] = gopBoundsFor(this.gopStarts, target, this.frameCount)
     if (!this.cachedGops.includes(gs)) void this.decodeGop(gs, ge)
   }
