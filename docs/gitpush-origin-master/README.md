@@ -104,7 +104,7 @@ The single source of truth for **where each act stands.** Maturity ladder:
 | # | Act | Movement | Maturity | Backing |
 | --- | --- | --- | --- | --- |
 | — | Prologue · The Repo | I · Fall | **Beats** | [`prologue-repo.md`](./prologue-repo.md) |
-| 1 | The Push | I · Fall | Spine | EP1 nodes ([`ep1.md`](./ep1.md)) clip in here |
+| 1 | The Push | I · Fall | **Beats** → [`act-1-push.md`](./act-1-push.md) | EP1 nodes ([`ep1.md`](./ep1.md)) clip in here |
 | 2 | The Collapse (2034) | I · Fall | Spine | — |
 | 3 | Alone | II · Revelation | Spine | — |
 | 4 | The Discovery | II · Revelation | **Beats** → [`act-4-discovery.md`](./act-4-discovery.md) | [`discovery-timeline.md`](./discovery-timeline.md) (beats 1–3 + epiphany) |
