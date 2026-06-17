@@ -37,9 +37,11 @@ export async function buildAnimation(anim: AnimationFolder, deps: AnimationDeps)
 
   // 1. Normalize a local source video.
   let frameCount: number
+  let meta: Awaited<ReturnType<typeof video.probe>>
   if (anim.sourceVideo) {
     await bucket.download(`${basePath}/${anim.sourceVideo}`, localSource)
-    frameCount = (await video.probe(localSource)).frameCount
+    meta = await video.probe(localSource)
+    frameCount = meta.frameCount
   } else {
     const framesDir = `${stem}.frames`
     await mkdir(framesDir, { recursive: true })
@@ -50,9 +52,8 @@ export async function buildAnimation(anim: AnimationFolder, deps: AnimationDeps)
     }
     await video.framesToVideo(join(framesDir, 'frame_%05d.jpg'), FRAMES_FPS, localSource)
     frameCount = anim.frames.length
+    meta = await video.probe(localSource)
   }
-
-  const meta = await video.probe(localSource)
 
   // 2. Encode the rendition ladder.
   const renditions: Rendition[] = []

@@ -39,6 +39,8 @@ describe('buildAnimation — source video present', () => {
 
     expect(bucket.download).toHaveBeenCalledWith('comics-v2/ep1/p7/anim/x/video.mp4', expect.any(String))
     expect(video.framesToVideo).not.toHaveBeenCalled()
+    // probe is called exactly once (no redundant double-probe)
+    expect(video.probe).toHaveBeenCalledTimes(1)
     // 1080 source → three rungs
     expect((video.encode as any).mock.calls.map((c: any[]) => c[2])).toEqual([480, 720, 1080])
     expect(asset.renditions.map((r) => r.height)).toEqual([480, 720, 1080])
