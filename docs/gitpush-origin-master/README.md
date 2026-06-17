@@ -238,6 +238,15 @@ documentary-real; the frame earns a distinct cosmic register, and the *contrast*
 - **Length / format** — one long scroll-comic, a multi-part series, or the spine future episodes fill in?
 - **Dates** — Act 2's 2034 is canon; the timeline's other years (2029, 2033, 2041, 2053, 2054) stay
   mythic/loose until a piece commits to one.
+- **Node paths in flux** — the Coda and Act 1 reference constellation nodes (EP1; An Optimistic Lens,
+  Billionaire Coin) by name while another thread relocates `ideas/` → a `stories/` directory; fix the
+  clip-point links once that move lands.
+- **Node clip order vs. release order** — EP1's tracklist (Camping → Karen → Emperor's Coin) differs
+  from Act 1's structural clip order (Emperor's → Camping → Karen); intentional, flagged for the web flow.
+
+*The whole arc is **beat-complete end-to-end** — all eight movements at **Beats**. The cross-arc
+cohesion read is recorded in [`stitch-pass.md`](./stitch-pass.md) (checklist, fixes, threads); next
+maturity step is **Beats → Script**.*
 
 ## The folder
 
