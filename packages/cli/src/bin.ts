@@ -8,6 +8,7 @@ import { pull } from './pull'
 import { generate } from './generate'
 import { assetsBuild } from './assets-build'
 import { SharpImageProcessor } from './image-processor'
+import { FfmpegVideoProcessor } from './video-processor'
 import { readManifestIfExists, writeManifestFile } from './write-manifest'
 import { GsutilBucket, LATEST_CC } from './bucket'
 import type { Target } from './target'
@@ -108,6 +109,7 @@ program
     const manifest = await assetsBuild({
       bucket,
       processor: new SharpImageProcessor(),
+      video: new FfmpegVideoProcessor(),
       src: opts.src,
       previous,
       force: opts.force ?? false,

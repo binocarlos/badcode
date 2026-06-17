@@ -1,11 +1,14 @@
 import { mkdtemp, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import type { AssetManifest, ImageVariant } from '@badcode/comic-manifest'
+import type { AssetManifest, ImageVariant, VideoAsset } from '@badcode/comic-manifest'
 import type { Bucket } from './bucket'
 import type { ImageProcessor } from './image-processor'
+import type { VideoProcessor } from './video-processor'
 import { IMMUTABLE_CC } from './bucket'
 import { relKey, variantKey, classifyAsset } from './asset-paths'
+import { groupAssets, posterKey } from './animation-paths'
+import { buildAnimation } from './build-animation'
 
 const LOW_WIDTH = 720
 const LOW_QUALITY = 70
@@ -15,6 +18,7 @@ const HIGH_QUALITY = 80
 export interface AssetsBuildOptions {
   bucket: Bucket
   processor: ImageProcessor
+  video: VideoProcessor
   /** Bucket-relative source subfolder (no trailing slash, no gs://). */
   src: string
   /** Previous manifest, used to reuse unchanged entries. */
@@ -45,15 +49,14 @@ async function mapPool<T, R>(items: T[], limit: number, fn: (item: T, index: num
 }
 
 export async function assetsBuild(opts: AssetsBuildOptions): Promise<AssetManifest> {
-  const { bucket, processor, src, previous, force = false, dryRun = false, concurrency = 6 } = opts
+  const { bucket, processor, video, src, previous, force = false, dryRun = false, concurrency = 6 } = opts
   const log = opts.log ?? (() => {})
   const basePath = src.endsWith('/') ? src.slice(0, -1) : src
 
   const allKeys = await bucket.listKeys(basePath)
-  const existing = new Set(allKeys.map((k) => relKey(basePath, k)))
-  const rasterOrPass = allKeys
-    .map((k) => relKey(basePath, k))
-    .filter((rel) => classifyAsset(rel) !== 'skip')
+  const relAll = allKeys.map((k) => relKey(basePath, k))
+  const existing = new Set(relAll)
+  const { animations: animFolders, staticImages } = groupAssets(relAll)
 
   let tmpDir: Promise<string> | null = null
   const ensureTmp = (): Promise<string> => {
@@ -62,7 +65,8 @@ export async function assetsBuild(opts: AssetsBuildOptions): Promise<AssetManife
   }
 
   try {
-    const entries = await mapPool(rasterOrPass, concurrency, async (rel, index): Promise<[string, ImageVariant]> => {
+    // --- static images (unchanged behavior) ---
+    const staticEntries = await mapPool(staticImages, concurrency, async (rel, index): Promise<[string, ImageVariant]> => {
       if (classifyAsset(rel) === 'passthrough') {
         log(`passthrough ${rel}`)
         return [rel, { thumbhash: '', low: rel, high: rel, width: 0, height: 0 }]
@@ -105,7 +109,29 @@ export async function assetsBuild(opts: AssetsBuildOptions): Promise<AssetManife
       return [rel, { thumbhash, low: lowKey, high: highKey, width, height }]
     })
 
-    return { basePath, assets: Object.fromEntries(entries) }
+    // --- animations (new) ---
+    const animEntries = await mapPool(animFolders, concurrency, async (anim, index): Promise<[string, VideoAsset]> => {
+      const prior = previous?.animations?.[anim.folder]
+      const outputsExist = existing.has(posterKey(anim.folder)) &&
+        (prior?.renditions ?? []).every((r) => existing.has(r.proxy)) && (prior?.renditions.length ?? 0) > 0
+      if (!force && prior && outputsExist) {
+        log(`reuse animation ${anim.folder}`)
+        return [anim.folder, prior]
+      }
+      if (dryRun) {
+        log(`would build animation ${anim.folder}`)
+        return [anim.folder, { thumbhash: '', poster: posterKey(anim.folder), renditions: [], width: 0, height: 0, frameCount: anim.frames.length, fps: 0 }]
+      }
+      const dir = await ensureTmp()
+      const asset = await buildAnimation(anim, { basePath, bucket, image: processor, video, tmpDir: dir, index, log })
+      return [anim.folder, asset]
+    })
+
+    return {
+      basePath,
+      assets: Object.fromEntries(staticEntries),
+      animations: Object.fromEntries(animEntries),
+    }
   } finally {
     if (tmpDir) await rm(await tmpDir, { recursive: true, force: true })
   }
