@@ -3,7 +3,7 @@ import { zoom } from '@badcode/comic/effects'
 import { crossfade } from '@badcode/comic/transitions'
 // Other effects/transitions available: grayscale, zoomInOut, pan, scale | iris, fadeOutFadeIn, slideOver, blur, wipe | scrollIn, fadeIn, fadeOut, pause (see @badcode/comic docs)
 
-export function KarenJackTestComic() {
+export function KarenComic() {
   return (
     <ScrollComic progressBar pageIndicator scrollHint>
       <Page

@@ -91,7 +91,7 @@ export const homeSteps: HomeStep[] = [
     camera: { position: [18, 12, 18], lookAt: [18, 6, 0] },
     title:  'Karen Will Lead the Revolution',
     route:  '/comics/karen',
-    status: 'coming-soon',
+    status: 'live',
     clip:   [18, 6],
     pos:    [18, 14],
   },

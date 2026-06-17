@@ -1,7 +1,7 @@
 import { defineComic } from '@badcode/comic-meta'
 
 export default defineComic({
-  id: 'karen-jack-test',
+  id: 'karen',
   style: '',
   characters: {
 
