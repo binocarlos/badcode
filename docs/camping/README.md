@@ -17,7 +17,8 @@ EP1, track 1. A financier and the homeless man he judged both get automated away
 
 | Medium | Where | Status |
 | --- | --- | --- |
-| Comic | `apps/web/src/comics/camping/` (already imported from Storyteller) | imported, not re-planned here |
+| Story spine | [`story.md`](./story.md) | re-narrated Jun 2026 — drafting; ending open |
+| Comic | `apps/web/src/comics/camping/` (imported from Storyteller; canonical folder is `camping-jack-test` pending rename) | imported; copy not yet reconciled to re-narrated spine |
 | Song — "Camping" | [`songs/camping.md`](./songs/camping.md) | drafting (Suno) |
 | Video | — | not started |
 | Social posts | — | not started |

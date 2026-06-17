@@ -25,7 +25,7 @@ See [`../characters/bob.md`](../characters/bob.md) and
 [`../characters/tarquin.md`](../characters/tarquin.md).
 
 ```lyrics
-[Verse]
+[Verse | Bob]
 Once again and you catching my eye,
 and you looking to the side in shame, but why
 
@@ -60,7 +60,7 @@ please sir, can I FUCKIN, have some more?
 [heavy bassline drop]
 [32 bars no lyrics]
 
-[Verse: Tarquin - posh London stock trader, sneering]
+[Verse | Tarquin]
 you are intent on living in a tent
 get fucked all day and pay no rent
 

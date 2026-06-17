@@ -64,10 +64,13 @@ This is why the skill exists and not just the raw GPT prompt. Apply on top of th
   [`docs/gitpush-origin-master/README.md`](../../../docs/gitpush-origin-master/README.md) and keep the
   polyphonic future-narrator voice and arc beats consistent. Check `ep1.md` for the teaser release.
 
-## Saving an idea
+## Saving a song
 
-When a prompt or lyric is worth keeping, copy `ideas/templates/song.md` into
-`ideas/songs/<slug>.md` and fill it in: **Concept** (the point it carries), **Lyrics**, and
-**Production notes**. Put the finished Suno **Style** and **Exclude Styles** prompts into the
-Production notes so they're reusable, alongside BPM/genre, voices, references, and arrangement.
-Curate — these feed the GPOM narrative; don't bulk-dump.
+When a prompt or lyric is worth keeping, write it to the story's canon at
+`docs/<story>/songs/<slug>.md` — the same file `new-story` step 4 produces. Use frontmatter
+(`title, status, suno: {style, exclude}, bpm, voices`) so the Suno **Style** and **Exclude Styles**
+prompts are reusable alongside BPM, genre, and voices, then the lyrics in a `lyrics` block.
+`docs/camping/songs/camping.md` is the worked reference — match its shape.
+
+If the song isn't tied to a story yet, offer to run the **`new-story`** skill to scaffold
+`docs/<story>/` first. Curate — these feed the GPOM narrative; don't bulk-dump.

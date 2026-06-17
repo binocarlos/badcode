@@ -35,7 +35,7 @@ Full guide: [`docs/voice.md`](./docs/voice.md). When writing lyrics or story cop
 | --- | --- | --- |
 | `docs/` | Vision, voice, story bible, method | …you need context |
 | `docs/suno-gpt/` | Suno-prompting toolkit (operating procedure + reference files) | …you're turning a song idea into a Suno prompt |
-| `ideas/` | Songs, stories, concepts in development (+ templates) | …you're capturing or developing an idea |
+| `.claude/skills/` | `new-story`, `suno-prompt` — the orchestrators for story capture and Suno prompting | …you're capturing a story or making a track |
 | `docs/<story>/` | Per-story canon (concept, characters, beats, songs) — source of truth | …you're capturing or producing a story's media |
 | `packages/comic` | `@badcode/comic` — code-first comic rendering library | …you're building the viewer |
 | `apps/web` | The website (Vite + React + TS SPA) | …you're building pages/routes |
@@ -44,12 +44,14 @@ Full guide: [`docs/voice.md`](./docs/voice.md). When writing lyrics or story cop
 
 - **Run the site:** `npm install` then `npm run dev` (Vite, port 5173). `npm run typecheck` and
   `npm run build` from the root cover all workspaces.
+- **Two skills do the creative heavy lifting** (`.claude/skills/`): **`new-story`** captures and
+  develops a story under `docs/<story>/`; **`suno-prompt`** turns a song idea into a Suno prompt.
+  The bullets below say when to reach for each — the skills carry the detailed procedure.
 - **Add a comic:** comics are written **in code**, not a WYSIWYG. Compose `<ScrollComic>` /
   `<Page>` from `@badcode/comic`, attach scroll-linked effects with factory functions
   (`zoom(...)`, `crossfade(...)`, `scrollIn()`). Worked example: `apps/web/src/comics/camping`.
-- **Add an idea:** copy a template from `ideas/templates/` into `ideas/songs|stories|concepts/`.
-  See [`ideas/README.md`](./ideas/README.md). We develop ideas collaboratively before they become
-  comics — don't bulk-import; curate so each one fits the GitPush Origin Master narrative.
+  A comic's `comic.meta.ts` is **derived from** the story's `docs/<story>/` canon (skill-driven, on
+  request) — edit the canon, not the artifact. See [`docs/camping/README.md`](./docs/camping/README.md).
 - **Make a Suno prompt:** type a song idea (a feeling, a reference, a GPOM beat) and the
   **`suno-prompt`** skill (`.claude/skills/suno-prompt/`) turns it into a Suno style prompt,
   exclude-styles list, and — on request — lyrics, in the BadCode voice. It runs on the toolkit in
