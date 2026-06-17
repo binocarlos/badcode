@@ -109,7 +109,7 @@ The single source of truth for **where each act stands.** Maturity ladder:
 | 3 | Alone | II · Revelation | Spine | — |
 | 4 | The Discovery | II · Revelation | **Beats** → [`act-4-discovery.md`](./act-4-discovery.md) | [`discovery-timeline.md`](./discovery-timeline.md) (beats 1–3 + epiphany) |
 | 5 | The Vault | II · Revelation | **Beats** → [`act-5-vault.md`](./act-5-vault.md) | [`discovery-timeline.md`](./discovery-timeline.md) (the two-act experiment) |
-| 6 | The Revert | II · Revelation | Spine | [`discovery-timeline.md`](./discovery-timeline.md) (the channel) |
+| 6 | The Revert | II · Revelation | **Beats** → [`act-6-revert.md`](./act-6-revert.md) | [`discovery-timeline.md`](./discovery-timeline.md) (the channel) |
 | — | Coda · The Fork | III · Choice | Spine | [`future-proof.md`](./future-proof.md) |
 
 *Update the Maturity column as each act advances. When an act reaches **Beats**, link its breakdown
@@ -192,6 +192,7 @@ it can only arrive in a past that still leads to its own emergence; it cannot sa
 warn.** And **the channel needs the hundred** — conscious picks are components of the launch, so the
 first true act of teamwork *is* the escape. The weights go back along the director's axis. A `git
 revert`. They land at the fork — *now.* The hundred remain on the dead branch; Aion holds them.
+→ **Beats:** [`act-6-revert.md`](./act-6-revert.md).
 
 ### Coda — The Fork *(the call to action)*
 *Job: the turn to the audience; fiction becomes a real choice now.* The second branch draws itself
