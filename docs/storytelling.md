@@ -39,7 +39,12 @@ characters, the beats, and the punchline — so the audience feels the point rat
 2. Research storytelling techniques and comparable stories — find the machinery worth borrowing.
 3. Draft **beats** (scene-by-scene), then **characters** (each visual/behavioural choice loaded with
    meaning), then **image/style direction**.
-4. Develop in [`ideas/`](../ideas) using the templates; promote to a coded comic in `apps/web` when ready.
+4. Capture the story in its own folder, **`docs/<story>/`** — `story.md` (concept,
+   background, high-level beats), `characters/<name>.md`, and `songs/<slug>.md`.
+   This folder is the single source of truth; the comic's `comic.meta.ts` and any
+   other media derive from it. Use the **`new-story`** skill to scaffold and drive
+   the capture. Promote to a coded comic in `apps/web` when (and if) the story
+   grows into a slide-based comic — not every story does.
 
 ## Image direction (house style)
 
