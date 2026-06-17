@@ -36,6 +36,7 @@ Full guide: [`docs/voice.md`](./docs/voice.md). When writing lyrics or story cop
 | `docs/` | Vision, voice, story bible, method | …you need context |
 | `docs/suno-gpt/` | Suno-prompting toolkit (operating procedure + reference files) | …you're turning a song idea into a Suno prompt |
 | `ideas/` | Songs, stories, concepts in development (+ templates) | …you're capturing or developing an idea |
+| `docs/<story>/` | Per-story canon (concept, characters, beats, songs) — source of truth | …you're capturing or producing a story's media |
 | `packages/comic` | `@badcode/comic` — code-first comic rendering library | …you're building the viewer |
 | `apps/web` | The website (Vite + React + TS SPA) | …you're building pages/routes |
 
@@ -53,6 +54,11 @@ Full guide: [`docs/voice.md`](./docs/voice.md). When writing lyrics or story cop
   **`suno-prompt`** skill (`.claude/skills/suno-prompt/`) turns it into a Suno style prompt,
   exclude-styles list, and — on request — lyrics, in the BadCode voice. It runs on the toolkit in
   [`docs/suno-gpt/`](./docs/suno-gpt/system-prompt.txt) and defaults to drum & bass.
+- **Capture / develop a story:** run the **`new-story`** skill
+  (`.claude/skills/new-story/`). It scaffolds `docs/<story>/` (concept,
+  characters, beats, songs) as the single source of truth and drives idea →
+  media, reusing `docs/storytelling.md` and the `suno-prompt` skill. Worked
+  reference: [`docs/camping/`](./docs/camping/README.md).
 
 ## Deeper context
 
