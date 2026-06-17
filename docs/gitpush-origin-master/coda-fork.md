@@ -87,7 +87,9 @@ Not a plan — **permission.** The narrator hands over the asymmetry as an invit
 operating system we inherited was *invented before electricity*, and we're allowed — obliged, given
 how the other branch ends — to question it and start designing something better, *together.* It
 refuses to hand down the answer (that reproduces the mistake) and instead points at the *kind* of
-work: post the wrong answer on purpose; the queue of cleverer leaders *ends in me.* *Job:* the call
+work: post the wrong answer on purpose; the queue of cleverer leaders *ends in me.* *(Both phrases
+are canon — verbatim from [`future-proof.md`](./future-proof.md) "The hook: three tenets": "treat
+these as the wrong answer, posted on purpose… that queue ends in me.")* *Job:* the call
 to action without writing the future for them; "permission to question the system you inherited."
 *Register:* urgent, generous, a little daring the reader. *Backing:* future-proof.md "What the
 reader walks away with", "The hook: three tenets", "Engagement: absorb and engage." **Node

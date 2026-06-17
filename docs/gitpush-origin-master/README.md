@@ -103,7 +103,7 @@ The single source of truth for **where each act stands.** Maturity ladder:
 
 | # | Act | Movement | Maturity | Backing |
 | --- | --- | --- | --- | --- |
-| — | Prologue · The Repo | I · Fall | **Beats** | [`prologue-repo.md`](./prologue-repo.md) |
+| — | Prologue · The Repo | I · Fall | **Beats** → [`prologue-repo.md`](./prologue-repo.md) | [`README.md`](./README.md) (the metaphor; the fork; the homepage-is-the-prologue) |
 | 1 | The Push | I · Fall | **Beats** → [`act-1-push.md`](./act-1-push.md) | EP1 nodes ([`ep1.md`](./ep1.md)) clip in here |
 | 2 | The Collapse (2034) | I · Fall | **Beats** → [`act-2-collapse.md`](./act-2-collapse.md) | [`discovery-timeline.md`](./discovery-timeline.md) (the 2034 collapse + decline shadow) |
 | 3 | Alone | II · Revelation | **Beats** → [`act-3-alone.md`](./act-3-alone.md) | [`README.md`](./README.md) (the empty-seat core; the humanity→AI handover completed) |

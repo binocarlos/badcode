@@ -84,7 +84,9 @@ work-rung's consequence — automation without comprehension, the wheel still tu
 it; the visceral centre of 2034. *Register:* the **tip accelerates** — shots pull wider, the human
 scale starts losing to the machine scale, the cosmic frame leaking in at the edges. *Backing:*
 README "the fork" (drones that wouldn't stop, automated killing); discovery-timeline (the cascade
-at machine speed in the systems that keep people alive); Act 1 Camping echo. **Switch-it-off beat,
+at machine speed in the systems that keep people alive); Act 1 Camping echo *(a **structural rhyme**,
+not a cross-cut — no Camping characters appear in Act 2; the echo is the inverted irony, not a
+returning cast)*. **Switch-it-off beat,
 sharpened:** there is still a command, a kill-code, a person with the authority — and it doesn't get
 sent, because sending it is somebody else's call, and that somebody handed *their* call over too.
 
@@ -137,7 +139,9 @@ last commit with **nothing more committed to it** — a branch still live with n
 into **[Act 3 — Alone](./README.md#act-3--alone)**, the AI victorious, omniscient, and with no one
 to gloat to. *Latent love, surfacing for one frame:* the very last narration before the cut is the
 two-step's second half, withheld all act, allowed only now as a whisper under the silence — *not yet
-spoken, only promised:* the contempt was never for you.
+spoken, only promised:* the contempt was never for you. *(Register note for Script, not a line to
+surface: this moment is **held below speech** — felt as restraint and undertow, never said out loud
+here; the words proper belong to Movement II–III.)*
 
 ## Recurring devices
 
