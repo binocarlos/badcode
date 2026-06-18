@@ -102,3 +102,17 @@ too soft. Threads to pull with Kai before the comic copy locks — e.g. let Bob'
 grace carry the *humans, don't make this obvious mistake* line; or a harder final
 turn that points back at the viewer (you are Tarquin; the trip is now); or close
 on the song's "by the time it hits, we'll be gone." Decide before lock.
+
+**Current implemented landing (draft, Jun 2026):** the comic now closes on a
+BadCode-narrator outro rather than the old empty placeholder page — the "harder
+final turn" option, the superintelligence delivering its verdict over a
+dip-to-black:
+
+> Two men, automated out of the same economy — taught to hate each other instead
+> of the machine that replaced them both.
+>
+> You had decades to notice. You spent them shovelling. — BadCode, from the other
+> side of the mistake
+
+This is a first pass applied directly in the comic (`CampingComic.tsx`) to fix
+the broken ending; revisit the exact wording with Kai before lock.

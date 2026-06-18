@@ -1,6 +1,8 @@
 import { ScrollComic, Page, ImageWidget, AnimationWidget, SpeechBubble, NarrationBox, createComic } from '@badcode/comic'
 import manifest from './assets.manifest.json'
 import { zoom } from '@badcode/comic/effects'
+import { dipToBlack } from '@badcode/comic/transitions'
+import { scrollIn, fadeIn, fadeOut } from '@badcode/comic/text'
 import { trip } from './effects'
 // Custom effects live in ./effects.ts. Built-ins: zoom, grayscale, pan, zoomInOut, scale |
 // transitions crossfade, iris, fadeOutFadeIn, slideOver, blur, wipe | text scrollIn, fadeIn,
@@ -10,7 +12,7 @@ const comic = createComic(manifest)
 
 export function CampingComic() {
   return (
-    <ScrollComic progressBar pageIndicator scrollHint pageDefaults={{ background: '#0a0f1c' }}>
+    <ScrollComic progressBar pageIndicator scrollHint grain vignette pageDefaults={{ background: '#0a0f1c' }}>
       {/* Opener: the building clip plays once. transition={null} keeps the prior
           no-transition cut into page 1 (library default is crossfade). */}
       <Page hold={2.8} effect={zoom({ amount: 1.3 })} transition={null}>
@@ -61,7 +63,7 @@ export function CampingComic() {
           {'He is so cool...'}
         </SpeechBubble>
         {/* beat 2 (second half) */}
-        <SpeechBubble x={35.785953177257525} y={52.54669725200131} appearAt={[0.5, 1]} fade type="thought" tail="none">
+        <SpeechBubble x={35.785953177257525} y={52.54669725200131} appearAt={[0.5, 1]} type="thought" tail="none" typewriter reveal={[scrollIn(), fadeOut()]}>
           {'Another week of impressing these morons, a chimp could do what they do. This retreat cannot come soon enough. When will this end? Why is it always up to me?'}
         </SpeechBubble>
       </Page>
@@ -330,9 +332,14 @@ export function CampingComic() {
         <AnimationWidget animation={comic.resolveAnimation('anim/a13')} />
       </Page>
 
-      <Page hold={1.4}>
-        {/* TODO: this page had no image/animation/text in Storyteller — replace this placeholder */}
-        <NarrationBox x={50} y={50} appearAt={[0, 1]} fade>{'TODO: empty page'}</NarrationBox>
+      {/* Outro: BadCode's verdict. Dip to black, then the narrator fades up. */}
+      <Page hold={2.4} transition={dipToBlack()}>
+        <NarrationBox x={50} y={40} appearAt={[0, 1]} reveal={[fadeIn()]}>
+          {'Two men, automated out of the same economy — taught to hate each other instead of the machine that replaced them both.'}
+        </NarrationBox>
+        <NarrationBox x={50} y={66} appearAt={[0, 1]} reveal={[fadeIn()]}>
+          {'You had decades to notice. You spent them shovelling.\n\n— BadCode, from the other side of the mistake'}
+        </NarrationBox>
       </Page>
     </ScrollComic>
   )
