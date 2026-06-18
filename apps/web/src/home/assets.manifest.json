@@ -1,0 +1,46 @@
+{
+  "basePath": "comics-v2/camping-jack-test",
+  "assets": {
+    "img/i01.jpg": {
+      "thumbhash": "nOcRDIJ3d4d/h3eHd3Z5YI0Htw==",
+      "low": "derived/img/i01.low.webp",
+      "high": "derived/img/i01.high.webp",
+      "width": 1920,
+      "height": 1080
+    },
+    "img/i08.jpg": {
+      "thumbhash": "0dcRDIBol3ePeId8d3mXcHxq9g==",
+      "low": "derived/img/i08.low.webp",
+      "high": "derived/img/i08.high.webp",
+      "width": 1928,
+      "height": 1072
+    }
+  },
+  "animations": {
+    "anim/a01": {
+      "thumbhash": "nOcRDIJ3d4d/h3eHd3Z4YI0Gtw==",
+      "poster": "derived/anim/a01.poster.webp",
+      "renditions": [
+        {
+          "height": 480,
+          "width": 854,
+          "proxy": "derived/anim/a01.480.mp4"
+        },
+        {
+          "height": 720,
+          "width": 1280,
+          "proxy": "derived/anim/a01.720.mp4"
+        },
+        {
+          "height": 1080,
+          "width": 1920,
+          "proxy": "derived/anim/a01.1080.mp4"
+        }
+      ],
+      "width": 1920,
+      "height": 1080,
+      "frameCount": 96,
+      "fps": 24
+    }
+  }
+}
