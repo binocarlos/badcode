@@ -200,3 +200,45 @@ export function fadeOutFadeIn(options: TransitionOptions = {}): TransitionInstan
     await settle(inc.animate([{ opacity: 0 }, { opacity: 1 }], { duration: half, easing: 'ease-out', fill: FILL }))
   })
 }
+
+/** Slow cinematic dolly: incoming scales up from slightly small while the
+ *  outgoing eases back and fades. Restrained CrossZoom. */
+export function pushIn(options: TransitionOptions = {}): TransitionInstance {
+  const duration = options.duration ?? 900
+  return defineTransition(duration, async (out, inc) => {
+    const a = out?.animate(
+      [{ transform: 'scale(1)', opacity: 1 }, { transform: 'scale(1.06)', opacity: 0 }],
+      { duration, easing: 'ease-in-out', fill: FILL },
+    )
+    const b = inc.animate(
+      [{ transform: 'scale(1.04)', opacity: 0 }, { transform: 'scale(1)', opacity: 1 }],
+      { duration, easing: 'ease-in-out', fill: FILL },
+    )
+    await settle(a, b)
+  })
+}
+
+/** Outgoing fades to black, then incoming fades up from black (two stages). */
+export function dipToBlack(options: TransitionOptions = {}): TransitionInstance {
+  const duration = options.duration ?? 1000
+  return defineTransition(duration, async (out, inc) => {
+    const half = duration / 2
+    if (out) {
+      await settle(out.animate([{ opacity: 1 }, { opacity: 0 }], { duration: half, easing: 'ease-in', fill: FILL }))
+    }
+    await settle(inc.animate([{ opacity: 0 }, { opacity: 1 }], { duration: half, easing: 'ease-out', fill: FILL }))
+  })
+}
+
+/** A soft, slightly-overlapping cross-dissolve — gentler than crossfade. */
+export function lightDissolve(options: TransitionOptions = {}): TransitionInstance {
+  const duration = options.duration ?? 800
+  return defineTransition(duration, async (out, inc) => {
+    const a = out?.animate([{ opacity: 1 }, { opacity: 0 }], { duration, easing: 'ease-out', fill: FILL })
+    const b = inc.animate(
+      [{ opacity: 0, offset: 0 }, { opacity: 0.15, offset: 0.4 }, { opacity: 1, offset: 1 }],
+      { duration, easing: 'ease-in-out', fill: FILL },
+    )
+    await settle(a, b)
+  })
+}
