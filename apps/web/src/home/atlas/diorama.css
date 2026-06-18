@@ -13,3 +13,13 @@
 .diorama-btn:hover { background: #123a4a; }
 .diorama-btn[disabled] { opacity: .5; cursor: default; border-color: #5f7c88; color: #5f7c88; }
 .diorama-back { background: transparent; border-color: #2a4a55; color: #9fb8c2; }
+
+/* Mobile / narrow: the panel becomes a bottom sheet so it never crowds the scene. */
+@media (max-width: 720px) {
+  .diorama { width: 100%; left: 0; right: 0; top: auto; bottom: 0; height: auto;
+    justify-content: flex-end; gap: 10px; padding: 20px 20px 26px;
+    background: linear-gradient(0deg, #02030af2 62%, transparent); }
+  .diorama-title { font-size: 21px; }
+  .diorama-blurb { font-size: 13px; max-width: none; }
+  .diorama-btn { padding: 11px 16px; }   /* larger tap target */
+}

@@ -29,7 +29,7 @@ export function Hud({
         <div className="hud-sub">git push origin master</div>
       </div>
       <div className="hud-where">{where}</div>
-      <div className="hud-hint">drag · pan&nbsp;&nbsp;scroll · zoom&nbsp;&nbsp;click · enter</div>
+      <div className="hud-hint">drag to pan&nbsp;&nbsp;·&nbsp;&nbsp;scroll to zoom&nbsp;&nbsp;·&nbsp;&nbsp;click a node to dive in</div>
       {introPlaying && (
         <button className="hud-skip" onClick={onSkip}>skip / explore</button>
       )}

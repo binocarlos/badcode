@@ -14,3 +14,12 @@
   pointer-events: auto; background: #0a1a22; border: 1px solid #2bd4ff; color: #2bd4ff;
   font: inherit; font-size: 12px; letter-spacing: .12em; padding: 6px 14px; cursor: pointer; }
 .hud-skip:hover { background: #123a4a; }
+
+/* Mobile / narrow: tighten chrome, drop the verbose desktop hint. */
+@media (max-width: 720px) {
+  .hud-top { top: 12px; left: 14px; }
+  .hud-brand { font-size: 15px; }
+  .hud-where { bottom: 12px; left: 14px; font-size: 10px; }
+  .hud-hint { display: none; }
+  .hud-skip { bottom: 14px; font-size: 11px; padding: 8px 14px; }
+}
