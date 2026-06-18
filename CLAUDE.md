@@ -37,7 +37,7 @@ Full guide: [`docs/voice.md`](./docs/voice.md). When writing lyrics or story cop
 | `docs/suno-gpt/` | Suno-prompting toolkit (operating procedure + reference files) | …you're turning a song idea into a Suno prompt |
 | `.claude/skills/` | `new-story`, `suno-prompt` — the orchestrators for story capture and Suno prompting | …you're capturing a story or making a track |
 | `docs/<story>/` | Per-story canon (concept, characters, beats, songs) — source of truth | …you're capturing or producing a story's media |
-| `packages/comic` | `@badcode/comic` — code-first comic rendering library | …you're building the viewer |
+| `packages/comic` | `@badcode/comic` — code-first comic rendering library (authoring guide: [`AUTHORING.md`](./packages/comic/AUTHORING.md)) | …you're building the viewer |
 | `apps/web` | The website (Vite + React + TS SPA) | …you're building pages/routes |
 
 ## How to work in this repo
