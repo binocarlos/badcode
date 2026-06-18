@@ -1,5 +1,5 @@
 // Core types
-export type { Point, ScrollDirection, EffectInstance, TransitionInstance } from './types'
+export type { Point, ScrollDirection, EffectInstance, TransitionInstance, EffectContext } from './types'
 
 // Components
 export { ScrollComic, type ScrollComicProps } from './components/ScrollComic'

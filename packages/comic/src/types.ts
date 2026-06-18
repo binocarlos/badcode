@@ -17,6 +17,19 @@ export type Point = [number, number]
 export type ScrollDirection = 'forward' | 'backward'
 
 /**
+ * Live, per-frame context passed to an effect's `apply` as an optional 3rd arg.
+ * `scrollPercent` duplicates the 2nd positional arg (kept for back-compat).
+ * `velocity` is smoothed scroll speed (overall-fraction per second). `pointer`
+ * and `audio` are reserved for later phases and are `null` until then.
+ */
+export interface EffectContext {
+  scrollPercent: number
+  velocity: number
+  pointer: { x: number; y: number } | null
+  audio: { bass: number; mid: number; high: number; beat: boolean } | null
+}
+
+/**
  * A scroll-linked, continuous visual effect applied to a page's widget element.
  *
  * `apply` runs on every scroll frame with the page's scroll progress (0..1) and
@@ -25,7 +38,7 @@ export type ScrollDirection = 'forward' | 'backward'
  * `@badcode/comic/effects`.
  */
 export interface EffectInstance {
-  apply: (el: HTMLElement, scrollPercent: number) => void
+  apply: (el: HTMLElement, scrollPercent: number, ctx?: EffectContext) => void
   cleanup: (el: HTMLElement) => void
 }
 

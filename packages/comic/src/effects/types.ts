@@ -13,7 +13,7 @@ export type { EffectInstance } from '../types'
  * })
  */
 export function defineEffect(
-  apply: (el: HTMLElement, scrollPercent: number) => void,
+  apply: (el: HTMLElement, scrollPercent: number, ctx?: import('../types').EffectContext) => void,
   cleanup?: (el: HTMLElement) => void,
 ): EffectInstance {
   return {
