@@ -28,21 +28,23 @@ export default function AtlasScene({ startFocus = null }: { startFocus?: AtlasNo
   // 0→1 graph-draw progress, driven by the intro; full (1) when not playing.
   const [draw, setDraw] = useState(startFocus ? 1 : 0)
 
-  // Aspect-aware overview: portrait screens pull the camera back so the whole map fits.
-  const [overviewZ, setOverviewZ] = useState(() =>
-    overviewDistance(typeof window !== 'undefined' ? window.innerWidth / window.innerHeight : 1.6),
+  // Aspect-aware overview: portrait zooms toward the fork (and re-centres) so it fills the screen.
+  const [aspect, setAspect] = useState(() =>
+    typeof window !== 'undefined' ? window.innerWidth / window.innerHeight : 1.6,
   )
   useEffect(() => {
-    const onResize = () => setOverviewZ(overviewDistance(window.innerWidth / window.innerHeight))
+    const onResize = () => setAspect(window.innerWidth / window.innerHeight)
     window.addEventListener('resize', onResize)
     return () => window.removeEventListener('resize', onResize)
   }, [])
+  const overviewZ = useMemo(() => overviewDistance(aspect), [aspect])
+  const centerX = aspect < 1 ? 8 : 6
   const overviewPose = useMemo(
     () => ({
-      position: [6, 0, overviewZ] as [number, number, number],
-      target:   [6, 0, 0] as [number, number, number],
+      position: [centerX, 0, overviewZ] as [number, number, number],
+      target:   [centerX, 0, 0] as [number, number, number],
     }),
-    [overviewZ],
+    [centerX, overviewZ],
   )
   // Cap device-pixel-ratio (touch devices lower still) so retina phones don't render 3× the pixels.
   const maxDpr = useMemo(
@@ -66,11 +68,22 @@ export default function AtlasScene({ startFocus = null }: { startFocus?: AtlasNo
 
   // The dive: a focused node opens its Diorama; surfacing flies back to the map.
   const focusedNode = nodes.find((n) => n.id === nav.focusId) ?? null
+  const [entering, setEntering] = useState(false)
+  const enterTimer = useRef<number | null>(null)
   const surface = () => {
     rig.current?.flyTo(overviewPose)
     setNav((s) => toGalaxy(s))
   }
-  const enter = (route: string) => navigate(route)
+  // Enter = push the camera through the framed window, fade, then load the content.
+  const enter = (route: string) => {
+    if (!focusedNode) { navigate(route); return }
+    const [x, y] = focusedNode.pos
+    const py = y + 5.6 // the focused plate sits above the node
+    rig.current?.flyTo({ position: [x, py, 5], target: [x, py, 0] })
+    setEntering(true)
+    enterTimer.current = window.setTimeout(() => navigate(route), 650)
+  }
+  useEffect(() => () => { if (enterTimer.current) clearTimeout(enterTimer.current) }, [])
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') surface() }
@@ -122,6 +135,16 @@ export default function AtlasScene({ startFocus = null }: { startFocus?: AtlasNo
       </div>
       <Hud nav={nav} nodes={nodes} introPlaying={introPlaying} onSkip={skip} />
       <Diorama node={focusedNode} onEnter={enter} onBack={surface} />
+      {/* dive-through fade — covers the swap into the content */}
+      <div
+        aria-hidden
+        style={{
+          position: 'fixed', inset: 0, zIndex: 5, pointerEvents: 'none',
+          background: DEEP.void,
+          opacity: entering ? 1 : 0,
+          transition: 'opacity 600ms ease-in',
+        }}
+      />
     </>
   )
 }

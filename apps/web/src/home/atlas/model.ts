@@ -13,6 +13,7 @@ export interface AtlasNode {
   status: 'live' | 'coming-soon'
   ring:   boolean
   plate?: string
+  video?: string
   blurb?: string
 }
 
@@ -36,6 +37,7 @@ export function buildAtlas(): { nodes: AtlasNode[]; tips: AtlasTip[] } {
     status: s.status ?? 'live',
     ring:   s.ring ?? false,
     plate:  s.plate,
+    video:  s.video,
     blurb:  s.blurb,
   }))
 

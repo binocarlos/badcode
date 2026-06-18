@@ -66,9 +66,11 @@ export function AtlasNode({
         </Text>
       </Billboard>
 
-      {!!node.plate && (lod === 'node' || focused) && (
+      {(!!node.plate || !!node.video) && (lod === 'node' || focused) && (
         <MediaPlate
           url={node.plate}
+          video={node.video}
+          active={focused}
           position={[0, focused ? 5.6 : 4.6, 0]}
           width={focused ? 11 : 6}
           framed={focused}

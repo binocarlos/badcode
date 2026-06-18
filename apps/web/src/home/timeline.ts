@@ -36,6 +36,7 @@ export interface HomeStep extends StepDef {
   route?:          string
   status?:         'live' | 'coming-soon'
   plate?:          string             // local poster image path for the node's media plate
+  video?:          string             // optional looping clip played on the focused plate
   blurb?:          string             // one-line synopsis shown in the diorama (BadCode voice)
 }
 

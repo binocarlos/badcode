@@ -7,9 +7,9 @@ export function overviewDistance(
   aspect: number,
   {
     fovDeg = 50,
-    halfWidth = 36, // half the map's horizontal extent (x ≈ -30..30) + label margin
+    halfWidth = 22, // bias toward the fork on portrait (don't frame the empty trunk ends)
     base = 76,
-    margin = 1.12,
+    margin = 1.06,
     max = 220,
   }: { fovDeg?: number; halfWidth?: number; base?: number; margin?: number; max?: number } = {},
 ): number {
