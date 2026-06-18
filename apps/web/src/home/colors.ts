@@ -12,7 +12,7 @@ export const COLORS = {
 
 /** Deep Field cosmos tokens: warm gold/violet against the cold cyan, nebula fog. */
 export const DEEP = {
-  void:    '#04060b',
+  void:    '#02030a',
   cyan:    '#46d5ff',
   gold:    '#e8c98a',
   violet:  '#8a6cff',

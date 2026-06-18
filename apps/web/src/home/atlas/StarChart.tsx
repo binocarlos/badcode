@@ -12,7 +12,10 @@ function branchPoints(pts: readonly V2[]): Vector3[] {
   return curve.getPoints(60)
 }
 
-export function StarChart() {
+const clamp01 = (v: number) => Math.max(0, Math.min(1, v))
+const slice = (pts: Vector3[], frac: number) => pts.slice(0, Math.floor(clamp01(frac) * pts.length))
+
+export function StarChart({ drawProgress = 1 }: { drawProgress?: number }) {
   const { history, bad, good } = GRAPH.branches
   const lines = useMemo(
     () => ({
@@ -23,22 +26,34 @@ export function StarChart() {
     [history, bad, good],
   )
 
+  // The graph draws itself: history first (0→0.5), then both branches grow
+  // outward from the fork (0.5→1). At drawProgress=1 the full graph is shown.
+  const hist  = slice(lines.history, drawProgress / 0.5)
+  const bad2  = slice(lines.bad,  (drawProgress - 0.5) / 0.5)
+  const good2 = slice(lines.good, (drawProgress - 0.5) / 0.5)
+
   return (
     <group>
       {/* far cool nebula wash — large + receded so it reads as backdrop, never a card */}
       <mesh position={[8, 0, -90]}>
         <planeGeometry args={[700, 460]} />
-        <meshBasicMaterial color={DEEP.nebula1} transparent opacity={0.28} depthWrite={false} />
+        <meshBasicMaterial color={DEEP.nebula1} transparent opacity={0.12} depthWrite={false} />
       </mesh>
       {/* faint warm wash — full-bleed so it never reads as a panel edge */}
       <mesh position={[10, 2, -70]}>
         <planeGeometry args={[640, 420]} />
-        <meshBasicMaterial color={DEEP.gold} transparent opacity={0.03} depthWrite={false} />
+        <meshBasicMaterial color={DEEP.gold} transparent opacity={0.012} depthWrite={false} />
       </mesh>
 
-      <Line points={lines.history} color={DEEP.line} lineWidth={1.5} transparent opacity={0.85} />
-      <Line points={lines.bad}     color={DEEP.lineHot} lineWidth={2} transparent opacity={0.9} />
-      <Line points={lines.good}    color={DEEP.lineHot} lineWidth={2} transparent opacity={0.9} />
+      {/* the spark — the fork, the push that split the timeline */}
+      <mesh position={[0, 0, 0]}>
+        <sphereGeometry args={[0.32, 16, 16]} />
+        <meshBasicMaterial color={DEEP.lineHot} />
+      </mesh>
+
+      {hist.length  >= 2 && <Line points={hist}  color={DEEP.lineHot} lineWidth={2} transparent opacity={0.9} />}
+      {bad2.length  >= 2 && <Line points={bad2}  color={DEEP.lineHot} lineWidth={2} transparent opacity={0.9} />}
+      {good2.length >= 2 && <Line points={good2} color={DEEP.lineHot} lineWidth={2} transparent opacity={0.9} />}
 
       {GRAPH.historyCommits.map((c, i) => (
         <mesh key={i} position={[c[0], c[1], 0]}>

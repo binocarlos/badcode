@@ -20,6 +20,8 @@ export default function AtlasScene({ startFocus = null }: { startFocus?: AtlasNo
   )
   // No intro when arriving via deep-link return.
   const [introPlaying, setIntroPlaying] = useState(!startFocus)
+  // 0→1 graph-draw progress, driven by the intro; full (1) when not playing.
+  const [draw, setDraw] = useState(startFocus ? 1 : 0)
 
   const onLod = (lod: Lod) => setNav((s) => withLod(s, lod))
   const select = (id: string) => {
@@ -30,22 +32,37 @@ export default function AtlasScene({ startFocus = null }: { startFocus?: AtlasNo
   }
   const skip = () => {
     setIntroPlaying(false)
+    setDraw(1)
     rig.current?.enable(true)
     if (startFocus) rig.current?.flyTo(poseForNode(startFocus), true)
   }
+
+  // Staged intro, driven by the draw clock (0→1):
+  //   lines draw 0→0.55 · tips (Storyverse/Future Proof) fade 0.55→0.73 · stories fade 0.75→1
+  const clamp01 = (v: number) => Math.max(0, Math.min(1, v))
+  const drawProgress = clamp01(draw / 0.55)
+  const revealFor = (n: AtlasNode) =>
+    n.branch === 'history' ? clamp01(draw / 0.3)           // history events appear with the trunk
+      : n.ring             ? clamp01((draw - 0.55) / 0.18) // branch tips after the line reaches the end
+      :                      clamp01((draw - 0.75) / 0.22) // the stories, last
 
   return (
     <>
       <div className="home-canvas">
         <Canvas camera={{ position: startFocus ? poseForNode(startFocus).position : [0, 0, 14], fov: 50 }}>
           <color attach="background" args={[DEEP.void]} />
-          <StarChart />
+          <StarChart drawProgress={drawProgress} />
           {nodes.map((n) => (
-            <NodeView key={n.id} node={n} lod={nav.lod} focused={nav.focusId === n.id} onSelect={select} />
+            <NodeView key={n.id} node={n} lod={nav.lod} focused={nav.focusId === n.id} reveal={revealFor(n)} onSelect={select} />
           ))}
           <CameraControlsRig ref={rig} onLod={onLod} enabled={!introPlaying} />
           {introPlaying && (
-            <IntroRail rig={rig} play onDone={() => setIntroPlaying(false)} />
+            <IntroRail
+              rig={rig}
+              play
+              onProgress={setDraw}
+              onDone={() => { setDraw(1); setIntroPlaying(false) }}
+            />
           )}
           <Effects />
         </Canvas>
