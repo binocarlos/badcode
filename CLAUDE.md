@@ -2,6 +2,10 @@
 
 Read this first. It tells you what BadCode is, how it sounds, and where everything lives.
 
+> **Building or editing a comic? STOP and read [`packages/comic/AUTHORING.md`](./packages/comic/AUTHORING.md) first.**
+> It is the authoritative guide to the `@badcode/comic` library — the page model, effects,
+> transitions, speech bubbles, and how to add your own. Do not author comic code without it.
+
 ## What BadCode is
 
 BadCode is an art collective. It releases **stories** (presented as comics on this website) and
@@ -47,11 +51,14 @@ Full guide: [`docs/voice.md`](./docs/voice.md). When writing lyrics or story cop
 - **Two skills do the creative heavy lifting** (`.claude/skills/`): **`new-story`** captures and
   develops a story under `docs/<story>/`; **`suno-prompt`** turns a song idea into a Suno prompt.
   The bullets below say when to reach for each — the skills carry the detailed procedure.
-- **Add a comic:** comics are written **in code**, not a WYSIWYG. Compose `<ScrollComic>` /
-  `<Page>` from `@badcode/comic`, attach scroll-linked effects with factory functions
-  (`zoom(...)`, `crossfade(...)`, `scrollIn()`). Worked example: `apps/web/src/comics/camping`.
-  A comic's `comic.meta.ts` is **derived from** the story's `docs/<story>/` canon (skill-driven, on
-  request) — edit the canon, not the artifact. See [`docs/camping/README.md`](./docs/camping/README.md).
+- **Add or edit a comic — [`packages/comic/AUTHORING.md`](./packages/comic/AUTHORING.md) is mandatory
+  reading and the single source of truth.** It covers the `<ScrollComic>`/`<Page>` mental model,
+  `pageDefaults` + precedence, the full prop reference, how to add/insert/reorder a page, how to
+  write custom effects/transitions (in `comics/<name>/effects.ts`) and the built-in catalog. Comics
+  are written **in code**, not a WYSIWYG. Worked example: `apps/web/src/comics/camping` (with its
+  local `effects.ts`). A comic's `comic.meta.ts` is **derived from** the story's `docs/<story>/`
+  canon (skill-driven, on request) — edit the canon, not the artifact. See
+  [`docs/camping/README.md`](./docs/camping/README.md).
 - **Make a Suno prompt:** type a song idea (a feeling, a reference, a GPOM beat) and the
   **`suno-prompt`** skill (`.claude/skills/suno-prompt/`) turns it into a Suno style prompt,
   exclude-styles list, and — on request — lyrics, in the BadCode voice. It runs on the toolkit in
