@@ -35,6 +35,7 @@ export interface HomeStep extends StepDef {
   cameraBehavior?: CameraBehaviorFn
   route?:          string
   status?:         'live' | 'coming-soon'
+  plate?:          string             // local poster image path for the node's media plate
 }
 
 /**
