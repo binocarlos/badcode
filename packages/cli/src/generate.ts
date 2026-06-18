@@ -67,7 +67,6 @@ interface Usage {
   speechBubble: boolean
   narrationBox: boolean
   zoom: boolean
-  crossfade: boolean
 }
 
 function renderBubble(bubble: StorytellerTextBubble, indent: string, usage: Usage): string {
@@ -104,22 +103,13 @@ function renderBubble(bubble: StorytellerTextBubble, indent: string, usage: Usag
 function renderPage(page: StorytellerPage, isFirst: boolean, indent: string, usage: Usage): string {
   const lines: string[] = []
 
-  lines.push(`${indent}<Page`)
-  lines.push(`${indent}  phases={{ enter: 0, hold: 1.4, exit: 0 }}`)
-  lines.push(`${indent}  scrollDuration={1.4}`)
+  lines.push(`${indent}<Page hold={1.4}`)
   if (isFirst) {
     usage.zoom = true
     lines.push(`${indent}  effect={zoom({ amount: 1.3 })}`)
-  } else {
-    usage.crossfade = true
-    lines.push(`${indent}  transition={crossfade()}`)
+    lines.push(`${indent}  transition={null}`)
   }
-  lines.push(`${indent}  background="#0a0f1c"`)
   lines.push(`${indent}>`)
-  if (!isFirst) {
-    lines.push(`${indent}  {/* TODO: pick an effect — zoom, grayscale, pan, zoomInOut, scale */}`)
-  }
-  lines.push(`${indent}  {/* TODO: pick background color */}`)
 
   // Track whether any real JSX child (widget or bubble) is emitted — JSX comments
   // don't count as children, and Page requires `children`, so a content-less page
@@ -169,9 +159,6 @@ function renderPage(page: StorytellerPage, isFirst: boolean, indent: string, usa
     lines.push(`${indent}  <NarrationBox x={50} y={50} appearAt={[0, 1]} fade>{'TODO: empty page'}</NarrationBox>`)
   }
 
-  // Side panel placeholder
-  lines.push(`${indent}  {/* TODO: add SidePanelText with narrative content */}`)
-
   lines.push(`${indent}</Page>`)
   return lines.join('\n')
 }
@@ -184,7 +171,6 @@ export function generateTsx(config: StorytellerComicConfig, slug: string): strin
     speechBubble: false,
     narrationBox: false,
     zoom: false,
-    crossfade: false,
   }
   const pages = config.pages.map((page, i) =>
     renderPage(page, i === 0, '      ', usage)
@@ -198,7 +184,6 @@ export function generateTsx(config: StorytellerComicConfig, slug: string): strin
 
   const importLines = [`import { ${comicImports.join(', ')} } from '@badcode/comic'`]
   if (usage.zoom) importLines.push(`import { zoom } from '@badcode/comic/effects'`)
-  if (usage.crossfade) importLines.push(`import { crossfade } from '@badcode/comic/transitions'`)
   importLines.push(
     `// Other effects/transitions available: grayscale, zoomInOut, pan, scale | iris, fadeOutFadeIn, slideOver, blur, wipe | scrollIn, fadeIn, fadeOut, pause (see @badcode/comic docs)`
   )
@@ -207,7 +192,7 @@ export function generateTsx(config: StorytellerComicConfig, slug: string): strin
 
 export function ${name}Comic() {
   return (
-    <ScrollComic progressBar pageIndicator scrollHint>
+    <ScrollComic progressBar pageIndicator scrollHint pageDefaults={{ background: '#0a0f1c' }}>
 ${pages}
     </ScrollComic>
   )
@@ -241,11 +226,23 @@ export async function generate(slug: string, rootDir: string, force = false): Pr
 
   const metaPath = join(comicDir, 'comic.meta.ts')
   const tsxPath = join(comicDir, `${name}Comic.tsx`)
+  const effectsPath = join(comicDir, 'effects.ts')
+  const effectsStarter = `import { defineEffect } from '@badcode/comic/effects'
+
+// Comic-local custom effects live here. Build with defineEffect(apply, cleanup?)
+// and import into the comic .tsx: import { myEffect } from './effects'
+// Graduate an effect into @badcode/comic/effects once a second comic wants it.
+// See packages/comic/AUTHORING.md.
+
+// export const example = (amount = 1) =>
+//   defineEffect((el, p) => { el.style.opacity = String(1 - p * amount) })
+`
 
   if (!force) {
     const existing: string[] = []
     if (await fileExists(metaPath)) existing.push(metaPath)
     if (await fileExists(tsxPath)) existing.push(tsxPath)
+    if (await fileExists(effectsPath)) existing.push(effectsPath)
     if (existing.length > 0) {
       throw new Error(
         `Refusing to overwrite existing files:\n  ${existing.join('\n  ')}\nRe-run with --force to overwrite.`
@@ -258,10 +255,14 @@ export async function generate(slug: string, rootDir: string, force = false): Pr
 
   await writeFile(metaPath, metaContent)
   await writeFile(tsxPath, tsxContent)
+  if (force || !(await fileExists(effectsPath))) {
+    await writeFile(effectsPath, effectsStarter)
+  }
 
   console.log(`Generated:`)
   console.log(`  ${metaPath}`)
   console.log(`  ${tsxPath}`)
+  console.log(`  ${effectsPath}`)
   console.log(`\nEdit these files to customize effects, transitions, side-panel text, and scroll durations.`)
   console.log(`Note: comic.meta.ts will fail schema validation until the TODO fields (sheet, path, characters) are filled in.`)
 }

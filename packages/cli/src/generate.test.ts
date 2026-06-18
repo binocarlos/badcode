@@ -152,9 +152,16 @@ describe('generateTsx', () => {
     expect(output).toContain('zoom({ amount: 1.3 })')
   })
 
-  it('applies crossfade transition to non-first pages', () => {
+  it('relies on the library default transition — no per-page crossfade', () => {
     const output = generateTsx(sampleConfig, 'test-comic')
-    expect(output).toContain('crossfade()')
+    expect(output).not.toContain('crossfade')
+    expect(output).toContain('pageDefaults={{ background: ')
+  })
+
+  it('emits hold and a null opener transition', () => {
+    const output = generateTsx(sampleConfig, 'test-comic')
+    expect(output).toContain('hold={1.4}')
+    expect(output).toContain('transition={null}')
   })
 
   it('emits remote bucket URLs for animation frames in ascending index order', () => {
