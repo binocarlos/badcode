@@ -1,0 +1,16 @@
+.hud { position: fixed; inset: 0; pointer-events: none; z-index: 3;
+  font-family: 'JetBrains Mono', ui-monospace, monospace; color: #7be3ff; }
+.hud::after { content: ''; position: absolute; inset: 0;
+  background: repeating-linear-gradient(0deg, #0bf1 0 1px, transparent 1px 3px);
+  opacity: .35; mix-blend-mode: screen; }
+.hud-top { position: absolute; top: 18px; left: 22px; letter-spacing: .14em; }
+.hud-brand { font-weight: 700; font-size: 18px; color: #eaffff; }
+.hud-sub { font-size: 11px; color: #5f7c88; }
+.hud-where { position: absolute; bottom: 20px; left: 22px; font-size: 12px;
+  letter-spacing: .08em; opacity: .9; }
+.hud-hint { position: absolute; bottom: 20px; right: 22px; font-size: 11px;
+  color: #5f7c88; text-align: right; }
+.hud-skip { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+  pointer-events: auto; background: #0a1a22; border: 1px solid #2bd4ff; color: #2bd4ff;
+  font: inherit; font-size: 12px; letter-spacing: .12em; padding: 6px 14px; cursor: pointer; }
+.hud-skip:hover { background: #123a4a; }
