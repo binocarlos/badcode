@@ -18,7 +18,6 @@ export function AtlasNode({
   onSelect: (id: string) => void
 }) {
   const enterable = node.status === 'live'
-  const showPlate = !!node.plate && (lod === 'node' || focused)
   const color = enterable ? DEEP.cyan : DEEP.gold
   const bodyOpacity = (enterable ? 1 : 0.55) * reveal
   const labelOpacity = (enterable ? 1 : 0.6) * reveal
@@ -47,8 +46,13 @@ export function AtlasNode({
         </Text>
       </Billboard>
 
-      {showPlate && (
-        <MediaPlate url={node.plate!} position={[0, 4.6, 0]} width={6} />
+      {!!node.plate && (lod === 'node' || focused) && (
+        <MediaPlate
+          url={node.plate}
+          position={[0, focused ? 5.6 : 4.6, 0]}
+          width={focused ? 11 : 6}
+          framed={focused}
+        />
       )}
     </group>
   )
