@@ -18,7 +18,7 @@ How to write and edit comics in code. Read this before touching any comic file.
 </ScrollComic>
 ```
 
-**Effects** are scroll-linked: the engine calls `apply(el, scrollPercent)` every animation frame while the page is active. Effects run on the widget element.
+**Effects** are scroll-linked: the engine calls `apply(el, scrollPercent, ctx?)` every animation frame while the page is active. Effects run on the widget element. The optional third arg is an `EffectContext` with live motion data (see [Effect context](#effect-context)).
 
 **Transitions** fire once when the reader scrolls from one page to the next. They animate the outgoing and incoming page layers using the Web Animations API, then resolve.
 
@@ -113,6 +113,8 @@ explicit <Page> prop  →  pageDefaults  →  library default
 | `scrollHint` | `boolean` | `false` | "Scroll to explore" hint until the reader scrolls. |
 | `hintText` | `string` | `'Scroll to explore ↓'` | Override the hint text. |
 | `pageDefaults` | `Partial<PageProps>` | `{}` | Comic-wide defaults inherited by every `<Page>`. |
+| `grain` | `boolean` | `false` | Opt-in animated film-grain coat over the whole comic. Opacity drifts with scroll velocity (subtle at rest, slightly stronger while scrolling). Animation is disabled under `prefers-reduced-motion`. |
+| `vignette` | `boolean` | `false` | Opt-in static radial vignette that darkens the corners. Independent of `grain`; both can be used together. |
 | `children` | `ReactNode` | required | A sequence of `<Page>` elements. |
 
 ---
@@ -153,6 +155,34 @@ export const slideUp = (px = 80) =>
 
 **Worked example:** `apps/web/src/comics/camping/effects.ts` — the `trip` effect (hue drift + breathing scale) shows the full pattern.
 
+#### Effect context
+
+Every effect receives an optional third arg, `ctx: EffectContext`, with live per-frame data:
+
+```ts
+interface EffectContext {
+  scrollPercent: number           // same as 2nd positional arg (convenience)
+  velocity: number                // smoothed scroll speed, overall-fraction per second
+  pointer: { x: number; y: number } | null   // reserved — null until a later phase
+  audio: { bass: number; mid: number; high: number; beat: boolean } | null  // reserved — null until a later phase
+}
+```
+
+`velocity` rises while the reader is scrolling and decays back to 0 after ~120 ms of stillness. Use it to add subtle motion energy — e.g. a slight blur or shake that breathes with scroll speed:
+
+```ts
+import { defineEffect } from '@badcode/comic/effects'
+
+/** Blur that intensifies when the reader scrolls fast. */
+export const motionBlur = (max = 4) =>
+  defineEffect((el, _p, ctx) => {
+    const blur = ctx ? (ctx.velocity * max) / 10 : 0
+    el.style.filter = blur > 0.1 ? `blur(${blur.toFixed(2)}px)` : ''
+  })
+```
+
+The `ctx` arg is always optional — two-arg callers (`(el, p) => …`) keep working unchanged.
+
 ### Transitions
 
 Use `defineTransition` from `@badcode/comic/transitions`:
@@ -167,6 +197,36 @@ export const flash = (duration = 200) =>
 ```
 
 `run(outgoing, incoming, direction)` receives the outgoing page's DOM element (may be `null` on the first transition), the incoming page's element, and the scroll direction (`'forward'` or `'backward'`). Animate using the Web Animations API and return a Promise that resolves when the transition is done. The engine resets inline styles afterward.
+
+### Speech bubble reveal
+
+`<SpeechBubble>` supports two Phase 1 additions for scroll-scrubbed animation. Both work alongside the existing `appearAt` window.
+
+#### `reveal` — scroll-scrubbed opacity + motion
+
+Pass the same segment types used by `<SidePanelText>` (imported from `@badcode/comic/text`):
+
+```tsx
+import { scrollIn, pause, fadeOut } from '@badcode/comic/text'
+
+<SpeechBubble appearAt={[0.3, 0.7]} reveal={[scrollIn(), pause(0.5), fadeOut()]}>
+  Your dialogue here.
+</SpeechBubble>
+```
+
+`reveal` segments consume the `appearAt` window as their total scroll budget, driving opacity and a CSS transform through the `computeTextEffectStyles` engine. When `reveal` is set it overrides the legacy `appearAt`+`fade` visibility path.
+
+#### `typewriter` — word-by-word reveal by scroll
+
+Reveal a string's words one by one as the reader scrolls through the `appearAt` window:
+
+```tsx
+<SpeechBubble appearAt={[0.3, 0.6]} typewriter>
+  This is revealed word by word as you scroll.
+</SpeechBubble>
+```
+
+Only applies when `children` is a plain string. Honors `prefers-reduced-motion` (the full string is shown immediately when motion is reduced).
 
 ### Where to put them
 
@@ -205,6 +265,9 @@ import { trip } from './effects'
 | `slideOver` | `slideOver({ duration?, direction? })` | Incoming slides over the outgoing page. |
 | `blur` | `blur({ duration?, amount? })` | Blur-out then blur-in. |
 | `wipe` | `wipe({ duration?, direction? })` | Directional wipe. |
+| `pushIn` | `pushIn({ duration? })` | Slow cinematic dolly: outgoing eases back while incoming scales up from slightly small (900 ms default). |
+| `dipToBlack` | `dipToBlack({ duration? })` | Outgoing fades to black, then incoming rises from black — two-stage (1000 ms default). |
+| `lightDissolve` | `lightDissolve({ duration? })` | Soft overlapping cross-dissolve; gentler than `crossfade` (800 ms default). |
 | `defineTransition` | `defineTransition(duration, run)` | Build a custom transition — see Custom transitions above. |
 
 ### Text segments — `import { … } from '@badcode/comic/text'`
