@@ -15,6 +15,7 @@ import type { TransitionInstance } from '../types'
 import type { PageProps } from './Page'
 import type { Phases } from '@badcode/scroll-timeline'
 import { resolvePage } from './pageDefaults'
+import { GrainOverlay } from './GrainOverlay'
 import '../styles/comic.css'
 
 export interface ScrollComicProps {
@@ -30,6 +31,10 @@ export interface ScrollComicProps {
   hintText?: string
   /** Page props every <Page> inherits unless it sets its own (explicit prop wins). */
   pageDefaults?: Partial<PageProps>
+  /** Animated film-grain coat over the whole comic (opt-in). */
+  grain?: boolean
+  /** Radial vignette over the whole comic (opt-in). */
+  vignette?: boolean
 }
 
 const pad = (n: number) => String(n).padStart(2, '0')
@@ -46,6 +51,8 @@ export function ScrollComic({
   scrollHint = false,
   hintText = 'Scroll to explore ↓',
   pageDefaults,
+  grain = false,
+  vignette = false,
 }: ScrollComicProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const layerRefs = useRef(new Map<number, HTMLElement>())
@@ -128,6 +135,7 @@ export function ScrollComic({
           </div>
         )}
         {scrollHint && overall < 0.02 && <div className="badcode-comic__hint">{hintText}</div>}
+        <GrainOverlay grain={grain} vignette={vignette} />
       </MotionContext.Provider>
     </EngineContext.Provider>
   )

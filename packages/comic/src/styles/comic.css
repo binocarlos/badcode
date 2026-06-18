@@ -74,3 +74,32 @@
 @media (prefers-reduced-motion: reduce) {
   .badcode-comic__hint { animation: none; }
 }
+
+/* Film-grain + vignette overlay (opt-in via <ScrollComic grain vignette>). */
+.badcode-comic__grain,
+.badcode-comic__vignette {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 50;
+}
+.badcode-comic__grain {
+  /* Tiled SVG turbulence as a data-URI; animated cheaply via background-position. */
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='120' height='120' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  mix-blend-mode: overlay;
+  animation: badcode-grain-shift 0.6s steps(4) infinite;
+}
+.badcode-comic__vignette {
+  background: radial-gradient(ellipse at center, transparent 55%, rgba(0, 0, 0, 0.55) 100%);
+}
+@keyframes badcode-grain-shift {
+  0% { background-position: 0 0; }
+  25% { background-position: -40px 20px; }
+  50% { background-position: 30px -30px; }
+  75% { background-position: -20px -40px; }
+  100% { background-position: 0 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .badcode-comic__grain { animation: none; }
+}
