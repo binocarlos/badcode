@@ -1,6 +1,8 @@
 import type { ReactNode } from 'react'
 import { useScrollProgress } from '../hooks/useScrollProgress'
 import { computeBubbleVisibility } from '../bubbles/visibility'
+import { computeBubbleReveal } from '../bubbles/reveal'
+import type { RevealSegment } from '../text/segments'
 import { BubbleFactory } from '../bubbles/renderers'
 import type { BubbleType, RendererType, TailDirection } from '../bubbles/renderers'
 import { markSlot } from './slots'
@@ -23,6 +25,9 @@ export interface SpeechBubbleProps {
   color?: string
   textColor?: string
   fontSize?: number
+  /** Scroll-scrubbed reveal segments, e.g. [scrollIn(), pause(0.2), fadeOut()].
+   *  When set, overrides the simple appearAt+fade visibility. */
+  reveal?: RevealSegment[]
   children: ReactNode
 }
 
@@ -40,11 +45,18 @@ export const SpeechBubble = markSlot(function SpeechBubble({
   color,
   textColor,
   fontSize,
+  reveal,
   children,
 }: SpeechBubbleProps) {
   const scrollPercent = useScrollProgress()
-  const { opacity, isVisible } = computeBubbleVisibility({ appearAt, fade }, scrollPercent)
-  if (!isVisible) return null
+  const r = reveal
+    ? computeBubbleReveal(scrollPercent, appearAt, reveal)
+    : (() => {
+        const v = computeBubbleVisibility({ appearAt, fade }, scrollPercent)
+        return { visible: v.isVisible, opacity: v.opacity, transform: 'none' }
+      })()
+  if (!r.visible) return null
+  const revealTransform = r.transform === 'none' ? '' : ` ${r.transform}`
 
   return (
     <div
@@ -52,9 +64,9 @@ export const SpeechBubble = markSlot(function SpeechBubble({
         position: 'absolute',
         left: `${x}%`,
         top: `${y}%`,
-        transform: 'translate(-50%, -50%)',
+        transform: `translate(-50%, -50%)${revealTransform}`,
         maxWidth: `${width}%`,
-        opacity,
+        opacity: r.opacity,
         pointerEvents: 'auto',
         transition: 'opacity 0.12s linear',
       }}
