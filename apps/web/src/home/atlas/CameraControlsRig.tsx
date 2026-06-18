@@ -12,8 +12,8 @@ export type RigHandle = {
 
 export const CameraControlsRig = forwardRef<
   RigHandle,
-  { onLod: (lod: Lod) => void; enabled: boolean }
->(function CameraControlsRig({ onLod, enabled }, ref) {
+  { onLod: (lod: Lod) => void; enabled: boolean; maxDistance?: number }
+>(function CameraControlsRig({ onLod, enabled, maxDistance = 90 }, ref) {
   const controls = useRef<CameraControlsImpl | null>(null)
   const camera = useThree((s) => s.camera)
   const lastLod = useRef<Lod | null>(null)
@@ -56,7 +56,7 @@ export const CameraControlsRig = forwardRef<
       ref={controls}
       enabled={enabled}
       minDistance={8}
-      maxDistance={90}
+      maxDistance={maxDistance}
       polarRotateSpeed={0}
       azimuthRotateSpeed={0}
       dollyToCursor

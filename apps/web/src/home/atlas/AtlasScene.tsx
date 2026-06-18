@@ -7,10 +7,12 @@ import { poseForNode } from './deeplink'
 import { StarChart } from './StarChart'
 import { AtlasNode as NodeView } from './AtlasNode'
 import { CameraControlsRig, type RigHandle } from './CameraControlsRig'
-import { IntroRail, INTRO_END } from './IntroRail'
+import { IntroRail } from './IntroRail'
 import { Effects } from './Effects'
 import { Hud } from './Hud'
 import { Diorama } from './Diorama'
+import { overviewDistance } from './viewport'
+import { AdaptiveDpr } from '@react-three/drei'
 import { DEEP } from '../colors'
 
 export default function AtlasScene({ startFocus = null }: { startFocus?: AtlasNode | null }) {
@@ -25,6 +27,28 @@ export default function AtlasScene({ startFocus = null }: { startFocus?: AtlasNo
   const [introPlaying, setIntroPlaying] = useState(!startFocus)
   // 0→1 graph-draw progress, driven by the intro; full (1) when not playing.
   const [draw, setDraw] = useState(startFocus ? 1 : 0)
+
+  // Aspect-aware overview: portrait screens pull the camera back so the whole map fits.
+  const [overviewZ, setOverviewZ] = useState(() =>
+    overviewDistance(typeof window !== 'undefined' ? window.innerWidth / window.innerHeight : 1.6),
+  )
+  useEffect(() => {
+    const onResize = () => setOverviewZ(overviewDistance(window.innerWidth / window.innerHeight))
+    window.addEventListener('resize', onResize)
+    return () => window.removeEventListener('resize', onResize)
+  }, [])
+  const overviewPose = useMemo(
+    () => ({
+      position: [6, 0, overviewZ] as [number, number, number],
+      target:   [6, 0, 0] as [number, number, number],
+    }),
+    [overviewZ],
+  )
+  // Cap device-pixel-ratio (touch devices lower still) so retina phones don't render 3× the pixels.
+  const maxDpr = useMemo(
+    () => (typeof window !== 'undefined' && window.matchMedia?.('(pointer: coarse)').matches ? 1.5 : 2),
+    [],
+  )
 
   const onLod = (lod: Lod) => setNav((s) => withLod(s, lod))
   const select = (id: string) => {
@@ -43,7 +67,7 @@ export default function AtlasScene({ startFocus = null }: { startFocus?: AtlasNo
   // The dive: a focused node opens its Diorama; surfacing flies back to the map.
   const focusedNode = nodes.find((n) => n.id === nav.focusId) ?? null
   const surface = () => {
-    rig.current?.flyTo(INTRO_END)
+    rig.current?.flyTo(overviewPose)
     setNav((s) => toGalaxy(s))
   }
   const enter = (route: string) => navigate(route)
@@ -53,6 +77,12 @@ export default function AtlasScene({ startFocus = null }: { startFocus?: AtlasNo
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
   }, [])
+
+  // Re-fit the overview when the aspect changes while idle on the map.
+  useEffect(() => {
+    if (!introPlaying && !nav.focusId) rig.current?.flyTo(overviewPose, true)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [overviewPose])
 
   // Staged intro, driven by the draw clock (0→1):
   //   lines draw 0→0.55 · tips (Storyverse/Future Proof) fade 0.55→0.73 · stories fade 0.75→1
@@ -67,6 +97,7 @@ export default function AtlasScene({ startFocus = null }: { startFocus?: AtlasNo
     <>
       <div className="home-canvas">
         <Canvas
+          dpr={[1, maxDpr]}
           camera={{ position: startFocus ? poseForNode(startFocus).position : [0, 0, 14], fov: 50 }}
           onPointerMissed={() => { if (nav.focusId) surface() }}
         >
@@ -75,16 +106,18 @@ export default function AtlasScene({ startFocus = null }: { startFocus?: AtlasNo
           {nodes.map((n) => (
             <NodeView key={n.id} node={n} lod={nav.lod} focused={nav.focusId === n.id} reveal={revealFor(n)} onSelect={select} />
           ))}
-          <CameraControlsRig ref={rig} onLod={onLod} enabled={!introPlaying} />
+          <CameraControlsRig ref={rig} onLod={onLod} enabled={!introPlaying} maxDistance={overviewZ + 30} />
           {introPlaying && (
             <IntroRail
               rig={rig}
               play
+              end={overviewPose}
               onProgress={setDraw}
               onDone={() => { setDraw(1); setIntroPlaying(false) }}
             />
           )}
           <Effects />
+          <AdaptiveDpr pixelated />
         </Canvas>
       </div>
       <Hud nav={nav} nodes={nodes} introPlaying={introPlaying} onSkip={skip} />
