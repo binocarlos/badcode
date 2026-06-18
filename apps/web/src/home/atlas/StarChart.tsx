@@ -25,10 +25,15 @@ export function StarChart() {
 
   return (
     <group>
-      {/* nebula backdrop: two large additive sprites of warm/cool fog */}
-      <mesh position={[10, 4, -30]}>
-        <planeGeometry args={[120, 80]} />
-        <meshBasicMaterial color={DEEP.nebula1} transparent opacity={0.18} depthWrite={false} />
+      {/* far cool nebula wash — large + receded so it reads as backdrop, never a card */}
+      <mesh position={[8, 0, -90]}>
+        <planeGeometry args={[700, 460]} />
+        <meshBasicMaterial color={DEEP.nebula1} transparent opacity={0.28} depthWrite={false} />
+      </mesh>
+      {/* faint warm wash — full-bleed so it never reads as a panel edge */}
+      <mesh position={[10, 2, -70]}>
+        <planeGeometry args={[640, 420]} />
+        <meshBasicMaterial color={DEEP.gold} transparent opacity={0.03} depthWrite={false} />
       </mesh>
 
       <Line points={lines.history} color={DEEP.line} lineWidth={1.5} transparent opacity={0.85} />

@@ -1,8 +1,8 @@
 .hud { position: fixed; inset: 0; pointer-events: none; z-index: 3;
   font-family: 'JetBrains Mono', ui-monospace, monospace; color: #7be3ff; }
 .hud::after { content: ''; position: absolute; inset: 0;
-  background: repeating-linear-gradient(0deg, #0bf1 0 1px, transparent 1px 3px);
-  opacity: .35; mix-blend-mode: screen; }
+  background: repeating-linear-gradient(0deg, #0bf1 0 1px, transparent 1px 4px);
+  opacity: .12; mix-blend-mode: screen; }
 .hud-top { position: absolute; top: 18px; left: 22px; letter-spacing: .14em; }
 .hud-brand { font-weight: 700; font-size: 18px; color: #eaffff; }
 .hud-sub { font-size: 11px; color: #5f7c88; }

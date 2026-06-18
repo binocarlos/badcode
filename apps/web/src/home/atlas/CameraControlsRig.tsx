@@ -1,7 +1,7 @@
-import { forwardRef, useImperativeHandle, useRef } from 'react'
+import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react'
 import { useThree, useFrame } from '@react-three/fiber'
 import { CameraControls } from '@react-three/drei'
-import type CameraControlsImpl from 'camera-controls'
+import CameraControlsImpl from 'camera-controls'
 import { altitudeToLod, type Lod } from './navState'
 import type { Pose } from './deeplink'
 
@@ -17,6 +17,19 @@ export const CameraControlsRig = forwardRef<
   const controls = useRef<CameraControlsImpl | null>(null)
   const camera = useThree((s) => s.camera)
   const lastLod = useRef<Lod | null>(null)
+
+  // Lock to a face-on star-chart: drag pans, wheel zooms, NO orbit.
+  // (The map lives on the z=0 plane; orbiting just reveals it's flat.)
+  useEffect(() => {
+    const c = controls.current
+    if (!c) return
+    c.mouseButtons.left   = CameraControlsImpl.ACTION.TRUCK
+    c.mouseButtons.right  = CameraControlsImpl.ACTION.TRUCK
+    c.mouseButtons.wheel  = CameraControlsImpl.ACTION.DOLLY
+    c.touches.one         = CameraControlsImpl.ACTION.TOUCH_TRUCK
+    c.touches.two         = CameraControlsImpl.ACTION.TOUCH_DOLLY_TRUCK
+    c.touches.three       = CameraControlsImpl.ACTION.TOUCH_TRUCK
+  }, [])
 
   useImperativeHandle(ref, () => ({
     flyTo: (pose, immediate = false) => {
@@ -44,6 +57,8 @@ export const CameraControlsRig = forwardRef<
       enabled={enabled}
       minDistance={8}
       maxDistance={90}
+      polarRotateSpeed={0}
+      azimuthRotateSpeed={0}
       dollyToCursor
     />
   )
