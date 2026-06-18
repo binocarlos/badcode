@@ -36,6 +36,7 @@ export interface HomeStep extends StepDef {
   route?:          string
   status?:         'live' | 'coming-soon'
   plate?:          string             // local poster image path for the node's media plate
+  blurb?:          string             // one-line synopsis shown in the diorama (BadCode voice)
 }
 
 /**
@@ -83,6 +84,7 @@ export const homeSteps: HomeStep[] = [
     route:  '/comics/camping',
     status: 'live',
     plate:  '/atlas/camping.webp',
+    blurb:  'They told you to pack light. They meant your expectations.',
     clip:   [10, 6],
     pos:    [10, 10],
   },
@@ -95,6 +97,7 @@ export const homeSteps: HomeStep[] = [
     route:  '/comics/karen',
     status: 'live',
     plate:  '/atlas/karen.webp',
+    blurb:  'Every revolution needs a manager. Hers just wants to speak to yours.',
     clip:   [18, 6],
     pos:    [18, 14],
   },
@@ -117,6 +120,7 @@ export const homeSteps: HomeStep[] = [
     camera: { position: [30, 9, 22], lookAt: [30, 6, 0] },
     title:  'Storyverse',
     route:  '/storyverse',
+    blurb:  'The physics we worked out the hard way, after the hard way ended us.',
     clip:   [29, 6],  // branch tip stops at ring edge (radius 1 short of centre)
     pos:    [30, 6],
   },
@@ -139,6 +143,7 @@ export const homeSteps: HomeStep[] = [
     camera: { position: [30, -8, 22], lookAt: [30, -6, 0] },
     title:  'Future Proof',
     route:  '/future-proof',
+    blurb:  'Governance with a test suite. Revert the parts that kill you.',
     clip:   [29, -6],  // branch tip stops at ring edge
     pos:    [30, -6],
   },

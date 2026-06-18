@@ -13,6 +13,7 @@ export interface AtlasNode {
   status: 'live' | 'coming-soon'
   ring:   boolean
   plate?: string
+  blurb?: string
 }
 
 export interface AtlasTip {
@@ -35,6 +36,7 @@ export function buildAtlas(): { nodes: AtlasNode[]; tips: AtlasTip[] } {
     status: s.status ?? 'live',
     ring:   s.ring ?? false,
     plate:  s.plate,
+    blurb:  s.blurb,
   }))
 
   const tips: AtlasTip[] = (['storyverse', 'futureProof'] as const).map((k) => {
