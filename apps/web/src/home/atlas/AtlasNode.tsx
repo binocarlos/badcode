@@ -10,19 +10,22 @@ export function AtlasNode({
   lod,
   focused,
   reveal = 1,
+  dim = false,
   onSelect,
 }: {
   node: Node
   lod: Lod
   focused: boolean
   reveal?: number
+  dim?: boolean // another node is focused — recede into the background
   onSelect: (id: string) => void
 }) {
   const [hovered, setHovered] = useState(false)
   const enterable = node.status === 'live'
   const color = enterable ? DEEP.cyan : DEEP.gold
-  const bodyOpacity = (enterable ? 1 : 0.55) * reveal
-  const labelOpacity = (enterable ? 1 : 0.6) * reveal
+  const dimFactor = dim && !hovered ? 0.1 : 1
+  const bodyOpacity = (enterable ? 1 : 0.55) * reveal * dimFactor
+  const labelOpacity = (enterable ? 1 : 0.6) * reveal * dimFactor
   const scale = 0.85 + 0.15 * reveal // subtle pop as it fades in
   const hit = node.ring ? 2.6 : 1.5 // generous invisible click/tap target
   const bodyScale = hovered ? 1.35 : 1
@@ -42,7 +45,7 @@ export function AtlasNode({
       {/* faint halo — signals the node is interactive (brightens on hover) */}
       <mesh scale={bodyScale}>
         <ringGeometry args={[node.ring ? 1.25 : 0.72, node.ring ? 1.5 : 0.98, 40]} />
-        <meshBasicMaterial color={color} transparent opacity={(hovered ? 0.55 : 0.16) * reveal} depthWrite={false} />
+        <meshBasicMaterial color={color} transparent opacity={(hovered ? 0.55 : 0.16) * reveal * dimFactor} depthWrite={false} />
       </mesh>
 
       {/* celestial body — ring for branch tips, point otherwise */}

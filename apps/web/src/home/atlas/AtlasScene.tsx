@@ -117,7 +117,15 @@ export default function AtlasScene({ startFocus = null }: { startFocus?: AtlasNo
           <color attach="background" args={[DEEP.void]} />
           <StarChart drawProgress={drawProgress} />
           {nodes.map((n) => (
-            <NodeView key={n.id} node={n} lod={nav.lod} focused={nav.focusId === n.id} reveal={revealFor(n)} onSelect={select} />
+            <NodeView
+              key={n.id}
+              node={n}
+              lod={nav.lod}
+              focused={nav.focusId === n.id}
+              reveal={revealFor(n)}
+              dim={!!nav.focusId && nav.focusId !== n.id}
+              onSelect={select}
+            />
           ))}
           <CameraControlsRig ref={rig} onLod={onLod} enabled={!introPlaying} maxDistance={overviewZ + 30} />
           {introPlaying && (
