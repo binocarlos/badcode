@@ -39,7 +39,8 @@ Full guide: [`docs/voice.md`](./docs/voice.md). When writing lyrics or story cop
 | --- | --- | --- |
 | `docs/` | Vision, voice, story bible, method | …you need context |
 | `docs/suno-gpt/` | Suno-prompting toolkit (operating procedure + reference files) | …you're turning a song idea into a Suno prompt |
-| `.claude/skills/` | `new-story`, `suno-prompt` — the orchestrators for story capture and Suno prompting | …you're capturing a story or making a track |
+| `.claude/skills/` | `new-story`, `suno-prompt`, `comic-review` — orchestrators for story capture, Suno prompting, and visually reviewing a rendered comic | …you're capturing a story, making a track, or looking at a comic |
+| `scripts/capture-comic.mjs` | Headless screenshot harness — renders a scroll comic and writes PNGs you can read | …you want to *see* a comic with your own eyes |
 | `docs/<story>/` | Per-story canon (concept, characters, beats, songs) — source of truth | …you're capturing or producing a story's media |
 | `packages/comic` | `@badcode/comic` — code-first comic rendering library (authoring guide: [`AUTHORING.md`](./packages/comic/AUTHORING.md)) | …you're building the viewer |
 | `apps/web` | The website (Vite + React + TS SPA) | …you're building pages/routes |
@@ -59,6 +60,23 @@ Full guide: [`docs/voice.md`](./docs/voice.md). When writing lyrics or story cop
   local `effects.ts`). A comic's `comic.meta.ts` is **derived from** the story's `docs/<story>/`
   canon (skill-driven, on request) — edit the canon, not the artifact. See
   [`docs/camping/README.md`](./docs/camping/README.md).
+- **See a comic with your own eyes — the screenshot-review loop (a power tool).** You can render
+  and *look at* any comic yourself. **No Browser MCP is required** (none is registered with the
+  CLI; a connected browser-extension MCP is not exposed to your session). With the dev server
+  running (`npm run dev`, port 5173), drive a headless browser to screenshot the scroll-driven
+  comic, then read the PNGs with the Read tool:
+  ```bash
+  node scripts/capture-comic.mjs /comics/<slug> /tmp/comic-shots 14   # args: <route> <outDir> <shots>
+  ```
+  It scrolls the pinned comic in N evenly-spaced steps and writes `shot-NN-PPpct.png` (PP = scroll %).
+  This closes the **look → edit → re-capture** loop: screenshot, judge against the creative
+  direction, edit the comic's `*Comic.tsx`, re-capture into a new dir to confirm before/after. The
+  harness self-resolves Playwright; if it's missing, run `npx playwright install chromium` (and, if
+  it names a headless-shell revision, `npx playwright install chromium-headless-shell`). A static
+  frame can land between a bubble's scroll window or mid-transition — re-capture before calling
+  something broken. **Full procedure, prerequisites, and the creative-direction checklist live in
+  the `comic-review` skill** ([`.claude/skills/comic-review/SKILL.md`](./.claude/skills/comic-review/SKILL.md)) —
+  invoke it with `/comic-review`.
 - **Make a Suno prompt:** type a song idea (a feeling, a reference, a GPOM beat) and the
   **`suno-prompt`** skill (`.claude/skills/suno-prompt/`) turns it into a Suno style prompt,
   exclude-styles list, and — on request — lyrics, in the BadCode voice. It runs on the toolkit in
