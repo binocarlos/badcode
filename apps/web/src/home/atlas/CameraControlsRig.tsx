@@ -12,8 +12,8 @@ export type RigHandle = {
 
 export const CameraControlsRig = forwardRef<
   RigHandle,
-  { onLod: (lod: Lod) => void; enabled: boolean; maxDistance?: number }
->(function CameraControlsRig({ onLod, enabled, maxDistance = 90 }, ref) {
+  { onLod: (lod: Lod) => void; enabled: boolean; maxDistance?: number; initialPose?: Pose }
+>(function CameraControlsRig({ onLod, enabled, maxDistance = 90, initialPose }, ref) {
   const controls = useRef<CameraControlsImpl | null>(null)
   const camera = useThree((s) => s.camera)
   const lastLod = useRef<Lod | null>(null)
@@ -29,6 +29,19 @@ export const CameraControlsRig = forwardRef<
     c.touches.one         = CameraControlsImpl.ACTION.TOUCH_TRUCK
     c.touches.two         = CameraControlsImpl.ACTION.TOUCH_DOLLY_TRUCK
     c.touches.three       = CameraControlsImpl.ACTION.TOUCH_TRUCK
+    // Seat the controls on the right pose immediately — otherwise they default
+    // to looking at the origin, giving an off-axis/tilted view on first paint.
+    // Re-assert next frame so it sticks past the controls' own init.
+    if (initialPose) {
+      const apply = () => c.setLookAt(
+        initialPose.position[0], initialPose.position[1], initialPose.position[2],
+        initialPose.target[0], initialPose.target[1], initialPose.target[2],
+        false,
+      )
+      apply()
+      const id = requestAnimationFrame(apply)
+      return () => cancelAnimationFrame(id)
+    }
   }, [])
 
   useImperativeHandle(ref, () => ({

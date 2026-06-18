@@ -129,12 +129,12 @@ export default function AtlasScene({ startFocus = null }: { startFocus?: AtlasNo
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [overviewPose])
 
-  // On mount: a deep-link return must seat the controls on the focused node,
-  // otherwise the camera looks at the origin from an angle (the tilted view).
-  useEffect(() => {
-    if (startFocus) rig.current?.flyTo(poseForNode(startFocus), true)
+  // Deep-link return seats the controls on the focused node from the first frame.
+  const initialPose = useMemo(
+    () => (startFocus ? poseForNode(startFocus) : undefined),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    [],
+  )
 
   // Staged intro, driven by the draw clock (0→1):
   //   lines draw 0→0.55 · tips (Storyverse/Future Proof) fade 0.55→0.73 · stories fade 0.75→1
@@ -165,7 +165,7 @@ export default function AtlasScene({ startFocus = null }: { startFocus?: AtlasNo
             />
           ))}
           <HeroPlate node={focusedNode} />
-          <CameraControlsRig ref={rig} onLod={onLod} enabled={!introPlaying} maxDistance={overviewZ + 30} />
+          <CameraControlsRig ref={rig} onLod={onLod} enabled={!introPlaying} maxDistance={overviewZ + 30} initialPose={initialPose} />
           {introPlaying && (
             <IntroRail
               rig={rig}
