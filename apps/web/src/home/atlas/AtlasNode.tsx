@@ -1,21 +1,15 @@
 import { useState } from 'react'
 import { Billboard, Text } from '@react-three/drei'
 import type { AtlasNode as Node } from './model'
-import type { Lod } from './navState'
-import { MediaPlate } from './MediaPlate'
 import { DEEP } from '../colors'
 
 export function AtlasNode({
   node,
-  lod,
-  focused,
   reveal = 1,
   dim = false,
   onSelect,
 }: {
   node: Node
-  lod: Lod
-  focused: boolean
   reveal?: number
   dim?: boolean // another node is focused — recede into the background
   onSelect: (id: string) => void
@@ -68,17 +62,6 @@ export function AtlasNode({
           {node.status === 'live' ? node.title : `${node.title} · soon`}
         </Text>
       </Billboard>
-
-      {(!!node.plate || !!node.video) && (lod === 'node' || focused) && (
-        <MediaPlate
-          url={node.plate}
-          video={node.video}
-          active={focused}
-          position={[0, focused ? 5.6 : 4.6, 0]}
-          width={focused ? 11 : 6}
-          framed={focused}
-        />
-      )}
     </group>
   )
 }

@@ -1,11 +1,13 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { Canvas } from '@react-three/fiber'
+import { Canvas, useFrame } from '@react-three/fiber'
+import { Group } from 'three'
 import { useNavigate } from 'react-router-dom'
 import { buildAtlas, type AtlasNode } from './model'
 import { INITIAL_NAV, focusNode, withLod, toGalaxy, type Lod, type NavState } from './navState'
 import { poseForNode } from './deeplink'
 import { StarChart } from './StarChart'
 import { AtlasNode as NodeView } from './AtlasNode'
+import { MediaPlate } from './MediaPlate'
 import { CameraControlsRig, type RigHandle } from './CameraControlsRig'
 import { IntroRail } from './IntroRail'
 import { Effects } from './Effects'
@@ -14,6 +16,36 @@ import { Diorama } from './Diorama'
 import { overviewDistance } from './viewport'
 import { AdaptiveDpr } from '@react-three/drei'
 import { DEEP } from '../colors'
+
+/**
+ * The single hero plate, lifted out of the nodes so only the focused story
+ * shows a picture — and so it can fade (scale) smoothly in and out. Keeps the
+ * last node during fade-out; the live video only plays while a node is focused.
+ */
+function HeroPlate({ node }: { node: AtlasNode | null }) {
+  const ref = useRef<Group>(null)
+  const last = useRef<AtlasNode | null>(node)
+  if (node) last.current = node
+  const t = useRef(node ? 1 : 0)
+
+  useFrame(() => {
+    const target = node ? 1 : 0
+    t.current += (target - t.current) * 0.16
+    const g = ref.current
+    if (!g) return
+    g.scale.setScalar(Math.max(0.0001, t.current))
+    g.visible = t.current > 0.01
+  })
+
+  const n = last.current
+  if (!n || (!n.plate && !n.video)) return null
+  const [x, y] = n.pos
+  return (
+    <group ref={ref} position={[x, y + 5.6, 0]}>
+      <MediaPlate url={n.plate} video={n.video} active={!!node} position={[0, 0, 0]} width={11} framed />
+    </group>
+  )
+}
 
 export default function AtlasScene({ startFocus = null }: { startFocus?: AtlasNode | null }) {
   const { nodes } = useMemo(() => buildAtlas(), [])
@@ -97,6 +129,13 @@ export default function AtlasScene({ startFocus = null }: { startFocus?: AtlasNo
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [overviewPose])
 
+  // On mount: a deep-link return must seat the controls on the focused node,
+  // otherwise the camera looks at the origin from an angle (the tilted view).
+  useEffect(() => {
+    if (startFocus) rig.current?.flyTo(poseForNode(startFocus), true)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   // Staged intro, driven by the draw clock (0→1):
   //   lines draw 0→0.55 · tips (Storyverse/Future Proof) fade 0.55→0.73 · stories fade 0.75→1
   const clamp01 = (v: number) => Math.max(0, Math.min(1, v))
@@ -120,13 +159,12 @@ export default function AtlasScene({ startFocus = null }: { startFocus?: AtlasNo
             <NodeView
               key={n.id}
               node={n}
-              lod={nav.lod}
-              focused={nav.focusId === n.id}
               reveal={revealFor(n)}
               dim={!!nav.focusId && nav.focusId !== n.id}
               onSelect={select}
             />
           ))}
+          <HeroPlate node={focusedNode} />
           <CameraControlsRig ref={rig} onLod={onLod} enabled={!introPlaying} maxDistance={overviewZ + 30} />
           {introPlaying && (
             <IntroRail
