@@ -84,12 +84,18 @@ export default function AtlasScene({ startFocus = null }: { startFocus?: AtlasNo
     [],
   )
 
+  // Keep the URL hash in sync with focus (so a reload restores the zoom),
+  // without going through the router (focus is local scene state).
+  const setHash = (id: string | null) =>
+    window.history.replaceState(null, '', id ? `#${id}` : window.location.pathname + window.location.search)
+
   const onLod = (lod: Lod) => setNav((s) => withLod(s, lod))
   const select = (id: string) => {
     const node = nodes.find((n) => n.id === id)
     if (!node) return
     rig.current?.flyTo(poseForNode(node))
     setNav((s) => focusNode(s, id))
+    setHash(id)
   }
   const skip = () => {
     setIntroPlaying(false)
@@ -105,6 +111,7 @@ export default function AtlasScene({ startFocus = null }: { startFocus?: AtlasNo
   const surface = () => {
     rig.current?.flyTo(overviewPose)
     setNav((s) => toGalaxy(s))
+    setHash(null)
   }
   // Enter = push the camera through the framed window, fade, then load the content.
   const enter = (route: string) => {

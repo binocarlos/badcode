@@ -10,12 +10,14 @@ const AtlasScene = lazy(() => import('../home/atlas/AtlasScene'))
 export function Home() {
   const env = useMemo(() => detectEnvironment(), [])
   const location = useLocation()
-  const fromNode = (location.state as { fromNode?: string } | null)?.fromNode
+  // The URL hash is the source of truth for "start zoomed into a node":
+  //   /#camping → land focused on Camping (no intro) · / → zoomed-out intro.
+  const hashId = location.hash.replace(/^#/, '') || undefined
 
   const startFocus = useMemo(() => {
     const { nodes } = buildAtlas()
-    return nodeForFromState(fromNode, nodes)
-  }, [fromNode])
+    return nodeForFromState(hashId, nodes)
+  }, [hashId])
 
   if (shouldUse2D(env)) return <Fallback2D />
   return (
