@@ -11,11 +11,13 @@ export function Hud({
   nodes,
   introPlaying,
   onSkip,
+  onPlayIntro,
 }: {
   nav: NavState
   nodes: AtlasNode[]
   introPlaying: boolean
   onSkip: () => void
+  onPlayIntro: () => void
 }) {
   const focused = nodes.find((n) => n.id === nav.focusId)
   const where = focused
@@ -30,9 +32,11 @@ export function Hud({
       </div>
       <div className="hud-where">{where}</div>
       <div className="hud-hint">drag to pan&nbsp;&nbsp;·&nbsp;&nbsp;scroll to zoom&nbsp;&nbsp;·&nbsp;&nbsp;click a node to dive in</div>
-      {introPlaying && (
+      {introPlaying ? (
         <button className="hud-skip" onClick={onSkip}>skip / explore</button>
-      )}
+      ) : !nav.focusId ? (
+        <button className="hud-skip" onClick={onPlayIntro}>▶ play the origin</button>
+      ) : null}
     </div>
   )
 }

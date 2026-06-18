@@ -55,10 +55,10 @@ export default function AtlasScene({ startFocus = null }: { startFocus?: AtlasNo
   const [nav, setNav] = useState<NavState>(
     startFocus ? focusNode(INITIAL_NAV, startFocus.id) : INITIAL_NAV,
   )
-  // No intro when arriving via deep-link return.
-  const [introPlaying, setIntroPlaying] = useState(!startFocus)
-  // 0→1 graph-draw progress, driven by the intro; full (1) when not playing.
-  const [draw, setDraw] = useState(startFocus ? 1 : 0)
+  // Default to the finished graph; the intro is opt-in (replayable), not auto-played.
+  const [introPlaying, setIntroPlaying] = useState(false)
+  // 0→1 graph-draw progress: full (1) at rest, ramps from 0 only while the intro plays.
+  const [draw, setDraw] = useState(1)
 
   // Aspect-aware overview: portrait zooms toward the fork (and re-centres) so it fills the screen.
   const [aspect, setAspect] = useState(() =>
@@ -101,7 +101,15 @@ export default function AtlasScene({ startFocus = null }: { startFocus?: AtlasNo
     setIntroPlaying(false)
     setDraw(1)
     rig.current?.enable(true)
-    if (startFocus) rig.current?.flyTo(poseForNode(startFocus), true)
+    rig.current?.flyTo(overviewPose, true)
+  }
+  // Replay the origin fly-in on demand (from the overview).
+  const playIntro = () => {
+    setHash(null)
+    setNav((s) => toGalaxy(s))
+    setDraw(0)
+    setIntroPlaying(true)
+    rig.current?.enable(false)
   }
 
   // The dive: a focused node opens its Diorama; surfacing flies back to the map.
@@ -138,7 +146,7 @@ export default function AtlasScene({ startFocus = null }: { startFocus?: AtlasNo
 
   // Deep-link return seats the controls on the focused node from the first frame.
   const initialPose = useMemo(
-    () => (startFocus ? poseForNode(startFocus) : undefined),
+    () => (startFocus ? poseForNode(startFocus) : overviewPose),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   )
@@ -157,7 +165,7 @@ export default function AtlasScene({ startFocus = null }: { startFocus?: AtlasNo
       <div className="home-canvas">
         <Canvas
           dpr={[1, maxDpr]}
-          camera={{ position: startFocus ? poseForNode(startFocus).position : [0, 0, 14], fov: 50 }}
+          camera={{ position: startFocus ? poseForNode(startFocus).position : overviewPose.position, fov: 50 }}
           onPointerMissed={() => { if (nav.focusId) surface() }}
         >
           <color attach="background" args={[DEEP.void]} />
@@ -186,7 +194,7 @@ export default function AtlasScene({ startFocus = null }: { startFocus?: AtlasNo
           <AdaptiveDpr pixelated />
         </Canvas>
       </div>
-      <Hud nav={nav} nodes={nodes} introPlaying={introPlaying} onSkip={skip} />
+      <Hud nav={nav} nodes={nodes} introPlaying={introPlaying} onSkip={skip} onPlayIntro={playIntro} />
       <Diorama node={focusedNode} onEnter={enter} onBack={surface} />
       {/* dive-through fade — covers the swap into the content */}
       <div
