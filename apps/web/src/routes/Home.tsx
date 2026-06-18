@@ -1,15 +1,26 @@
 import { Suspense, lazy, useMemo } from 'react'
+import { useLocation } from 'react-router-dom'
 import { detectEnvironment, shouldUse2D } from '../home/environment'
 import { Fallback2D } from '../home/Fallback2D'
+import { buildAtlas } from '../home/atlas/model'
+import { nodeForFromState } from '../home/atlas/deeplink'
 
-const Scene = lazy(() => import('../home/Scene'))
+const AtlasScene = lazy(() => import('../home/atlas/AtlasScene'))
 
 export function Home() {
-  const use2D = useMemo(() => shouldUse2D(detectEnvironment()), [])
-  if (use2D) return <Fallback2D />
+  const env = useMemo(() => detectEnvironment(), [])
+  const location = useLocation()
+  const fromNode = (location.state as { fromNode?: string } | null)?.fromNode
+
+  const startFocus = useMemo(() => {
+    const { nodes } = buildAtlas()
+    return nodeForFromState(fromNode, nodes)
+  }, [fromNode])
+
+  if (shouldUse2D(env)) return <Fallback2D />
   return (
-    <Suspense fallback={<div style={{ position: 'fixed', inset: 0, background: '#000' }} />}>
-      <Scene />
+    <Suspense fallback={<div style={{ position: 'fixed', inset: 0, background: '#04060b' }} />}>
+      <AtlasScene startFocus={startFocus} />
     </Suspense>
   )
 }
