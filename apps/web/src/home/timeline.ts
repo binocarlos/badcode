@@ -84,7 +84,8 @@ export const homeSteps: HomeStep[] = [
     title:  'Camping',
     route:  '/comics/camping',
     status: 'live',
-    plate:  '/atlas/camping.webp',
+    // TEMP: borrowing the comic's first frame until dedicated AI plates exist.
+    plate:  'https://storage.googleapis.com/badcode-storage/comics/a17f2cc4-1efb-4cb9-a6d9-0912e4c18662/pages/page_1/animation_end/cf8cc860-ee68-408e-83c1-46d970edb504.png',
     blurb:  'They told you to pack light. They meant your expectations.',
     clip:   [10, 6],
     pos:    [10, 10],
@@ -97,7 +98,8 @@ export const homeSteps: HomeStep[] = [
     title:  'Karen Will Lead the Revolution',
     route:  '/comics/karen',
     status: 'live',
-    plate:  '/atlas/karen.webp',
+    // TEMP: borrowing the comic's first page until dedicated AI plates exist.
+    plate:  'https://storage.googleapis.com/badcode-storage/comics/f63d9a14-5c2f-4415-be49-f4b62b2d71d4/pages/d94d1c75-331c-4fb9-93a8-810352e8b1d0/main/1.png',
     blurb:  'Every revolution needs a manager. Hers just wants to speak to yours.',
     clip:   [18, 6],
     pos:    [18, 14],
