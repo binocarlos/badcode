@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import { useScrollProgress } from '../hooks/useScrollProgress'
 import { computeBubbleVisibility } from '../bubbles/visibility'
-import { computeBubbleReveal } from '../bubbles/reveal'
+import { bubbleLocalProgress, computeBubbleReveal, visibleWordCount } from '../bubbles/reveal'
 import type { RevealSegment } from '../text/segments'
 import { BubbleFactory } from '../bubbles/renderers'
 import type { BubbleType, RendererType, TailDirection } from '../bubbles/renderers'
@@ -28,6 +28,9 @@ export interface SpeechBubbleProps {
   /** Scroll-scrubbed reveal segments, e.g. [scrollIn(), pause(0.2), fadeOut()].
    *  When set, overrides the simple appearAt+fade visibility. */
   reveal?: RevealSegment[]
+  /** Scroll-scrubbed typewriter: reveals the line word-by-word across the
+   *  appearAt window. Only applies when children is a plain string. */
+  typewriter?: boolean
   children: ReactNode
 }
 
@@ -46,6 +49,7 @@ export const SpeechBubble = markSlot(function SpeechBubble({
   textColor,
   fontSize,
   reveal,
+  typewriter,
   children,
 }: SpeechBubbleProps) {
   const scrollPercent = useScrollProgress()
@@ -57,6 +61,13 @@ export const SpeechBubble = markSlot(function SpeechBubble({
       })()
   if (!r.visible) return null
   const revealTransform = r.transform === 'none' ? '' : ` ${r.transform}`
+
+  let content = children
+  if (typewriter && typeof children === 'string') {
+    const words = children.split(' ')
+    const shown = visibleWordCount(words.length, bubbleLocalProgress(scrollPercent, appearAt))
+    content = words.slice(0, shown).join(' ')
+  }
 
   return (
     <div
@@ -80,7 +91,7 @@ export const SpeechBubble = markSlot(function SpeechBubble({
         textColor={textColor}
         fontSize={fontSize}
       >
-        {children}
+        {content}
       </BubbleFactory>
     </div>
   )

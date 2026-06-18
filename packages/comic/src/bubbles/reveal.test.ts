@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { bubbleLocalProgress, computeBubbleReveal } from './reveal'
+import { bubbleLocalProgress, computeBubbleReveal, visibleWordCount } from './reveal'
 import { fadeIn, scrollIn } from '../text/segments'
 
 describe('bubbleLocalProgress', () => {
@@ -26,5 +26,21 @@ describe('computeBubbleReveal', () => {
   it('produces a translate transform early when scrollIn is set', () => {
     const early = computeBubbleReveal(0.41, [0.4, 0.6], [scrollIn()])
     expect(early.transform).toContain('translateY')
+  })
+})
+
+describe('visibleWordCount', () => {
+  it('reveals no words at progress 0', () => {
+    expect(visibleWordCount(5, 0)).toBe(0)
+  })
+  it('reveals all words at progress 1', () => {
+    expect(visibleWordCount(5, 1)).toBe(5)
+  })
+  it('reveals a proportional prefix mid-scroll', () => {
+    expect(visibleWordCount(6, 0.5)).toBe(3)
+  })
+  it('clamps out-of-range progress', () => {
+    expect(visibleWordCount(4, -1)).toBe(0)
+    expect(visibleWordCount(4, 2)).toBe(4)
   })
 })

@@ -38,3 +38,9 @@ export function computeBubbleReveal(
   const styles = computeTextEffectStyles(local, buildTextConfig(reveal))
   return { visible, opacity: styles.opacity, transform: styles.transform }
 }
+
+/** How many leading words of a typewriter line are visible at a given local progress. */
+export function visibleWordCount(totalWords: number, localProgress: number): number {
+  const p = localProgress < 0 ? 0 : localProgress > 1 ? 1 : localProgress
+  return Math.max(0, Math.min(totalWords, Math.ceil(p * totalWords)))
+}
