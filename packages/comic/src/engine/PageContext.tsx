@@ -1,5 +1,6 @@
 import { createContext, useContext } from 'react'
 
+
 /**
  * Per-page context. Provided by <ScrollComic> around each rendered <Page>, and
  * read by the page and its descendants (bubbles, side text, custom widgets).
@@ -43,4 +44,23 @@ export function useEngineContext(): EngineContextValue {
     throw new Error('useEngineContext must be used within a <ScrollComic>')
   }
   return ctx
+}
+
+/**
+ * Global motion state for effects: scroll velocity now, pointer/audio later.
+ * Provided once by <ScrollComic>. Non-throwing — defaults to a still state so
+ * useScrollEffect works even outside a provider.
+ */
+export interface MotionState {
+  velocity: number
+  pointer: { x: number; y: number } | null
+  audio: { bass: number; mid: number; high: number; beat: boolean } | null
+}
+
+const STILL: MotionState = { velocity: 0, pointer: null, audio: null }
+
+export const MotionContext = createContext<MotionState>(STILL)
+
+export function useMotionState(): MotionState {
+  return useContext(MotionContext)
 }

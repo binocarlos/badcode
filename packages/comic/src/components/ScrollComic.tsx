@@ -10,7 +10,7 @@ import {
 } from 'react'
 import { useScrollEngine } from '../engine/useScrollEngine'
 import { useTransitions } from '../engine/useTransitions'
-import { EngineContext, PageContext } from '../engine/PageContext'
+import { EngineContext, PageContext, MotionContext } from '../engine/PageContext'
 import type { TransitionInstance } from '../types'
 import type { PageProps } from './Page'
 import type { Phases } from '@badcode/scroll-timeline'
@@ -66,7 +66,7 @@ export function ScrollComic({
     [resolved],
   )
 
-  const { percents, currentPage, overall, totalHeight } = useScrollEngine(containerRef, phases)
+  const { percents, currentPage, overall, totalHeight, velocity } = useScrollEngine(containerRef, phases)
 
   const getLayer = useCallback((i: number) => layerRefs.current.get(i) ?? null, [])
   const { outgoingPage } = useTransitions(currentPage, transitions, getLayer)
@@ -76,6 +76,11 @@ export function ScrollComic({
     else layerRefs.current.delete(i)
   }, [])
   const engineValue = useMemo(() => ({ registerLayer }), [registerLayer])
+
+  const motionValue = useMemo(
+    () => ({ velocity, pointer: null, audio: null }),
+    [velocity],
+  )
 
   // Rolling window: current ± 2 (preloads two pages ahead/behind to beat fast-scroll),
   // plus the outgoing page during a transition. Only current + outgoing are *visible*;
@@ -93,35 +98,37 @@ export function ScrollComic({
 
   return (
     <EngineContext.Provider value={engineValue}>
-      <div ref={containerRef} className="badcode-comic" style={{ height: totalHeight }}>
-        <div className="badcode-comic__stage">
-          {windowIndices.map((i) => {
-            const isCurrent = i === currentPage
-            const visible = isCurrent || i === outgoingPage
-            const zIndex = isCurrent ? 2 : i === outgoingPage ? 1 : 0
-            return (
-              <PageContext.Provider
-                key={i}
-                value={{ scrollPercent: percents[i] ?? 0, index: i, isCurrent, visible, zIndex }}
-              >
-                {cloneElement(pageElements[i], {
-                  effect: resolved[i].effect,
-                  background: resolved[i].background,
-                })}
-              </PageContext.Provider>
-            )
-          })}
+      <MotionContext.Provider value={motionValue}>
+        <div ref={containerRef} className="badcode-comic" style={{ height: totalHeight }}>
+          <div className="badcode-comic__stage">
+            {windowIndices.map((i) => {
+              const isCurrent = i === currentPage
+              const visible = isCurrent || i === outgoingPage
+              const zIndex = isCurrent ? 2 : i === outgoingPage ? 1 : 0
+              return (
+                <PageContext.Provider
+                  key={i}
+                  value={{ scrollPercent: percents[i] ?? 0, index: i, isCurrent, visible, zIndex }}
+                >
+                  {cloneElement(pageElements[i], {
+                    effect: resolved[i].effect,
+                    background: resolved[i].background,
+                  })}
+                </PageContext.Provider>
+              )
+            })}
+          </div>
         </div>
-      </div>
-      {progressBar && (
-        <div className="badcode-comic__progress" style={{ width: `${overall * 100}%` }} />
-      )}
-      {pageIndicator && (
-        <div className="badcode-comic__indicator">
-          {pad(currentPage + 1)} / {pad(total)}
-        </div>
-      )}
-      {scrollHint && overall < 0.02 && <div className="badcode-comic__hint">{hintText}</div>}
+        {progressBar && (
+          <div className="badcode-comic__progress" style={{ width: `${overall * 100}%` }} />
+        )}
+        {pageIndicator && (
+          <div className="badcode-comic__indicator">
+            {pad(currentPage + 1)} / {pad(total)}
+          </div>
+        )}
+        {scrollHint && overall < 0.02 && <div className="badcode-comic__hint">{hintText}</div>}
+      </MotionContext.Provider>
     </EngineContext.Provider>
   )
 }

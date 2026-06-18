@@ -1,7 +1,7 @@
 import { useLayoutEffect, useMemo, type RefObject } from 'react'
-import type { EffectInstance } from '../types'
+import type { EffectInstance, EffectContext } from '../types'
 import { defineEffect } from '../effects/types'
-import { usePageContext } from '../engine/PageContext'
+import { usePageContext, useMotionState } from '../engine/PageContext'
 
 type EffectInput =
   | EffectInstance
@@ -27,12 +27,21 @@ function normalize(input: EffectInput): EffectInstance | null {
  */
 export function useScrollEffect(ref: RefObject<HTMLElement>, effectInput: EffectInput): void {
   const { scrollPercent } = usePageContext()
+  const motion = useMotionState()
   const effect = useMemo(() => normalize(effectInput), [effectInput])
 
   useLayoutEffect(() => {
     const el = ref.current
-    if (el && effect) effect.apply(el, scrollPercent)
-  }, [ref, effect, scrollPercent])
+    if (el && effect) {
+      const ctx: EffectContext = {
+        scrollPercent,
+        velocity: motion.velocity,
+        pointer: motion.pointer,
+        audio: motion.audio,
+      }
+      effect.apply(el, scrollPercent, ctx)
+    }
+  }, [ref, effect, scrollPercent, motion.velocity, motion.pointer, motion.audio])
 
   useLayoutEffect(() => {
     return () => {
