@@ -7,10 +7,15 @@ import type { Phases } from '@badcode/scroll-timeline'
 
 export interface PageProps {
   /**
-   * How many viewport-heights of scroll this page occupies (default 1). Longer
-   * pages give effects and text reveals more room to breathe.
+   * @deprecated Use `hold` instead. How many viewport-heights of scroll this
+   * page occupies (default 1). Kept as an alias for back-compat.
    */
   scrollDuration?: number
+  /**
+   * How many viewport-heights of scroll this page holds (default 1). The
+   * friendly scalar for page length; longer pages give effects/text more room.
+   */
+  hold?: number
   /**
    * Three-phase scroll budget. If provided, takes precedence over scrollDuration.
    * `{ enter: 0, hold: 1, exit: 0 }` is exactly equivalent to `scrollDuration={1}`.

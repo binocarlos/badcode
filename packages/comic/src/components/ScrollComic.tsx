@@ -1,5 +1,6 @@
 import {
   Children,
+  cloneElement,
   isValidElement,
   useCallback,
   useMemo,
@@ -13,6 +14,7 @@ import { EngineContext, PageContext } from '../engine/PageContext'
 import type { TransitionInstance } from '../types'
 import type { PageProps } from './Page'
 import type { Phases } from '@badcode/scroll-timeline'
+import { resolvePage } from './pageDefaults'
 import '../styles/comic.css'
 
 export interface ScrollComicProps {
@@ -26,6 +28,8 @@ export interface ScrollComicProps {
   scrollHint?: boolean
   /** Text of the scroll hint (default "Scroll to explore ↓"). */
   hintText?: string
+  /** Page props every <Page> inherits unless it sets its own (explicit prop wins). */
+  pageDefaults?: Partial<PageProps>
 }
 
 const pad = (n: number) => String(n).padStart(2, '0')
@@ -41,6 +45,7 @@ export function ScrollComic({
   pageIndicator = false,
   scrollHint = false,
   hintText = 'Scroll to explore ↓',
+  pageDefaults,
 }: ScrollComicProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const layerRefs = useRef(new Map<number, HTMLElement>())
@@ -51,18 +56,14 @@ export function ScrollComic({
   )
   const total = pageElements.length
 
-  const phases = useMemo<Phases[]>(
-    () =>
-      pageElements.map((p) => {
-        if (p.props.phases) return p.props.phases
-        const d = p.props.scrollDuration ?? 1
-        return { enter: 0, hold: d > 0 ? d : 1, exit: 0 }
-      }),
-    [pageElements],
+  const resolved = useMemo<ReturnType<typeof resolvePage>[]>(
+    () => pageElements.map((p) => resolvePage(p.props, pageDefaults)),
+    [pageElements, pageDefaults],
   )
+  const phases = useMemo<Phases[]>(() => resolved.map((r) => r.phases), [resolved])
   const transitions = useMemo<(TransitionInstance | null)[]>(
-    () => pageElements.map((p) => p.props.transition ?? null),
-    [pageElements],
+    () => resolved.map((r) => r.transition),
+    [resolved],
   )
 
   const { percents, currentPage, overall, totalHeight } = useScrollEngine(containerRef, phases)
@@ -103,7 +104,10 @@ export function ScrollComic({
                 key={i}
                 value={{ scrollPercent: percents[i] ?? 0, index: i, isCurrent, visible, zIndex }}
               >
-                {pageElements[i]}
+                {cloneElement(pageElements[i], {
+                  effect: resolved[i].effect,
+                  background: resolved[i].background,
+                })}
               </PageContext.Provider>
             )
           })}
