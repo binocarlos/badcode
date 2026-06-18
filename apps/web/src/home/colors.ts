@@ -10,4 +10,16 @@ export const COLORS = {
   tether: '#244657',
 } as const
 
+/** Deep Field cosmos tokens: warm gold/violet against the cold cyan, nebula fog. */
+export const DEEP = {
+  void:    '#04060b',
+  cyan:    '#46d5ff',
+  gold:    '#e8c98a',
+  violet:  '#8a6cff',
+  nebula1: '#231a3a',
+  nebula2: '#0a0813',
+  line:    '#3a6a7e',
+  lineHot: '#7be3ff',
+} as const
+
 export type ColorName = keyof typeof COLORS
