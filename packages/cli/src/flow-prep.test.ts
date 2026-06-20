@@ -39,11 +39,16 @@ describe('refKey', () => {
     const url = 'https://storage.googleapis.com/badcode-storage/comics/demo/characters/bob.latest.png'
     expect(refKey(url)).toBe('comics/demo/characters/bob.latest.png')
   })
+
+  it('throws when the url is not in the bucket', () => {
+    expect(() => refKey('https://other.cdn.com/foo.png')).toThrow('url is not in the bucket')
+  })
 })
 
 describe('flowPrep', () => {
   it('returns the assembled prompt and downloads each ref into destDir', async () => {
     const { bucket, downloads } = fakeBucket()
+    // destDir is only used for path construction here — the fake bucket never touches the filesystem.
     const result = await flowPrep(bucket, comic, { kind: 'asset', id: 'p1-main' }, '/tmp/out')
 
     expect(result.prompt).toContain('Scene: bob outside a shop')
