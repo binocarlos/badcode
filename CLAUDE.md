@@ -39,7 +39,7 @@ Full guide: [`docs/voice.md`](./docs/voice.md). When writing lyrics or story cop
 | --- | --- | --- |
 | `docs/` | Vision, voice, story bible, method | …you need context |
 | `docs/suno-gpt/` | Suno-prompting toolkit (operating procedure + reference files) | …you're turning a song idea into a Suno prompt |
-| `.claude/skills/` | `new-story`, `suno-prompt` — the orchestrators for story capture and Suno prompting | …you're capturing a story or making a track |
+| `.claude/skills/` | `new-story`, `suno-prompt`, `make-comic` — orchestrators for story capture, Suno prompting, and the full idea→comic pipeline | …you're capturing a story, making a track, or building a comic |
 | `docs/<story>/` | Per-story canon (concept, characters, beats, songs) — source of truth | …you're capturing or producing a story's media |
 | `packages/comic` | `@badcode/comic` — code-first comic rendering library (authoring guide: [`AUTHORING.md`](./packages/comic/AUTHORING.md)) | …you're building the viewer |
 | `apps/web` | The website (Vite + React + TS SPA) | …you're building pages/routes |
@@ -48,8 +48,9 @@ Full guide: [`docs/voice.md`](./docs/voice.md). When writing lyrics or story cop
 
 - **Run the site:** `npm install` then `npm run dev` (Vite, port 5173). `npm run typecheck` and
   `npm run build` from the root cover all workspaces.
-- **Two skills do the creative heavy lifting** (`.claude/skills/`): **`new-story`** captures and
-  develops a story under `docs/<story>/`; **`suno-prompt`** turns a song idea into a Suno prompt.
+- **Three skills do the creative heavy lifting** (`.claude/skills/`): **`new-story`** captures and
+  develops a story under `docs/<story>/`; **`suno-prompt`** turns a song idea into a Suno prompt;
+  **`make-comic`** runs the full idea→rendered-comic pipeline (composing the other pieces).
   The bullets below say when to reach for each — the skills carry the detailed procedure.
 - **Add or edit a comic — [`packages/comic/AUTHORING.md`](./packages/comic/AUTHORING.md) is mandatory
   reading and the single source of truth.** It covers the `<ScrollComic>`/`<Page>` mental model,
@@ -68,6 +69,14 @@ Full guide: [`docs/voice.md`](./docs/voice.md). When writing lyrics or story cop
   characters, beats, songs) as the single source of truth and drives idea →
   media, reusing `docs/storytelling.md` and the `suno-prompt` skill. Worked
   reference: [`docs/camping/`](./docs/camping/README.md).
+- **Make a comic (idea → rendered comic):** run the **`make-comic`** skill
+  (`.claude/skills/make-comic/`). A gated, six-stage workflow (idea → characters →
+  character images → storyboard → storyboard images → assemble) that composes
+  `new-story` (canon), **Google Flow** driven over a logged-in browser (character
+  + storyboard images, harvested into per-panel records under
+  `docs/<story>/storyboard/`), and `@badcode/comic` (assembly). Each generated
+  image keeps its exact prompt + revision log so "just like that, but change X"
+  is one cheap step. Worked reference: [`docs/magic-money-tree/`](./docs/magic-money-tree/README.md).
 
 ## Deeper context
 

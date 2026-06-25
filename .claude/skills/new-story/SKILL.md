@@ -10,6 +10,10 @@ capture it as canon under `docs/<story>/`, the single source of truth that the
 comic, the song(s), and any later media derive from. Drive it collaboratively
 from the CLI; write the files as you go.
 
+> For the **full idea → rendered-comic pipeline** — including generating the
+> character and storyboard images in Google Flow and assembling the comic — use
+> the **`make-comic`** skill, which composes this one for its canon stages.
+
 ## Read first
 
 - `CLAUDE.md` — what BadCode is and the repo map.
