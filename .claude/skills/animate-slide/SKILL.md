@@ -170,21 +170,28 @@ gsutil cp /tmp/animate-slide/clip.mp4 \
   gs://badcode-storage/comics-v2/<comic>/anim/<key>/video.mp4
 ```
 
-Then rebuild renditions, poster, and manifest:
+Then rebuild renditions, poster, and manifest. **⚠️ Use an ABSOLUTE `-m` path.**
+`npm run --workspace @badcode/cli` runs with its CWD set to `packages/cli/`, so a *relative*
+`-m apps/web/...` silently writes the manifest to `packages/cli/apps/web/...` (the wrong
+place). Anchor it to the repo root:
 
 ```bash
 npm run badcode --workspace @badcode/cli -- \
   assets-build -s comics-v2/<comic> \
-  -m apps/web/src/comics/<comic>/assets.manifest.json
+  -m "$(pwd)/apps/web/src/comics/<comic>/assets.manifest.json"
 ```
 
-Confirm the manifest now has an `"anim/<key>"` entry:
+(Run from the repo root so `$(pwd)` resolves correctly.) Confirm the new entry landed — note
+the manifest keeps animations under a top-level **`animations`** map (images are under
+`assets`):
 
 ```bash
-grep -n '"anim/<key>"' apps/web/src/comics/<comic>/assets.manifest.json
+node -e "const m=require('./apps/web/src/comics/<comic>/assets.manifest.json'); const a=m.animations['anim/<key>']; console.log(a ? {renditions:a.renditions.length, frameCount:a.frameCount, fps:a.fps, poster:a.poster} : 'MISSING')"
 ```
 
-Expected: an entry with `renditions`, `poster`, `frameCount`, `fps`.
+Expected: renditions/poster/frameCount/fps present (not `MISSING`). If a stray
+`packages/cli/apps/` tree appeared, you used a relative path — move the manifest to the real
+location and `rm -rf packages/cli/apps`.
 
 ### Step 7: Assemble — swap the page
 

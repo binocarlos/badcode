@@ -331,7 +331,7 @@ export function KarenComic() {
       </Page>
 
       <Page hold={1.4}>
-        <ImageWidget src={comic.resolve('img/i38.png')} />
+        <AnimationWidget animation={comic.resolveAnimation('anim/a12')} />
         <SpeechBubble x={49.91508152173913} y={26.780113290576285} fade tail="none">
           {'Once AI took jobs from the middle class, that\'s where things changed…'}
         </SpeechBubble>
