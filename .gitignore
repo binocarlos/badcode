@@ -10,8 +10,12 @@ build/
 coverage/
 .superpowers/
 
+# Flow automation: persistent, logged-in Chrome profile (never commit — holds Google session)
+.flow-profile/
+
 # Claude Code: share project config (skills, commands, settings.json) but keep
 # personal and ephemeral bits local.
 .claude/worktrees/
 .claude/settings.local.json
 
+.playwright-mcp

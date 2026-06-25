@@ -1,7 +1,9 @@
 #!/usr/bin/env -S npx tsx
 import { Command } from 'commander'
+import { mkdir } from 'node:fs/promises'
 import { loadComic } from './loadComic'
 import { buildPrompt } from './prompt'
+import { flowPrep } from './flow-prep'
 import { push } from './push'
 import { status } from './status'
 import { pull } from './pull'
@@ -45,6 +47,24 @@ program
     const comic = await loadComic(comicId)
     const result = buildPrompt(comic, toTarget(assetId, opts.character), opts.add)
     printPrompt(result)
+  })
+
+program
+  .command('flow-prep')
+  .description('Stage a slide for Flow: print the prompt and download its reference images to a dir.')
+  .argument('<comic>', 'comic id')
+  .argument('[assetId]', 'asset id from the comic metadata')
+  .option('-c, --character <id>', 'target a character sheet instead of an asset')
+  .requiredOption('-d, --dest <dir>', 'local directory to write reference images into')
+  .action(async (comicId: string, assetId: string | undefined, opts: { character?: string; dest: string }) => {
+    const comic = await loadComic(comicId)
+    await mkdir(opts.dest, { recursive: true })
+    const result = await flowPrep(new GsutilBucket(), comic, toTarget(assetId, opts.character), opts.dest)
+    console.log('\n--- PROMPT (paste into Flow) ---\n')
+    console.log(result.prompt)
+    console.log('\nREFERENCE FILES (attach in order):')
+    for (const ref of result.refs) console.log(`  ${ref.label} ${ref.file}`)
+    console.log('')
   })
 
 program
