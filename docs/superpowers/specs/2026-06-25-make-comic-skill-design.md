@@ -40,9 +40,15 @@ Each stage gates on user approval before the next begins.
    including the visual **sheet** description in house style. **Gate:** approve
    descriptions.
 3. **Character images** — ensure Flow connected (§ Flow connection); create a
-   **Flow Character** per character from its sheet description (the cross-panel
-   consistency anchor), harvest the portrait, record it (see § Record format,
-   applied to characters). **Gate:** approve / reroll.
+   **Flow Character for every named character** from its sheet description (the
+   cross-panel consistency anchor), harvest the portrait, record it (see § Record
+   format, applied to characters). **Gate:** approve / reroll.
+
+   > **Verified 2026-06-25:** a single Flow generation can cast **multiple Flow
+   > Characters** and honours each one's likeness (tested with Dawn + Marcus in
+   > one ward-corridor frame — both consistent with their Characters). So
+   > multi-character panels reference every relevant Character by name; there is
+   > no need to fall back to inline-describing the extras.
 4. **Storyboard** — discuss the panel sequence; write a per-panel record
    `storyboard/pNN.md` (planned scene, narration, characters referenced) plus
    `storyboard/index.md`. **Gate:** approve the board.
@@ -118,13 +124,16 @@ URL via `page.request` → `curl` to disk), and the Flow **Character** workflow.
 
 ## Packaging
 
-- `.claude/skills/make-comic/SKILL.md` — single-file skill (repo convention),
-  lean: the stage flow, the gates, what each stage reads/writes, and pointers.
-- `.claude/skills/make-comic/references/` (or one references file) — the
-  detail-heavy bits kept out of `SKILL.md`: the per-panel record format and the
-  Flow generate → harvest → record routine.
-- **Points at:** `docs/storytelling.md`, `docs/voice.md`, the `new-story` skill,
-  `docs/superpowers/flow-selectors.md`, and `packages/comic/AUTHORING.md`.
+- `.claude/skills/make-comic/SKILL.md` — **a single self-contained file** (repo
+  convention; per Kai, no separate references file). It carries the full
+  instructions: the stage flow and gates, what each stage reads/writes, the
+  per-panel record format, and the Flow connection check + the generate → harvest
+  → record routine (prompt → submit → wait → identify newest
+  `getMediaUrlRedirect` image → resolve signed URL via `page.request` → `curl` to
+  disk → write record), including multi-character casting.
+- **Points at (for depth, not duplicated):** `docs/storytelling.md`,
+  `docs/voice.md`, the `new-story` skill, `docs/superpowers/flow-selectors.md`,
+  and `packages/comic/AUTHORING.md`.
 
 ## Resume & progress
 
