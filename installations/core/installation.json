@@ -1,4 +1,0 @@
-{
-  "name": "core",
-  "description": "Minimal, product-neutral root image: shell + filesystem essentials (bash, coreutils, git, ripgrep, curl, jq, unzip) on the Agent Orange harness. Nothing project-specific. Every other installation extends this."
-}
