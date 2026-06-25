@@ -24,6 +24,6 @@ manufactured; "we can't afford it" is a choice about who counts, not a fact.
 | --- | --- | --- |
 | Story spine | [`story.md`](./story.md) | drafted Jun 2026 |
 | Storyboard | [`storyboard.md`](./storyboard.md) | 10 panels drafted |
-| Comic | `apps/web/src/comics/magic-money-tree/` | building (Flow auto-gen) |
+| Comic | `apps/web/src/comics/magic-money-tree/` | **built** — live at `/comics/magic-money-tree`; 10 Flow-generated frames (Dawn as a Flow Character), assembled scroll comic, verified rendering. Frames served from `public/` (bucket migration is a follow-up). Panel 9 (money tree) leaned illustrative — candidate for a photoreal reroll. |
 | Song | — | not started |
 | Video | — | not started |
