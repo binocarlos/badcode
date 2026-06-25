@@ -259,5 +259,9 @@ Touch only that one record/image — leave the rest of the comic untouched.
 
 - **Music.** Songs are the `suno-prompt` skill's job; only offer it as an optional
   follow-on after Stage 6.
+- **Animating a panel.** make-comic produces static panels. Turning a finished
+  panel into a Flow-generated scroll-scrubbed video is the **`animate-slide`**
+  skill's job — reach for it after Stage 6, on a comic that has been migrated to
+  the bucket pipeline (`basePath "comics-v2/<comic>"`).
 - **Bucket-pipeline migration** for derived assets (a noted follow-up).
 - **Fully-unattended runs.** The gates assume a human approving each stage.

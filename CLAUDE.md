@@ -39,7 +39,7 @@ Full guide: [`docs/voice.md`](./docs/voice.md). When writing lyrics or story cop
 | --- | --- | --- |
 | `docs/` | Vision, voice, story bible, method | …you need context |
 | `docs/suno-gpt/` | Suno-prompting toolkit (operating procedure + reference files) | …you're turning a song idea into a Suno prompt |
-| `.claude/skills/` | `new-story`, `suno-prompt`, `make-comic` — orchestrators for story capture, Suno prompting, and the full idea→comic pipeline | …you're capturing a story, making a track, or building a comic |
+| `.claude/skills/` | `new-story`, `suno-prompt`, `make-comic`, `animate-slide` — orchestrators for story capture, Suno prompting, the full idea→comic pipeline, and animating a finished panel | …you're capturing a story, making a track, building a comic, or animating a slide |
 | `docs/<story>/` | Per-story canon (concept, characters, beats, songs) — source of truth | …you're capturing or producing a story's media |
 | `packages/comic` | `@badcode/comic` — code-first comic rendering library (authoring guide: [`AUTHORING.md`](./packages/comic/AUTHORING.md)) | …you're building the viewer |
 | `apps/web` | The website (Vite + React + TS SPA) | …you're building pages/routes |
@@ -77,6 +77,10 @@ Full guide: [`docs/voice.md`](./docs/voice.md). When writing lyrics or story cop
   `docs/<story>/storyboard/`), and `@badcode/comic` (assembly). Each generated
   image keeps its exact prompt + revision log so "just like that, but change X"
   is one cheap step. Worked reference: [`docs/magic-money-tree/`](./docs/magic-money-tree/README.md).
+- **Animate a finished panel:** run the **`animate-slide`** skill
+  (`.claude/skills/animate-slide/`). Turns a finished comic's slide into a
+  Flow-generated scroll-scrubbed video. Requires the comic to be on the bucket
+  pipeline (`assets.manifest.json` with `basePath "comics-v2/<comic>"`).
 
 ## Deeper context
 
