@@ -42,7 +42,7 @@ export function KarenComic() {
       </Page>
 
       <Page hold={1.4}>
-        <ImageWidget src={comic.resolve('img/i05.png')} />
+        <AnimationWidget animation={comic.resolveAnimation('anim/a13')} />
         <SpeechBubble x={69.22815635451505} y={68.42610364683301} fade tail="none">
           {'Make sure you get that spot at the back, do you need me to tell you how to do your oh so complex job, hun?'}
         </SpeechBubble>

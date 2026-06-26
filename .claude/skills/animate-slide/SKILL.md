@@ -56,13 +56,19 @@ Video generation requires Flow connected. Confirm before producing:
 
 1. **CDP up?** `curl -s http://localhost:9222/json/version` returns JSON.
 2. **Playwright MCP available?** a `browser_*` tool is present in this session.
-3. **If not connected**, walk the user through setup:
-   - `./scripts/flow-chrome.sh` — launches the logged-in Chromium (WSL: uses Playwright's
-     bundled Chromium via WSLg). Log into Google **once**; the session persists in
-     `.flow-profile/`. Launch detached so it survives a session resume.
-   - If the Playwright MCP isn't loaded, `.mcp.json` only loads at startup — have the user
-     restart / `claude --resume` this thread, approve the `playwright` server, and confirm
-     via `/mcp`.
+3. **If CDP is down, launch the browser yourself** (no need to make the user do it):
+   run `./scripts/flow-chrome.sh` **as a background process** from your shell. It renders via
+   WSLg (so the user sees it) and exposes CDP on `:9222`. The already-loaded Playwright MCP
+   **re-attaches to the fresh browser on its own** — no session restart needed (verified). Poll
+   `curl -s http://localhost:9222/json/version` until it returns JSON, then use `browser_*`.
+   - The login persists in `.flow-profile/`, so a relaunch is **already signed in** — the user
+     only ever logs in the very first time.
+   - On relaunch, the auto-opened Flow tabs may show a transient `OAuthCallback` sign-in error
+     (a race from 3 tabs at once). Ignore it; a **fresh `browser_navigate` to
+     `https://labs.google/fx/tools/flow` loads signed-in**.
+   - Only if the Playwright MCP itself isn't loaded at all (no `browser_*` tool exists) does the
+     user need to restart / `claude --resume` and approve the `playwright` server (`.mcp.json`
+     loads at startup).
 4. Confirm a signed-in screenshot of `https://labs.google/fx/tools/flow`.
 
 For the full Flow video UI recipe — how a source image enters image→video mode, where the
@@ -74,6 +80,37 @@ motion prompt goes, the completion signal, aspect-ratio pinning, and the mp4 har
 > `docs/superpowers/plans/2026-06-25-animate-slide.md` Task 1.
 
 ---
+
+## Co-viewing the comic (interactive mode)
+
+When the user wants to **work on a slide together** — browse the comic, pick one, and iterate
+on its motion — run this co-view setup first. The whole thing is automatable; don't make the
+user start things by hand.
+
+1. **Start the dev server yourself**, backgrounded: `npm run dev` (from repo root). Read the
+   port from its output (`http://localhost:<port>/comics/<comic>`) — it's `5173` unless taken.
+   **Print the URL** so the user can open it on their side too if they like.
+2. **Ensure the shared browser** is up (the Flow-engine check above — launch
+   `./scripts/flow-chrome.sh` backgrounded if CDP is down).
+3. **Open the comic in the shared browser**: `browser_navigate` to
+   `http://localhost:<port>/comics/<comic>`. This one Chromium is **both** what the user sees
+   (WSLg) **and** what you screenshot (CDP) — so you're always looking at the same thing. When
+   you scroll, it scrolls on their screen.
+4. **Co-locate on a slide.** Scroll (`window.scrollTo` to a fraction of `scrollHeight`) and
+   `browser_take_screenshot`; identify the slide by its bubble text. Discuss it in plain
+   language until you agree on the target. Resolve it to `img/iNN` + page + new `anim/<key>`.
+5. **Iterate the motion prompt in conversation** (see below) — gate before generating.
+6. **Review in context** (loop step 7): after building in, switch to the comic tab, reload to
+   pick up the new manifest, scroll to the slide, and screenshot **a few scroll positions** —
+   the clip is scroll-scrubbed, so one screenshot is one frame; stepping the scroll gives a
+   flip-book of the motion in the real comic. Then decide: accept, or iterate.
+
+**Cheap-iteration rule:** judge the harvested clip (frames/scrub) **before** the upload+build
+step — `assets-build` is the slow part. Only build in once the clip is right; refine weak ones
+in the **same Flow session** first.
+
+**Tabs:** keep the comic on one tab and Flow on another; `browser_tabs` to switch. Driving Flow
+shows the user Flow; switching back to the comic shows them the result.
 
 ## Writing motion prompts
 

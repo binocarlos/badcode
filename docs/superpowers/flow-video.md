@@ -18,6 +18,9 @@
      Video-generation-default tab. Count tabs `1x|x2|x3|x4` → **1x** for a single clip.
    - **Confirm before generating** is its own setting: `Always` (default) makes the agent ask
      before spending credits — a useful gate; `Never` is full-auto. **Save**.
+   - ⚠️ **These defaults RESET per project** — a fresh project comes up as `Omni Flash`, so
+     re-select **Veo 3.1 - Quality** every new project/session. (Aspect 16:9 / 1x persisted as
+     defaults, but re-check them.)
 3. **Upload the source image** — top bar `button "add Add Media"` → menuitem
    `"upload Upload media"` → a **file chooser** opens (`browser_file_upload`).
    - ⚠️ **The Playwright MCP sandboxes uploads to repo roots.** Files under `/tmp` are
@@ -38,6 +41,12 @@
 7. **Wait — poll, never fixed-sleep.** Veo Quality can **queue** under load: *"Your video has
    been scheduled and is waiting in the queue due to high demand."* (a `warning Failed`-looking
    icon may show while queued — it is **not** a real failure). See "Completion signal" below.
+   - ⚠️ **Genuine failure vs. queue.** A real failure reads *"Oops, something went wrong!"* and
+     the agent **re-posts the Approve gate** — you must click **Approve again to retry** (Veo
+     failures are often transient; the retry then queues normally). Distinguish it from the
+     benign *"scheduled… waiting in the queue"* message (which just needs patience). On the
+     second slide the first attempt failed this way and the retry succeeded. So the poll must
+     watch for `Oops, something went wrong` and retry, not wait forever.
 8. **Harvest the .mp4** — same signed-URL trick as images (see "Harvest").
 
 ## Completion signal (how to know it's done) — IMPORTANT
