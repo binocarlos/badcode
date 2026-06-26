@@ -13,6 +13,11 @@ coverage/
 # Flow automation: persistent, logged-in Chrome profile (never commit — holds Google session)
 .flow-profile/
 
+# Flow automation: scratch screenshots from the Playwright/CDP browser workflow
+# (keep the folder + its README, ignore the captured PNGs)
+.flow-screenshots/*
+!.flow-screenshots/README.md
+
 # Claude Code: share project config (skills, commands, settings.json) but keep
 # personal and ephemeral bits local.
 .claude/worktrees/

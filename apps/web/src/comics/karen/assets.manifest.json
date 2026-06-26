@@ -557,6 +557,46 @@
       "height": 2160,
       "frameCount": 192,
       "fps": 24
+    },
+    "anim/a12": {
+      "thumbhash": "lBgODIRwaIZrl3aGeYUPr/2yyg==",
+      "poster": "derived/anim/a12.poster.webp",
+      "renditions": [
+        {
+          "height": 480,
+          "width": 854,
+          "proxy": "derived/anim/a12.480.mp4"
+        },
+        {
+          "height": 720,
+          "width": 1280,
+          "proxy": "derived/anim/a12.720.mp4"
+        }
+      ],
+      "width": 1280,
+      "height": 720,
+      "frameCount": 192,
+      "fps": 24
+    },
+    "anim/a13": {
+      "thumbhash": "ZAgKBIC3hTePd3d9iGQEhGgQOA==",
+      "poster": "derived/anim/a13.poster.webp",
+      "renditions": [
+        {
+          "height": 480,
+          "width": 854,
+          "proxy": "derived/anim/a13.480.mp4"
+        },
+        {
+          "height": 720,
+          "width": 1280,
+          "proxy": "derived/anim/a13.720.mp4"
+        }
+      ],
+      "width": 1280,
+      "height": 720,
+      "frameCount": 192,
+      "fps": 24
     }
   }
 }
