@@ -1,0 +1,31 @@
+{
+  "name": "@badcode/flow-mcp",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "badcode — MCP server that drives Google Flow over CDP to generate images/videos.",
+  "main": "./src/index.ts",
+  "module": "./src/index.ts",
+  "types": "./src/index.ts",
+  "bin": {
+    "badcode-flow-mcp": "./src/server.ts"
+  },
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "start": "tsx src/server.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.0",
+    "playwright": "^1.49.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "tsx": "^4.19.2",
+    "vitest": "^2.1.8"
+  }
+}
