@@ -2,8 +2,13 @@
 name: bob
 role: protagonist
 voice: "Scouse, weathered street-poet — adenoidal Merseyside drawl, softened 'ck', rising sing-song intonation, lo-fi phone texture"
-sheet: ""
+sheet: characters/img/bob-sheet.jpg
 signals: charity-shop coat layered against the cold, grey stubble, kind tired eyes, beanie, ~50 (looks older)
+flow_sheet_source:
+  project: b5d76bd1-c989-4040-bc8c-8649cf77ca93
+  media: cdabced2-a870-426c-af04-524e194bc6f6
+  url: https://labs.google/fx/tools/flow/project/b5d76bd1-c989-4040-bc8c-8649cf77ca93/edit/cdabced2-a870-426c-af04-524e194bc6f6
+  note: existing sheet in Flow Images; harvested as reference. Promote to an official Flow Character after flow MCP loads.
 ---
 
 # Bob

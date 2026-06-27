@@ -2,8 +2,13 @@
 name: tarquin
 role: antagonist → fellow victim
 voice: "Posh London financier — sneering, clipped RP, mocking and dismissive"
-sheet: ""
+sheet: characters/img/tarquin-sheet.jpg
 signals: middle-aged, slicked-back hair, smug, expensive charcoal overcoat, no tie, good watch, BMW X8 "wank tank", Châteauneuf-du-Pape, the Shard, executive ayahuasca retreat
+flow_sheet_source:
+  project: 8970bef9-0c6d-47f7-9aa0-8e4ad462eda8
+  media: 3bfdc65f-743a-477e-8199-d6d14fc6abd9
+  url: https://labs.google/fx/tools/flow/project/8970bef9-0c6d-47f7-9aa0-8e4ad462eda8/edit/3bfdc65f-743a-477e-8199-d6d14fc6abd9
+  note: existing sheet in Flow Images; harvested as reference. Promote to an official Flow Character after flow MCP loads.
 ---
 
 # Tarquin
