@@ -1,7 +1,8 @@
 /** MCP tool return shape (subset of the SDK's CallToolResult). */
 export interface ToolResult {
+  [key: string]: unknown
   content: { type: 'text'; text: string }[]
-  structuredContent?: unknown
+  structuredContent?: Record<string, unknown>
   isError?: boolean
 }
 
@@ -12,7 +13,7 @@ export const NOT_RUNNING_HINT =
 export function ok(data: unknown): ToolResult {
   return {
     content: [{ type: 'text', text: JSON.stringify(data) }],
-    structuredContent: data,
+    structuredContent: data as Record<string, unknown>,
   }
 }
 

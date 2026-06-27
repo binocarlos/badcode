@@ -3,6 +3,10 @@
     "playwright": {
       "command": "npx",
       "args": ["-y", "@playwright/mcp@latest", "--cdp-endpoint", "http://localhost:9222"]
+    },
+    "flow": {
+      "command": "npx",
+      "args": ["tsx", "packages/flow-mcp/src/server.ts"]
     }
   }
 }
