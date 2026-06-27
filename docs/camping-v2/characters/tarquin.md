@@ -49,3 +49,7 @@ these:
 Warmth touches him only as argument: the BMW's gold headlights, the Châteauneuf
 glass, the Shard's glass catching a cold sky. In the car park and the ruins the
 palette goes muted, cool, unforgiving.
+
+**Flow Character:** id `29e97ae3-39ba-49b2-88d8-7a2250713f6b` · tag `@Tarquin` ·
+project `camping-v2` (`9b729074-da88-4668-a442-458e9a0f15ac`) · created from
+`img/tarquin-sheet.jpg` (the harvested multi-angle sheet) · model nano-banana-2.

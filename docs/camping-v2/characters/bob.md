@@ -45,3 +45,7 @@ these:
 Lit by what is actually there — overcast car-park daylight, a sodium streetlamp,
 the cold blue before dawn. No flattering rim light. The realism is the argument:
 he is the man anyone has stepped around outside a supermarket.
+
+**Flow Character:** id `7566666e-b510-4dda-9f8b-ca23a4d57115` · tag `@Bob` ·
+project `camping-v2` (`9b729074-da88-4668-a442-458e9a0f15ac`) · created from
+`img/bob-sheet.jpg` (the harvested multi-angle sheet) · model nano-banana-2.
