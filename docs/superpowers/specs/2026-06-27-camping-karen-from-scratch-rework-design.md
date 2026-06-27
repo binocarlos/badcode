@@ -43,78 +43,88 @@ reference.
 4. **Isolation = git worktree/branch** (e.g. `feat/camping-v2-rework`), because
    commits in this repo auto-push (publishing). The rework does not happen
    directly on `main`.
-5. **Layered prompts.** A panel record authors the **scene** line only; a
-   **compose step** builds the exact Flow prompt from `style.md` + the scene +
-   the cast's character sheets, and records the composed string for provenance.
-   Editing `style.md` re-skins every panel without touching panel files.
-6. **Per-slide studio loop = reusable recipe** `docs/superpowers/flow-image.md`
-   (mirrors the existing `flow-video.md`), driven from `make-comic` Stage 5:
-   compose → generate N variations → compare → tweak/reroll → lock. No new skill.
+5. **Image generation = `@badcode/flow-mcp` + `badcode-art-direction` skill.**
+   Stills go through the `flow` MCP tools (`flow_generate_image`, `flow_refine`)
+   driven by the `badcode-art-direction` skill's plan → critique → generate →
+   look → refine/accept loop. No prose Flow puppeteering; no separate
+   `flow-image.md` recipe (the skill *is* that loop). Prereq:
+   `./scripts/flow-chrome.sh` + log in.
+6. **Style is global, with a thin per-comic layer.** The BadCode house style
+   lives in the `badcode-art-direction` skill (uniform across comics — "the
+   format, not an option"). Each comic adds a **thin** `docs/<story>/style.md`
+   the art-director reads *alongside* the global identity: comic-specific
+   specializations only (recurring locations, which beats earn warmth, motifs).
+   It is **not** a re-skin knob that overrides the global look.
 7. **Git is the prompt ledger.** Commit **per locked image** (variations are
-   scratch, not committed): each commit = one accepted slide + its exact composed
-   prompt + a revision note. History stays meaningful and diffable; the worktree
-   keeps it off `main` until merge.
-8. **Style is a first-class artifact** (`style.md`), established in Phase 1 — not
-   deferred. The *visual direction choice* (match the original look vs.
-   "clean-cinematic") is still made when we see the first Flow portrait, but it
-   then lives in one tunable file, not scattered across panels.
+   scratch, not committed): each commit = one accepted slide + its exact prompt +
+   a revision note. History stays meaningful and diffable; the worktree keeps it
+   off `main` until merge.
+8. **Panel record = the art-direction skill's format.** `pNN.md` carries
+   `panel`, `flow_media_id`, `model`, `status`, the **exact prompt sent**, and a
+   Revisions block — the standard the merged skill already defines. We do not
+   invent a separate layered schema.
 
 ## Authoring model (three altitudes)
 
-The reworked workflow separates three kinds of work, each with its own artifact
-and its own change cadence. This is the general BadCode comic workflow — the
-rework is its first full exercise.
+The workflow separates three kinds of work, each with its own artifact and its
+own change cadence. The merged tooling realises this model — the rework is its
+first full exercise.
 
 | Altitude | Artifact | Cadence | Yields |
 |---|---|---|---|
-| **Story** | `storyboard/pNN.md` | slow — story-bound | the **scene prompt** (what happens in the frame) |
-| **Character** | `characters/<name>.md` + Flow Character | medium — a redesign ripples to every panel they appear in | the **character sheet** (canonical appearance) |
-| **Style** | `style.md` | set early, tuned occasionally — changing it re-skins the whole comic | the **house style** |
+| **Story** | `storyboard/pNN.md` | slow — story-bound | the **scene** (what happens in the frame) |
+| **Character** | `characters/<name>.md` + Flow Character | medium — a redesign ripples to every panel they appear in | the **character sheet** (canonical appearance + signals) |
+| **Style** | `badcode-art-direction` skill (global) + thin `style.md` (per-comic) | global = fixed format; per-comic notes tuned occasionally | the **house style** |
 
-**Composition rule:** `final image prompt = STYLE ⊕ SCENE ⊕ CHARACTERS present`.
-The three layers are edited independently; the panel record stores the authored
-scene plus the composed prompt actually sent to Flow.
+**Composition** is done by the `badcode-art-direction` loop, not a hand-written
+compose step: `prompt = house-style preamble (skill) ⊕ scene (pNN) ⊕ character
+signals (canon) ⊕ thin per-comic notes (style.md)`. The panel record stores the
+**exact prompt sent** (the skill's format), so "just like that but change X" is
+one cheap `flow_refine`.
 
-### Layered panel record schema
+### Panel record format (defined by the art-direction skill)
 
 ```markdown
 ---
 panel: 12
 characters: [tarquin, bob]
 flow_media_id:            # filled when locked
-status: planned           # planned | locked
+model: nano-banana-2
+status: planned           # planned | done
 ---
-![panel 12](img/p12.jpg)  # added when locked
+![panel 12](img/p12.png)  # added when locked
 
-**Scene (authored):**
-> <what happens in the frame — story-derived, ~fixed>
+**Prompt (exact, sent to Flow):**
+> <house-style preamble> + <scene> + <character signals> ...
 
-**Composed prompt (exact, sent to Flow):**
-> <style.md house style> + <scene> + featuring Tarquin, Bob
+**Narration:** "<caption / speech>"
 
 **Revisions:**
 - v1 (<date>) — initial
-- v3 (<date>) — locked
 ```
 
-### `style.md` (new, per comic)
+### Thin `style.md` (per comic)
 
-One file naming the comic-wide visual direction: medium, linework/render, palette,
-lighting/mood, framing conventions, and any negative/exclude notes. It is the
-`STYLE` layer of every composed prompt. Changing it is how you re-skin the
-whole comic in one edit.
+Short. Only comic-specific specializations the global identity can't know:
+recurring locations and their class signifiers, which beats earn warmth (and
+why), recurring motifs. Read *alongside* the art-direction identity, never
+overriding it.
 
-## Pipeline upgrades to fold back
+## What the merge already provides (don't rebuild)
 
-These are general improvements, not camping-v2-only. They are applied to the
-`make-comic` / `new-story` skills so every future comic inherits them:
+The `flow-mcp` + `badcode-art-direction` merge means several earlier spec ideas
+are now superseded by shipped tooling:
 
-1. Add `style.md` as a first-class Phase-1 / Stage-1 artifact.
-2. Switch the panel record to the **layered schema** above (authored scene +
-   composed prompt) instead of a single frozen prompt string.
-3. Add `docs/superpowers/flow-image.md` (the studio loop) and have Stage 5
-   drive it.
-4. Adopt **commit-per-locked-image** as the Stage-5 cadence.
+- **Image gen** → `flow_generate_image` / `flow_refine` MCP tools (signed-URL
+  harvest to disk built in). Not prose puppeteering.
+- **The studio loop** → the `badcode-art-direction` skill (plan → critique →
+  generate → look → refine/accept) — richer than the proposed `flow-image.md`,
+  which is dropped.
+- **House style + calibration** → encoded once, globally, in the skill.
+- **Panel record format** → defined by the skill (above).
+
+The only general pipeline behaviour we still add on top: **commit-per-locked-
+image** as the Stage-5 cadence (orthogonal to the tooling).
 
 ## Approach
 
@@ -128,12 +138,11 @@ official six-stage `make-comic` workflow:
 | **Stage 1 — capture essence** | 1 (story), 2 (characters), 4 (storyboard) | `docs/camping-v2/` canon: `story.md`, `characters/*.md`, `style.md`, `storyboard/index.md` + `pNN.md` |
 | **Stage 2 — rework via Flow** | 3 (character images), 5 (panel images), 6 (assemble) | Flow character sheets + every panel image + the rendered `camping-v2` comic |
 
-This is mostly a composition of existing skills (`make-comic`, which itself
-composes `new-story` + Flow + `@badcode/comic`; then `animate-slide`), plus a
-small set of **pipeline upgrades folded back into those skills** (see "Pipeline
-upgrades to fold back"): a first-class `style.md`, the layered panel record, the
-`flow-image.md` studio loop, and commit-per-lock. The rework is the first full
-exercise of the upgraded workflow.
+This is a composition of existing skills: `make-comic` (which composes
+`new-story` for canon, then delegates image gen to `@badcode/flow-mcp` +
+`badcode-art-direction`, then `@badcode/comic` for assembly), and later
+`animate-slide`. The one behaviour we add is **commit-per-locked-image**. The
+rework is the first full exercise of this merged workflow end-to-end.
 
 ## Phase structure (Camping — the de-risking run)
 
@@ -145,26 +154,28 @@ Read `docs/camping/` + the imported `comic.json` and distil into `docs/camping-v
   the original README; resolve it explicitly with the user here.
 - `characters/{tarquin,bob}.md` — official character canon **with visual `sheet:`
   descriptions** (originals are bare). Include the two object-refs (tent, car).
-- `style.md` — the comic-wide house style (the `STYLE` layer). Drafted here from
-  the original's look; the final visual direction is locked in Phase 2.
-- `storyboard/index.md` + one `pNN.md` per panel using the **layered schema** —
-  authored **scene** line + the existing caption/bubble copy. No composed prompt
-  yet (that needs the locked style + characters).
+- `style.md` — the **thin** per-comic style notes (recurring locations, warm-
+  moment beats, motifs). Read alongside the global art-direction identity.
+- `storyboard/index.md` + one `pNN.md` per panel (`status: planned`) — the
+  authored **scene** + existing caption/bubble copy + the `characters:` present.
+  The exact Flow prompt is written when the panel is generated in Phase 3.
 
 Pure read + write-docs. Fully reviewable before any image is generated.
 
-### Phase 2 — Character images + style lock via Flow
-Generate a Flow Character + portrait + prompt-record for Tarquin and Bob (plus
-object-refs for the tent and car). This is where the **official characters** come
-into being. The **visual direction is chosen here** (match original vs.
-clean-cinematic) and written into `style.md` as the locked `STYLE` layer.
+### Phase 2 — Character images via flow-mcp
+For Tarquin and Bob (plus object-refs for the tent and car): create the Flow
+Character from the `sheet` description, generate the portrait via
+`flow_generate_image` / `flow_refine` under the `badcode-art-direction` skill,
+harvest to `docs/camping-v2/characters/img/<name>.png`, and append the character
+record. This is where the **official characters** come into being. No separate
+visual-direction decision — the house style is the global format.
 
-### Phase 3 — Panel images via the studio loop
-For each `pNN.md`: **compose** the prompt (`style.md` + scene + cast sheets), then
-run the `docs/superpowers/flow-image.md` studio loop — generate N variations,
-compare, tweak/reroll, **lock**. On lock: harvest the image, fill `flow_media_id`,
-set `status: locked`, record the exact composed prompt + revision note, and
-**commit that single panel**. Provenance is the git history plus the record.
+### Phase 3 — Panel images via the art-direction loop
+For each `pNN.md`: run the `badcode-art-direction` per-panel loop (plan → critique
+prompt → `flow_generate_image` → look → `flow_refine`/accept), casting every
+character in `characters:`. On accept: harvest to `storyboard/img/pNN.png`, fill
+`flow_media_id`, set `status: done`, record the **exact prompt** + revision note,
+and **commit that single panel**. Provenance is the git history plus the record.
 
 ### Phase 4 — Assemble
 Build `apps/web/src/comics/camping-v2/` against `@badcode/comic`
@@ -192,8 +203,9 @@ Identical phase structure. Deltas only:
 - **Gated, agent-driven.** `make-comic` and `animate-slide` are gated skills:
   every *produce* step waits for user approval. No silent batch generation of
   ~33 images.
-- **Flow needs a logged-in browser.** Runs over the user's session; the user may
-  need to be present to drive/auth it.
+- **Flow needs a logged-in Chrome.** Run `./scripts/flow-chrome.sh` and log in;
+  if a `flow` tool returns `{ error: true, code: "NOT_RUNNING" }`, that login is
+  missing. The user may need to be present to drive/auth it.
 - **Originals frozen.** Nothing under `docs/camping/`, `docs/karen/`,
   `apps/web/src/comics/{camping,karen}/`, or `comics-v2/{camping,karen}` is
   edited.
@@ -202,21 +214,19 @@ Identical phase structure. Deltas only:
 
 - Songs (the `suno-prompt` track work is tracked separately per story).
 - Any change to the imported originals.
-- Net-new *skills* — the pipeline upgrades extend existing skills + add one
-  recipe doc (`flow-image.md`); no standalone new skill is built.
+- Net-new *skills* or recipes — image gen, the studio loop, and the house style
+  already shipped in the `flow-mcp` + `badcode-art-direction` merge.
 
 ## Success criteria
 
 - `docs/camping-v2/` is a complete, faithful canon (story + characters with
-  `sheet` descriptions + `style.md` + per-panel storyboard) reviewable
+  `sheet` descriptions + thin `style.md` + per-panel storyboard) reviewable
   independently of art.
-- Every Camping character and panel has a Flow-generated asset **and** a layered
-  prompt-record; editing `style.md` re-skins the comic and changing a scene/
-  character is one cheap regen step.
-- Each locked panel is its own commit carrying the exact composed prompt — git is
-  a usable prompt history (diff / revert / branch a prompt).
+- Every Camping character and panel has a Flow-generated asset **and** a
+  prompt-record (the art-direction format); changing a scene/character/prompt is
+  one cheap `flow_refine`.
+- Each locked panel is its own commit carrying the exact prompt — git is a usable
+  prompt history (diff / revert / branch a prompt).
 - `camping-v2` renders in the browser via `@badcode/comic` on the bucket
   pipeline.
-- The pipeline upgrades (`style.md`, layered records, `flow-image.md`,
-  commit-per-lock) live in the `make-comic` / `new-story` skills, so `karen-v2`
-  and every future comic inherit them.
+- `karen-v2` follows on the identical, now-proven loop.
