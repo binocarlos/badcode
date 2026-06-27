@@ -44,7 +44,11 @@ cheap step. Spec:
 
 1. **Essence capture** (this phase) — canon only: story, characters + sheet
    descriptions, thin style, storyboard. No images.
-2. Character images via `flow-mcp` + `badcode-art-direction`.
+2. Character images via `flow-mcp` + `badcode-art-direction`. **Note:** existing
+   Tarquin/Bob sheets already live in Flow's *Images* (not the *Characters*
+   feature). Phase 2 opens by harvesting those and **promoting them to official
+   Flow Characters** — reuse the look, don't regenerate from a blank prompt —
+   then refine only if needed.
 3. Panel images via the art-direction loop; commit per locked image.
 4. Assemble with `@badcode/comic`; verify it renders.
 5. Animations later via `animate-slide` (after bucket-pipeline migration).
