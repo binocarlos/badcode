@@ -10,7 +10,7 @@ function fakeRequest(opts: {
   contentType?: string
 }): RequestLike {
   return {
-    get: vi.fn(async (url: string) => ({
+    get: vi.fn(async (_url: string) => ({
       url: () => opts.finalUrl,
       body: async () => opts.body ?? Buffer.from(''),
       headers: () => ({ 'content-type': opts.contentType ?? 'image/jpeg' }),
