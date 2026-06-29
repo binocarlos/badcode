@@ -32,6 +32,24 @@ idea pops  ──/new-idea──▶  docs/ideas/<slug>.md   (seed)
 *before* that. The two never overlap: an idea file is a brain-dump; a `docs/<story>/`
 folder is the source of truth.
 
+### Front door vs. workshop (the two skills' relationship)
+
+The skills feel adjacent but answer different questions, at different commitment levels:
+
+- **`new-idea` — the front door.** *"Should I keep this thought?"* One prose file + an
+  index row. Zero development, zero commitment. Doesn't yet care whether the idea becomes
+  a comic, a shorts series, a song, or nothing. Most ideas live here as `seed` or `parked`.
+- **`new-story` — the workshop.** *"Let's make this real."* Builds the full `docs/<story>/`
+  canon — the source of truth the comic, music, and later media derive from. Real work.
+
+They do not collide; they **chain**. `new-story`'s own first step is "take the idea — a
+fragment, don't demand a brief," so an idea file is exactly the input `new-story` wants.
+The seam between them is the hand-off offer below.
+
+The inbox is **optional, not a gate.** An idea the user is already sure about can go
+straight to `new-story`; the inbox exists for the "hold that thought" flow, not to force
+every idea through a queue.
+
 ## Structure
 
 ```
@@ -86,12 +104,16 @@ A small skill in `.claude/skills/new-idea/`. Triggers: "record this idea", "new 
    and a faithful prose brain-dump in the BadCode voice. Pick a kebab-case `<slug>`.
 2. **Index** — add or update the idea's row in `docs/ideas/README.md` (hook, best-guess
    media, status `seed`).
-3. **Hand off** — when the user says an idea is ready to develop, invoke the `new-story`
-   skill (passing the idea file as the starting fragment), then flip the README row to
-   `developing`/`graduated` and link the resulting `docs/<story>/`.
+3. **Offer the hand-off (always, as the closing step)** — after capturing, the skill
+   does not go silent. It ends by offering the next step:
+   > *"Captured as a seed. Want to develop this now with `new-story`, or leave it for later?"*
+   A suggestion, not an automatic jump — the default answer is usually "leave it," but the
+   door to `new-story` is always shown so the path forward is never a dead end. If the user
+   says go, invoke `new-story` (passing the idea file as the starting fragment) and flip the
+   README row to `developing`/`graduated` with a link to the resulting `docs/<story>/`.
 
 The skill stays deliberately thin: it does not develop characters, beats, or songs —
-that is `new-story`'s job. It captures and tracks.
+that is `new-story`'s job. It captures, tracks, and points at the workshop door.
 
 ## Discoverability
 
@@ -131,6 +153,8 @@ double as worked examples):
 
 1. `docs/ideas/` exists with a README index and the two seed ideas.
 2. Saying "record this idea: …" produces a new `docs/ideas/<slug>.md` + a README row,
-   with no further prompting needed.
-3. Saying "let's develop <idea>" hands off cleanly to `new-story` and updates the status.
+   with no further prompting needed, and the skill closes by offering the `new-story`
+   hand-off ("develop now, or leave it for later?").
+3. Saying "let's develop <idea>" (or accepting the closing offer) hands off cleanly to
+   `new-story` and updates the status.
 4. `CLAUDE.md` points to the inbox so the convention is discoverable next session.
