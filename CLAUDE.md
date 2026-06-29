@@ -38,8 +38,9 @@ Full guide: [`docs/voice.md`](./docs/voice.md). When writing lyrics or story cop
 | Path | What | Start here if… |
 | --- | --- | --- |
 | `docs/` | Vision, voice, story bible, method | …you need context |
+| `docs/ideas/` | The idea inbox — raw ideas (minimal prose) before they become stories | …you have a new idea to park, or want to develop one |
 | `docs/suno-gpt/` | Suno-prompting toolkit (operating procedure + reference files) | …you're turning a song idea into a Suno prompt |
-| `.claude/skills/` | `new-story`, `suno-prompt`, `make-comic`, `animate-slide` — orchestrators for story capture, Suno prompting, the full idea→comic pipeline, and animating a finished panel | …you're capturing a story, making a track, building a comic, or animating a slide |
+| `.claude/skills/` | `new-idea`, `new-story`, `suno-prompt`, `make-comic`, `animate-slide` — orchestrators for parking an idea, story capture, Suno prompting, the full idea→comic pipeline, and animating a finished panel | …you're capturing an idea, developing a story, making a track, building a comic, or animating a slide |
 | `docs/<story>/` | Per-story canon (concept, characters, beats, songs) — source of truth | …you're capturing or producing a story's media |
 | `packages/comic` | `@badcode/comic` — code-first comic rendering library (authoring guide: [`AUTHORING.md`](./packages/comic/AUTHORING.md)) | …you're building the viewer |
 | `apps/web` | The website (Vite + React + TS SPA) | …you're building pages/routes |
@@ -64,6 +65,12 @@ Full guide: [`docs/voice.md`](./docs/voice.md). When writing lyrics or story cop
   **`suno-prompt`** skill (`.claude/skills/suno-prompt/`) turns it into a Suno style prompt,
   exclude-styles list, and — on request — lyrics, in the BadCode voice. It runs on the toolkit in
   [`docs/suno-gpt/`](./docs/suno-gpt/system-prompt.txt) and defaults to drum & bass.
+- **Record an idea (the inbox):** run the **`new-idea`** skill
+  (`.claude/skills/new-idea/`). It parks an idea the second it pops as a
+  minimal-prose file under [`docs/ideas/`](./docs/ideas/README.md) and adds a
+  row to the inbox index — then offers to develop it with `new-story`. The inbox
+  is the stage *before* canon: optional, zero-commitment, medium-agnostic (a
+  comic, a short, a song, or nothing yet). Develop when ready; don't develop here.
 - **Capture / develop a story:** run the **`new-story`** skill
   (`.claude/skills/new-story/`). It scaffolds `docs/<story>/` (concept,
   characters, beats, songs) as the single source of truth and drives idea →
