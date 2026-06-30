@@ -2,15 +2,23 @@ import { chromium, type Browser, type Page } from 'playwright'
 import { pickActiveCanvas } from './canvas'
 import { toCanvasImgs, SCRAPE_IMGS, type RawImg } from './dom'
 import { harvestToFile, contentTypeOf } from './harvest'
+import { pickProject, SCRAPE_PROJECTS, type ProjectTile } from './project'
+import { batchOutPath } from './batch'
 
 const FLOW_URL = 'https://labs.google/fx/tools/flow'
 const DEFAULT_ENDPOINT = `http://localhost:${process.env.FLOW_CDP_PORT ?? '9222'}`
 const TURN_TIMEOUT_MS = 90_000
 const VIDEO_TIMEOUT_MS = 8 * 60_000
-const POLL_MS = 5_000
+// Image/grid polls are cheap in-page DOM scrapes, so poll fast (~1s of discovery latency).
+const POLL_MS = 1_000
+// The video poll additionally makes a content-type HTTP request per candidate media, so keep it
+// a touch slower to stay polite to Flow's media endpoint over the minutes-long generation wait.
+const VIDEO_POLL_MS = 3_000
 
 export interface ImageResult { path: string; mediaId: string; width: number; height: number }
 export interface MediaResult { path: string; mediaId: string }
+export interface BatchItem { index: number; prompt: string; path: string; mediaId: string; width: number; height: number }
+export interface CharacterRef { name: string }
 export interface FlowStatus { loggedIn: boolean; projectOpen: boolean; url: string }
 
 export class FlowClient {
@@ -48,13 +56,44 @@ export class FlowClient {
     await this.page.waitForURL(/\/project\//, { timeout: TURN_TIMEOUT_MS })
   }
 
+  async openProject(name: string): Promise<void> {
+    // Always start from the projects list so the name match is honoured even if a
+    // different project is already open.
+    if (/\/project\//.test(this.page.url()) || !this.page.url().includes('labs.google/fx/tools/flow')) {
+      await this.page.goto(FLOW_URL, { waitUntil: 'domcontentloaded' })
+    }
+    // The project grid hydrates AFTER domcontentloaded, so poll the scrape until the
+    // named project appears rather than reading an empty list once.
+    const deadline = Date.now() + TURN_TIMEOUT_MS
+    let href: string | null = null
+    while (Date.now() < deadline) {
+      const tiles = (await this.page.evaluate(`(${SCRAPE_PROJECTS})()`)) as ProjectTile[]
+      href = pickProject(tiles, name)
+      if (href) break
+      await this.page.waitForTimeout(POLL_MS)
+    }
+    if (!href) throw new Error('PROJECT_NOT_FOUND')
+    // SPA-navigate by clicking the project tile. A second hard goto (list -> project)
+    // races the app's hydration and tips it into its client-side error boundary.
+    await this.page.locator(`a[href="${href}"]`).first().click()
+    await this.page.waitForURL(/\/project\//, { timeout: TURN_TIMEOUT_MS })
+    // The create bar hydrates after navigation; wait for the (enabled) prompt textbox
+    // before returning so callers never interact with a half-rendered editor.
+    await this.page
+      .locator('div[role="textbox"][contenteditable="true"]')
+      .first()
+      .waitFor({ state: 'visible', timeout: TURN_TIMEOUT_MS })
+  }
+
   private async submitPrompt(prompt: string): Promise<void> {
-    // The prompt box is an empty-named contenteditable; locate it by the
-    // placeholder text it renders while empty (its accessible name is blank).
-    const box = this.page.getByRole('textbox').filter({ hasText: /What do you want to create/i })
+    // Confirmed live 2026-06-30: the prompt box is a contenteditable div with role="textbox"
+    // and NO own placeholder text (the old hasText filter matched nothing). A sibling <textarea>
+    // also exposes the textbox role, so target the contenteditable div directly.
+    const box = this.page.locator('div[role="textbox"][contenteditable="true"]').first()
     await box.fill(prompt)
-    // The bar has several "Create" buttons; the submit is the arrow_forward one.
-    await this.page.getByRole('button', { name: /arrow_forward Create/i }).click()
+    // Submit is the arrow_forward button; its accessible name renders as "arrow_forwardCreate"
+    // (no space) — allow optional whitespace between the icon ligature and the label.
+    await this.page.getByRole('button', { name: /arrow_forward\s*Create/i }).click()
   }
 
   /**
@@ -63,21 +102,49 @@ export class FlowClient {
    * Idempotent — safe to call when already in image mode.
    */
   private async ensureImageMode(): Promise<void> {
-    // The mode/config button is the only create-bar button whose label carries
-    // an aspect-ratio icon ("crop_…"); open its menu.
-    await this.page.getByRole('button', { name: /crop_/ }).first().click()
-    await this.page.getByRole('tab', { name: /image Image/i }).click()
+    // Wait for the create bar to hydrate (it renders after navigation).
+    await this.page
+      .locator('div[role="textbox"][contenteditable="true"]')
+      .first()
+      .waitFor({ state: 'visible', timeout: TURN_TIMEOUT_MS })
+    // The bar toggles between "Agent" (conversational) and direct generation; the image config
+    // (the "crop_…" button) only exists in generation mode. If it isn't showing we're in Agent
+    // mode — click the Agent toggle to leave it. (Gating on crop_'s presence is more reliable
+    // than reading the toggle's aria-pressed, which lags after navigation.)
+    const crop = this.page.getByRole('button', { name: /crop_/ }).first()
+    if (!(await crop.count())) {
+      const agent = this.page.getByRole('button', { name: 'Agent', exact: true })
+      if (await agent.count()) await agent.click()
+    }
+    // Open the config menu (auto-waits for crop_ to appear after any mode switch).
+    await crop.click()
+    // The tab's accessible name concatenates the icon ligature with the label, no space.
+    await this.page.getByRole('tab', { name: /image\s*Image/i }).click()
     const oneX = this.page.getByRole('tab', { name: '1x', exact: true })
     if (await oneX.count()) await oneX.click().catch(() => {})
     await this.page.keyboard.press('Escape')
   }
 
-  /** Poll the canvas until a media img is present, then return its name + size. */
-  private async waitForActiveCanvas(timeoutMs: number): Promise<{ name: string; width: number; height: number }> {
+  /** Snapshot the media UUIDs currently on the canvas, so a later turn can detect new ones. */
+  private async snapshotMediaNames(): Promise<Set<string>> {
+    const raw = (await this.page.evaluate(`(${SCRAPE_IMGS})()`)) as RawImg[]
+    return new Set(toCanvasImgs(raw).map((i) => i.name))
+  }
+
+  /**
+   * Poll until a media img appears whose UUID was NOT present in `before`, then return the
+   * largest such image. Each Flow turn yields a fresh UUID, so comparing against the pre-submit
+   * snapshot is what distinguishes a new generation from the previous (still on-canvas) image —
+   * waiting for "any image" would harvest the stale previous frame on refine/batch turns.
+   */
+  private async waitForNewCanvas(
+    before: Set<string>,
+    timeoutMs: number,
+  ): Promise<{ name: string; width: number; height: number }> {
     const deadline = Date.now() + timeoutMs
     while (Date.now() < deadline) {
       const raw = (await this.page.evaluate(`(${SCRAPE_IMGS})()`)) as RawImg[]
-      const imgs = toCanvasImgs(raw)
+      const imgs = toCanvasImgs(raw).filter((i) => !before.has(i.name))
       const name = pickActiveCanvas(imgs)
       if (name) {
         const hit = imgs.find((i) => i.name === name)!
@@ -88,23 +155,104 @@ export class FlowClient {
     throw new Error('TIMEOUT')
   }
 
-  async generateImage(prompt: string, outPath: string): Promise<ImageResult> {
+  async generateImage(
+    prompt: string,
+    outPath: string,
+    opts?: { character?: string },
+  ): Promise<ImageResult> {
     await this.ensureProject()
     await this.ensureImageMode()
-    await this.submitPrompt(prompt)
-    const { name, width, height } = await this.waitForActiveCanvas(TURN_TIMEOUT_MS)
+    const before = await this.snapshotMediaNames()
+    if (opts?.character) await this.submitWithCharacter(opts.character, prompt)
+    else await this.submitPrompt(prompt)
+    const { name, width, height } = await this.waitForNewCanvas(before, TURN_TIMEOUT_MS)
     await harvestToFile(this.page.request, name, outPath)
     return { path: outPath, mediaId: name, width, height }
   }
 
+  /**
+   * Cast a project Character into the next generation. Mapped live 2026-06-30: type "@" to open
+   * the asset picker, select the "<Name> — Character" option, "Add to Prompt" (which inserts an
+   * inline character-reference chip), then APPEND the scene text after the chip and submit.
+   * The scene text must be appended, not filled — `fill()` would clear the chip and lose the
+   * reference (a plain "@Name" typed as text does NOT bind the character).
+   */
+  private async submitWithCharacter(name: string, prompt: string): Promise<void> {
+    const box = this.page.locator('div[role="textbox"][contenteditable="true"]').first()
+    await box.click()
+    await box.pressSequentially('@')
+    const esc = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+    await this.page
+      .getByRole('option', { name: new RegExp(`${esc}\\s*Character`, 'i') })
+      .first()
+      .click()
+    await this.page.getByRole('button', { name: /Add to Prompt/i }).click()
+    // Move to the end of the chip and append the scene text (fill() would wipe the chip).
+    await box.click()
+    await this.page.keyboard.press('End')
+    await this.page.keyboard.type(` ${prompt}`)
+    await this.page.getByRole('button', { name: /arrow_forward\s*Create/i }).click()
+  }
+
+  async generateBatch(prompts: string[], outDir: string): Promise<BatchItem[]> {
+    await this.ensureProject()
+    await this.ensureImageMode()
+    const items: BatchItem[] = []
+    for (let i = 0; i < prompts.length; i++) {
+      const prompt = prompts[i]!
+      const before = await this.snapshotMediaNames()
+      await this.submitPrompt(prompt)
+      const { name, width, height } = await this.waitForNewCanvas(before, TURN_TIMEOUT_MS)
+      const path = batchOutPath(outDir, i)
+      await harvestToFile(this.page.request, name, path)
+      items.push({ index: i, prompt, path, mediaId: name, width, height })
+    }
+    return items
+  }
+
   /** Follow-up correction in the SAME session, then harvest the new active canvas. */
   async refine(prompt: string, outPath: string): Promise<MediaResult> {
+    const before = await this.snapshotMediaNames()
     await this.submitPrompt(prompt)
-    const { name } = await this.waitForActiveCanvas(TURN_TIMEOUT_MS)
+    const { name } = await this.waitForNewCanvas(before, TURN_TIMEOUT_MS)
     await harvestToFile(this.page.request, name, outPath)
     return { path: outPath, mediaId: name }
   }
 
+  /**
+   * Create a reusable, castable Flow Character from one or more reference images.
+   * Mapped live 2026-06-30: Characters sidebar -> "New Character" card -> Upload (file chooser)
+   * -> fill "Character Name" -> Done. Returns once the character editor is left.
+   */
+  async createCharacter(name: string, refImages: string[]): Promise<CharacterRef> {
+    await this.ensureProject()
+    await this.page.getByRole('button', { name: /accessibility_new\s*Characters/i }).click()
+    // "New Character" is a clickable card (a div with an icon ligature), not a <button>.
+    await this.page.getByText('New Character', { exact: true }).first().click()
+    await this.page.waitForURL(/\/characters\b/, { timeout: TURN_TIMEOUT_MS })
+    // Upload the reference(s); the file chooser accepts the array.
+    const chooser = this.page.waitForEvent('filechooser')
+    await this.page.getByRole('button', { name: /upload\s*Upload/i }).first().click()
+    await (await chooser).setFiles(refImages)
+    // After upload the character editor opens with a "Character Name" field defaulting to
+    // "Untitled Character"; set it, then finalize.
+    const nameInput = this.page.locator('input[placeholder="Character Name"]')
+    await nameInput.waitFor({ state: 'visible', timeout: TURN_TIMEOUT_MS })
+    await nameInput.fill(name)
+    await this.page.getByRole('button', { name: /^Done$/ }).click()
+    // Done returns to the project root (leaves /character/<id>).
+    await this.page.waitForURL((u) => /\/project\/[0-9a-f-]+$/.test(u.toString()), {
+      timeout: TURN_TIMEOUT_MS,
+    })
+    return { name }
+  }
+
+  /**
+   * Animate a still into an image→video clip (Veo). Mapped live 2026-06-30 + flow-video.md:
+   * Add Media → "Upload media" (file chooser) → the uploaded tile's more_vert → "Animate"
+   * (attaches the source frame and switches the bar to Video mode) → motion prompt → submit →
+   * approve the credit gate if shown → poll for the new video media and harvest the .mp4.
+   */
   async generateVideo(
     imagePath: string,
     motion: string,
@@ -112,28 +260,96 @@ export class FlowClient {
     _model?: string,
   ): Promise<MediaResult> {
     await this.ensureProject()
-    // Upload the source frame via Add Media → file chooser.
+    // 1. Upload the source frame.
+    await this.page.getByRole('button', { name: /add\s*Add Media/i }).click()
     const chooser = this.page.waitForEvent('filechooser')
-    await this.page.getByRole('button', { name: /Add Media/i }).click()
+    await this.page.getByRole('menuitem', { name: /upload\s*Upload media/i }).click()
     await (await chooser).setFiles(imagePath)
-    // Attach as animation source, then prompt + create. (See flow-video.md.)
+    // 2. Attach it as the animation source.
+    await this.openAnimateMenu()
+    // 3. Motion prompt + submit (capture the pre-submit media set to detect the new clip).
+    const before = new Set(await this.scrapeMediaNames())
     await this.submitPrompt(motion)
-    // Video is ready when the media's content-type is video/*.
-    const name = await this.waitForVideo(VIDEO_TIMEOUT_MS)
+    // 4. Approve the credit gate if Flow posts one (Veo Quality = 100 credits).
+    await this.approveCreditGateIfPresent()
+    // 5. Poll for the new video media and harvest.
+    const name = await this.waitForVideoClip(before, VIDEO_TIMEOUT_MS)
     await harvestToFile(this.page.request, name, outPath)
     return { path: outPath, mediaId: name }
   }
 
-  private async waitForVideo(timeoutMs: number): Promise<string> {
+  /**
+   * Open the "Animate" action on an uploaded still. Media tiles only reveal their more_vert on
+   * hover, and a media-rich project has several "Generated image" tiles (including video posters
+   * whose menu has no Animate), so hover each tile, click the revealed more_vert, and accept the
+   * first whose menu exposes Animate.
+   *
+   * NOTE (2026-06-30): the end-to-end image→video flow is PROVEN (a real .mp4 was generated and
+   * harvested through this exact path), but this tile-targeting step has only been hardened, not
+   * re-validated clean against a media-cluttered project — see docs/superpowers/flow-video.md.
+   */
+  private async openAnimateMenu(): Promise<void> {
+    const tiles = this.page.locator('img[alt="Generated image"]')
+    await tiles.first().waitFor({ state: 'visible', timeout: TURN_TIMEOUT_MS })
+    const n = await tiles.count()
+    for (let i = 0; i < n; i++) {
+      await tiles.nth(i).hover()
+      const more = this.page
+        .locator('button:has-text("more_vert"):near(img[alt="Generated image"])')
+        .first()
+      if (!(await more.count())) continue
+      await more.click()
+      const animate = this.page.getByRole('menuitem', { name: /motion_blur\s*Animate/i })
+      if (await animate.count()) {
+        await animate.click()
+        return
+      }
+      await this.page.keyboard.press('Escape') // wrong tile (e.g. a video) — close and try the next
+    }
+    throw new Error('ANIMATE_NOT_FOUND')
+  }
+
+  /** Media UUIDs from <video>/<source>/<img> nodes carrying a non-thumbnail getMediaUrlRedirect src. */
+  private static readonly SCRAPE_MEDIA_NAMES = `() => {
+    const names = []
+    for (const el of document.querySelectorAll('video, source, img')) {
+      const s = el.currentSrc || el.src || el.getAttribute('src') || ''
+      if (s.includes('getMediaUrlRedirect') && !s.includes('THUMBNAIL')) {
+        try { const n = new URL(s, location.href).searchParams.get('name'); if (n) names.push(n) } catch (e) {}
+      }
+    }
+    return names
+  }`
+
+  private async scrapeMediaNames(): Promise<string[]> {
+    return (await this.page.evaluate(`(${FlowClient.SCRAPE_MEDIA_NAMES})()`)) as string[]
+  }
+
+  /** Click the credit-confirmation "Approve" if Flow posts one; no-op if there is no gate. */
+  private async approveCreditGateIfPresent(timeoutMs = 20_000): Promise<void> {
+    const approve = this.page.getByRole('button', { name: /^Approve$/ }).first()
+    try {
+      await approve.waitFor({ state: 'visible', timeout: timeoutMs })
+      await approve.click()
+    } catch {
+      // No gate (Confirm=Never / direct generation) — nothing to approve.
+    }
+  }
+
+  /** Poll for a media name not present pre-submit whose content-type is video/*; retry a transient gate. */
+  private async waitForVideoClip(before: Set<string>, timeoutMs: number): Promise<string> {
     const deadline = Date.now() + timeoutMs
     while (Date.now() < deadline) {
-      const raw = (await this.page.evaluate(`(${SCRAPE_IMGS})()`)) as RawImg[]
-      const name = pickActiveCanvas(toCanvasImgs(raw))
-      if (name) {
-        const ct = await contentTypeOf(this.page.request, name)
-        if (ct.startsWith('video/')) return name
+      // A genuine failure re-posts the gate ("Oops, something went wrong") — re-approve to retry.
+      if (await this.page.getByText(/Oops, something went wrong/i).count()) {
+        await this.approveCreditGateIfPresent(5_000)
       }
-      await this.page.waitForTimeout(POLL_MS)
+      for (const n of await this.scrapeMediaNames()) {
+        if (before.has(n)) continue
+        const ct = await contentTypeOf(this.page.request, n)
+        if (ct.startsWith('video/')) return n
+      }
+      await this.page.waitForTimeout(VIDEO_POLL_MS)
     }
     throw new Error('TIMEOUT')
   }

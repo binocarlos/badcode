@@ -21,6 +21,7 @@ function toToolError(err: unknown): ToolResult {
     return fail('NOT_RUNNING', 'Could not attach to Chrome on the CDP port.', NOT_RUNNING_HINT)
   }
   if (msg === 'TIMEOUT') return fail('TIMEOUT', 'Flow did not finish generating in time.')
+  if (msg === 'PROJECT_NOT_FOUND') return fail('PROJECT_NOT_FOUND', 'No Flow project with that name.', 'Check the name in the Flow projects list.')
   return fail('FLOW_ERROR', msg)
 }
 
@@ -43,19 +44,41 @@ server.registerTool(
 )
 
 server.registerTool(
+  'flow_open_project',
+  {
+    title: 'Open project',
+    description: 'Open an existing Flow project by its exact name (e.g. "camping-v2"). Errors PROJECT_NOT_FOUND if absent.',
+    inputSchema: { name: z.string().min(1) },
+  },
+  async ({ name }) => {
+    try {
+      return await withClient(async (c) => {
+        await c.openProject(name)
+        return ok(await c.status())
+      })
+    } catch (err) {
+      return toToolError(err)
+    }
+  },
+)
+
+server.registerTool(
   'flow_generate_image',
   {
     title: 'Generate image',
     description:
-      'Generate ONE image in Flow from a prompt and save it to outPath (absolute). Returns { path, mediaId, width, height }.',
+      'Generate ONE image in Flow from a prompt and save it to outPath (absolute). Pass character to cast a project Character (created via flow_create_character) for cross-slide consistency. Returns { path, mediaId, width, height }.',
     inputSchema: {
       prompt: z.string().min(1),
       outPath: z.string().min(1),
+      character: z.string().min(1).optional(),
     },
   },
-  async ({ prompt, outPath }) => {
+  async ({ prompt, outPath, character }) => {
     try {
-      return await withClient(async (c) => ok(await c.generateImage(prompt, outPath)))
+      return await withClient(async (c) =>
+        ok(await c.generateImage(prompt, outPath, character ? { character } : undefined)),
+      )
     } catch (err) {
       return toToolError(err)
     }
@@ -98,6 +121,46 @@ server.registerTool(
   async ({ imagePath, motion, model, outPath }) => {
     try {
       return await withClient(async (c) => ok(await c.generateVideo(imagePath, motion, outPath, model)))
+    } catch (err) {
+      return toToolError(err)
+    }
+  },
+)
+
+server.registerTool(
+  'flow_generate_batch',
+  {
+    title: 'Generate image batch',
+    description:
+      'Generate N images sequentially in ONE Flow session from an ordered list of prompts. Saves <outDir>/<NN>.jpg per slide. Returns BatchItem[]. Use after planning all slide prompts up front.',
+    inputSchema: {
+      prompts: z.array(z.string().min(1)).min(1).max(8),
+      outDir: z.string().min(1),
+    },
+  },
+  async ({ prompts, outDir }) => {
+    try {
+      return await withClient(async (c) => ok(await c.generateBatch(prompts, outDir)))
+    } catch (err) {
+      return toToolError(err)
+    }
+  },
+)
+
+server.registerTool(
+  'flow_create_character',
+  {
+    title: 'Create character',
+    description:
+      'Create a reusable Flow Character from one or more reference image paths (absolute), for cross-slide consistency. Cast it later by typing "@" in the prompt. Returns { name }.',
+    inputSchema: {
+      name: z.string().min(1),
+      refImages: z.array(z.string().min(1)).min(1),
+    },
+  },
+  async ({ name, refImages }) => {
+    try {
+      return await withClient(async (c) => ok(await c.createCharacter(name, refImages)))
     } catch (err) {
       return toToolError(err)
     }
