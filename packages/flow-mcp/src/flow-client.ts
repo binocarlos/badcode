@@ -9,7 +9,11 @@ const FLOW_URL = 'https://labs.google/fx/tools/flow'
 const DEFAULT_ENDPOINT = `http://localhost:${process.env.FLOW_CDP_PORT ?? '9222'}`
 const TURN_TIMEOUT_MS = 90_000
 const VIDEO_TIMEOUT_MS = 8 * 60_000
-const POLL_MS = 5_000
+// Image/grid polls are cheap in-page DOM scrapes, so poll fast (~1s of discovery latency).
+const POLL_MS = 1_000
+// The video poll additionally makes a content-type HTTP request per candidate media, so keep it
+// a touch slower to stay polite to Flow's media endpoint over the minutes-long generation wait.
+const VIDEO_POLL_MS = 3_000
 
 export interface ImageResult { path: string; mediaId: string; width: number; height: number }
 export interface MediaResult { path: string; mediaId: string }
@@ -345,7 +349,7 @@ export class FlowClient {
         const ct = await contentTypeOf(this.page.request, n)
         if (ct.startsWith('video/')) return n
       }
-      await this.page.waitForTimeout(POLL_MS)
+      await this.page.waitForTimeout(VIDEO_POLL_MS)
     }
     throw new Error('TIMEOUT')
   }
