@@ -22,7 +22,10 @@ export class FlowClient {
     const context = browser.contexts()[0]
     if (!context) throw new Error('NO_CONTEXT')
     const pages = context.pages()
-    let page = pages.find((p) => p.url().includes('labs.google/fx/tools/flow'))
+    // Prefer an already-open project page; fall back to any Flow page.
+    let page =
+      pages.find((p) => /labs\.google\/fx\/tools\/flow\/project\//.test(p.url())) ??
+      pages.find((p) => p.url().includes('labs.google/fx/tools/flow'))
     if (!page) {
       page = pages[0] ?? (await context.newPage())
       await page.goto(FLOW_URL, { waitUntil: 'domcontentloaded' })
@@ -46,16 +49,34 @@ export class FlowClient {
   }
 
   private async submitPrompt(prompt: string): Promise<void> {
-    const box = this.page.getByRole('textbox', { name: /What do you want to create/i })
+    // The prompt box is an empty-named contenteditable; locate it by the
+    // placeholder text it renders while empty (its accessible name is blank).
+    const box = this.page.getByRole('textbox').filter({ hasText: /What do you want to create/i })
     await box.fill(prompt)
-    await this.page.getByRole('button', { name: /Create/i }).click()
+    // The bar has several "Create" buttons; the submit is the arrow_forward one.
+    await this.page.getByRole('button', { name: /arrow_forward Create/i }).click()
+  }
+
+  /**
+   * Force the create bar into single-image mode. The bar defaults to
+   * "Video · 8s"; opening the mode menu exposes an Image tab and a 1x count.
+   * Idempotent — safe to call when already in image mode.
+   */
+  private async ensureImageMode(): Promise<void> {
+    // The mode/config button is the only create-bar button whose label carries
+    // an aspect-ratio icon ("crop_…"); open its menu.
+    await this.page.getByRole('button', { name: /crop_/ }).first().click()
+    await this.page.getByRole('tab', { name: /image Image/i }).click()
+    const oneX = this.page.getByRole('tab', { name: '1x', exact: true })
+    if (await oneX.count()) await oneX.click().catch(() => {})
+    await this.page.keyboard.press('Escape')
   }
 
   /** Poll the canvas until a media img is present, then return its name + size. */
   private async waitForActiveCanvas(timeoutMs: number): Promise<{ name: string; width: number; height: number }> {
     const deadline = Date.now() + timeoutMs
     while (Date.now() < deadline) {
-      const raw = (await this.page.evaluate(SCRAPE_IMGS)) as RawImg[]
+      const raw = (await this.page.evaluate(`(${SCRAPE_IMGS})()`)) as RawImg[]
       const imgs = toCanvasImgs(raw)
       const name = pickActiveCanvas(imgs)
       if (name) {
@@ -69,6 +90,7 @@ export class FlowClient {
 
   async generateImage(prompt: string, outPath: string): Promise<ImageResult> {
     await this.ensureProject()
+    await this.ensureImageMode()
     await this.submitPrompt(prompt)
     const { name, width, height } = await this.waitForActiveCanvas(TURN_TIMEOUT_MS)
     await harvestToFile(this.page.request, name, outPath)
@@ -105,7 +127,7 @@ export class FlowClient {
   private async waitForVideo(timeoutMs: number): Promise<string> {
     const deadline = Date.now() + timeoutMs
     while (Date.now() < deadline) {
-      const raw = (await this.page.evaluate(SCRAPE_IMGS)) as RawImg[]
+      const raw = (await this.page.evaluate(`(${SCRAPE_IMGS})()`)) as RawImg[]
       const name = pickActiveCanvas(toCanvasImgs(raw))
       if (name) {
         const ct = await contentTypeOf(this.page.request, name)
