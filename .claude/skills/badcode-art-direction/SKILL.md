@@ -40,10 +40,32 @@ Right now AI image generation clusters around four defaults that would immediate
 
 4. **Lens flares, heavy vignettes, and chromatic aberration as decoration.** These are the AI equivalent of comic-book SFX decoration — digital flourishes that read as "AI image" immediately. The house style explicitly bans lens flares. Film grain and gate weave are allowed because they are analogue artefacts, not effects applied on top.
 
+## Casting characters (consistency) — load-bearing
+
+A recurring character (Tarquin, Bob, Dawn, Karen…) must read as the **same person**
+in every panel. That likeness comes from a **Flow Character**, and it only binds if
+the character is **attached as a reference** — naming them in prose is not enough.
+
+- **Once per character:** create a Flow Character from the canon sheet — Flow
+  sidebar → Characters → New Character → Upload the sheet → name it (e.g.
+  `Tarquin`) → Done. (For camping-v2 these already exist: `@Tarquin`, `@Bob`.)
+- **Every character panel:** attach the character as a reference *before*
+  generating — in the prompt box type `@`, pick **"<Name> — Character"** from the
+  asset picker, click **Add to Prompt**. A reference chip appears on the bar; the
+  generation then uses the real sheet face. Then type the scene text and submit.
+- **Plain `@Name` text does NOT bind the character.** Proven on camping-v2 p03:
+  the first pass typed `@Tarquin` as text → a *generic* financier; only attaching
+  the Character reference produced Tarquin's actual face.
+- **Tooling caveat:** `flow_generate_image` types text only — it does **not**
+  attach references. So character panels currently need the reference attached by
+  driving the Flow UI (Playwright MCP: `@` → pick Character → Add to Prompt), then
+  type + submit. Object-refs (a specific car, tent) can be Characters too, or
+  described richly in prose where likeness matters less than a face.
+
 ## The loop (per panel)
 
 1. **Plan** the prompt from the panel beat + canon (`docs/<story>/storyboard/`), in the
-   BadCode house style. Shape: house-style preamble + specific scene description; for character panels name the character and their signals (from the canon file), including the specific expression the beat requires.
+   BadCode house style. Shape: house-style preamble + specific scene description; for character panels **attach the character reference** (see "Casting characters") and describe their signals + the specific expression the beat requires.
 2. **Critique the prompt** before sending: does it name a motivated light source, or is it relying on the AI to invent one? Does it specify the class-coded environment, or leave it generic? Does it describe the character's actual physical signals (grey stubble, lanyard, cardigan), or just name them and hope? Does it read like THIS beat from THIS story, or like a generic dramatic comic panel? Revise; say what you changed and why.
 3. **Generate** → `flow_generate_image({ prompt, outPath: "<abs>/docs/<story>/storyboard/img/pNN.png" })`.
 4. **Look** at the returned file. Critique against the beat and the Calibration list: does the face have the right exhaustion/particularity? Is the lighting motivated or AI-invented? Is the framing observational or heroic? Is the palette muted, or has warmth crept in where it doesn't belong?
