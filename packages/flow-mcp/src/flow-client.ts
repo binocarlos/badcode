@@ -2,6 +2,8 @@ import { chromium, type Browser, type Page } from 'playwright'
 import { pickActiveCanvas } from './canvas'
 import { toCanvasImgs, SCRAPE_IMGS, type RawImg } from './dom'
 import { harvestToFile, contentTypeOf } from './harvest'
+import { pickProject, SCRAPE_PROJECTS, type ProjectTile } from './project'
+import { batchOutPath } from './batch'
 
 const FLOW_URL = 'https://labs.google/fx/tools/flow'
 const DEFAULT_ENDPOINT = `http://localhost:${process.env.FLOW_CDP_PORT ?? '9222'}`
@@ -11,6 +13,7 @@ const POLL_MS = 5_000
 
 export interface ImageResult { path: string; mediaId: string; width: number; height: number }
 export interface MediaResult { path: string; mediaId: string }
+export interface BatchItem { index: number; prompt: string; path: string; mediaId: string; width: number; height: number }
 export interface FlowStatus { loggedIn: boolean; projectOpen: boolean; url: string }
 
 export class FlowClient {
@@ -48,13 +51,44 @@ export class FlowClient {
     await this.page.waitForURL(/\/project\//, { timeout: TURN_TIMEOUT_MS })
   }
 
+  async openProject(name: string): Promise<void> {
+    // Always start from the projects list so the name match is honoured even if a
+    // different project is already open.
+    if (/\/project\//.test(this.page.url()) || !this.page.url().includes('labs.google/fx/tools/flow')) {
+      await this.page.goto(FLOW_URL, { waitUntil: 'domcontentloaded' })
+    }
+    // The project grid hydrates AFTER domcontentloaded, so poll the scrape until the
+    // named project appears rather than reading an empty list once.
+    const deadline = Date.now() + TURN_TIMEOUT_MS
+    let href: string | null = null
+    while (Date.now() < deadline) {
+      const tiles = (await this.page.evaluate(`(${SCRAPE_PROJECTS})()`)) as ProjectTile[]
+      href = pickProject(tiles, name)
+      if (href) break
+      await this.page.waitForTimeout(POLL_MS)
+    }
+    if (!href) throw new Error('PROJECT_NOT_FOUND')
+    // SPA-navigate by clicking the project tile. A second hard goto (list -> project)
+    // races the app's hydration and tips it into its client-side error boundary.
+    await this.page.locator(`a[href="${href}"]`).first().click()
+    await this.page.waitForURL(/\/project\//, { timeout: TURN_TIMEOUT_MS })
+    // The create bar hydrates after navigation; wait for the (enabled) prompt textbox
+    // before returning so callers never interact with a half-rendered editor.
+    await this.page
+      .locator('div[role="textbox"][contenteditable="true"]')
+      .first()
+      .waitFor({ state: 'visible', timeout: TURN_TIMEOUT_MS })
+  }
+
   private async submitPrompt(prompt: string): Promise<void> {
-    // The prompt box is an empty-named contenteditable; locate it by the
-    // placeholder text it renders while empty (its accessible name is blank).
-    const box = this.page.getByRole('textbox').filter({ hasText: /What do you want to create/i })
+    // Confirmed live 2026-06-30: the prompt box is a contenteditable div with role="textbox"
+    // and NO own placeholder text (the old hasText filter matched nothing). A sibling <textarea>
+    // also exposes the textbox role, so target the contenteditable div directly.
+    const box = this.page.locator('div[role="textbox"][contenteditable="true"]').first()
     await box.fill(prompt)
-    // The bar has several "Create" buttons; the submit is the arrow_forward one.
-    await this.page.getByRole('button', { name: /arrow_forward Create/i }).click()
+    // Submit is the arrow_forward button; its accessible name renders as "arrow_forwardCreate"
+    // (no space) — allow optional whitespace between the icon ligature and the label.
+    await this.page.getByRole('button', { name: /arrow_forward\s*Create/i }).click()
   }
 
   /**
@@ -66,18 +100,33 @@ export class FlowClient {
     // The mode/config button is the only create-bar button whose label carries
     // an aspect-ratio icon ("crop_…"); open its menu.
     await this.page.getByRole('button', { name: /crop_/ }).first().click()
-    await this.page.getByRole('tab', { name: /image Image/i }).click()
+    // The tab's accessible name concatenates the icon ligature with the label, no space.
+    await this.page.getByRole('tab', { name: /image\s*Image/i }).click()
     const oneX = this.page.getByRole('tab', { name: '1x', exact: true })
     if (await oneX.count()) await oneX.click().catch(() => {})
     await this.page.keyboard.press('Escape')
   }
 
-  /** Poll the canvas until a media img is present, then return its name + size. */
-  private async waitForActiveCanvas(timeoutMs: number): Promise<{ name: string; width: number; height: number }> {
+  /** Snapshot the media UUIDs currently on the canvas, so a later turn can detect new ones. */
+  private async snapshotMediaNames(): Promise<Set<string>> {
+    const raw = (await this.page.evaluate(`(${SCRAPE_IMGS})()`)) as RawImg[]
+    return new Set(toCanvasImgs(raw).map((i) => i.name))
+  }
+
+  /**
+   * Poll until a media img appears whose UUID was NOT present in `before`, then return the
+   * largest such image. Each Flow turn yields a fresh UUID, so comparing against the pre-submit
+   * snapshot is what distinguishes a new generation from the previous (still on-canvas) image —
+   * waiting for "any image" would harvest the stale previous frame on refine/batch turns.
+   */
+  private async waitForNewCanvas(
+    before: Set<string>,
+    timeoutMs: number,
+  ): Promise<{ name: string; width: number; height: number }> {
     const deadline = Date.now() + timeoutMs
     while (Date.now() < deadline) {
       const raw = (await this.page.evaluate(`(${SCRAPE_IMGS})()`)) as RawImg[]
-      const imgs = toCanvasImgs(raw)
+      const imgs = toCanvasImgs(raw).filter((i) => !before.has(i.name))
       const name = pickActiveCanvas(imgs)
       if (name) {
         const hit = imgs.find((i) => i.name === name)!
@@ -91,16 +140,34 @@ export class FlowClient {
   async generateImage(prompt: string, outPath: string): Promise<ImageResult> {
     await this.ensureProject()
     await this.ensureImageMode()
+    const before = await this.snapshotMediaNames()
     await this.submitPrompt(prompt)
-    const { name, width, height } = await this.waitForActiveCanvas(TURN_TIMEOUT_MS)
+    const { name, width, height } = await this.waitForNewCanvas(before, TURN_TIMEOUT_MS)
     await harvestToFile(this.page.request, name, outPath)
     return { path: outPath, mediaId: name, width, height }
   }
 
+  async generateBatch(prompts: string[], outDir: string): Promise<BatchItem[]> {
+    await this.ensureProject()
+    await this.ensureImageMode()
+    const items: BatchItem[] = []
+    for (let i = 0; i < prompts.length; i++) {
+      const prompt = prompts[i]!
+      const before = await this.snapshotMediaNames()
+      await this.submitPrompt(prompt)
+      const { name, width, height } = await this.waitForNewCanvas(before, TURN_TIMEOUT_MS)
+      const path = batchOutPath(outDir, i)
+      await harvestToFile(this.page.request, name, path)
+      items.push({ index: i, prompt, path, mediaId: name, width, height })
+    }
+    return items
+  }
+
   /** Follow-up correction in the SAME session, then harvest the new active canvas. */
   async refine(prompt: string, outPath: string): Promise<MediaResult> {
+    const before = await this.snapshotMediaNames()
     await this.submitPrompt(prompt)
-    const { name } = await this.waitForActiveCanvas(TURN_TIMEOUT_MS)
+    const { name } = await this.waitForNewCanvas(before, TURN_TIMEOUT_MS)
     await harvestToFile(this.page.request, name, outPath)
     return { path: outPath, mediaId: name }
   }

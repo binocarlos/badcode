@@ -104,6 +104,38 @@ person. The reference attachment is what binds it (camping-v2 p03: text → gene
 financier; reference → the real Tarquin). `flow_generate_image` only fills text, so
 character panels need the reference attached via the UI (Playwright) for now.
 
+## Hardening — confirmed live 2026-06-30 (flow-script-hardening branch)
+
+Live-validated `@badcode/flow-mcp` against camping-v2 (`/project/9b729074…`): `openProject`,
+`generateImage`, `refine`, `generateBatch` all proven end-to-end with real harvested frames.
+Key corrections to the spike-era selectors above:
+
+- **Accessible names concatenate the Material-icon ligature with the label, with NO space.**
+  `getByRole` matches the *accessible name*, so the submit button is `arrow_forwardCreate`
+  (not `arrow_forward Create`) and the image tab is `imageImage`. Use `/arrow_forward\s*Create/i`,
+  `/image\s*Image/i`, etc. — a literal space in the regex matches nothing. This was the hidden
+  root cause that made the spike-era selectors untrustworthy.
+- **Submit** = `getByRole('button', { name: /arrow_forward\s*Create/i })` (disabled until the box
+  has text; a separate `add_2Create` button exists — the `arrow_forward` prefix disambiguates).
+- **Prompt box** = `page.locator('div[role="textbox"][contenteditable="true"]').first()`, which has
+  NO own placeholder text — the old `.filter({ hasText: /What do you want to create/i })` matched
+  nothing. A sibling `<textarea>` also exposes the textbox role.
+- **Image-mode menu**: open via `getByRole('button', { name: /crop_/ })` (the
+  `🍌 Nano Banana 2 · crop_16_9 · 1x` config button). Tabs: `imageImage` / `play_circleVideo`;
+  aspect `crop_16_916:9`, `crop_landscape4:3`, …; count `1x` / `x2` / `x3` / `x4`. Default is already
+  Image · 16:9 · 1x, so `ensureImageMode` is idempotent.
+- **Open an existing project**: tiles are `a[href*="/fx/tools/flow/project/"]` with EMPTY anchor
+  text — the name is a sibling styled-components span with a HASHED class. Scrape by climbing each
+  anchor to the nearest short own-text node (see `project.ts` `SCRAPE_PROJECTS`). The grid hydrates
+  after `domcontentloaded`, so poll the scrape until the name appears.
+- **Navigate gently**: reach a project by CLICKING its tile (`a[href="…"]`, SPA nav). A second hard
+  `goto` (list → project) races hydration and tips the app into a client-side error boundary
+  ("Application error: a client-side exception"). After landing, wait for the contenteditable prompt
+  box before interacting.
+- **Detect a NEW image, not "any image".** Each turn yields a fresh media UUID while the previous
+  image stays on-canvas. Snapshot the media-name set BEFORE submit and wait for a name not in it
+  (`waitForNewCanvas`), otherwise refine/batch turns harvest the stale previous frame.
+
 ## Still to spike (before a full unattended comic run)
 
 1. **Iterative correction** — how reliably a follow-up message fixes a weak frame.
