@@ -85,12 +85,28 @@ base64, but don't — it bloats context). Do the actual file write in the **dete
 Refs (`e123`) from `browser_snapshot` are per-snapshot and **go stale** — in the hardened
 command, locate by ARIA role + accessible name/placeholder, not ref.
 
+## Character consistency — SOLVED (2026-06-30, camping-v2)
+
+Casting a Flow Character into a generation works via the **`@` asset picker**, not
+prose:
+
+1. Create the Character once: sidebar **Characters → New Character → Upload** the
+   canon sheet → name it → **Done**. Characters are project-scoped but castable by
+   `@tag`.
+2. In the prompt box, type **`@`** → an asset-picker `dialog` opens listing project
+   assets; the character shows as an `option` *"<Name> — Character"*. Select it →
+   **"Add to Prompt"** button. A **character reference chip** attaches to the bar
+   (`button "Character reference image …"`), and generation uses the real face.
+3. Type the scene text after the chip, set Image mode, submit, harvest as usual.
+
+**Plain `@Name` typed as text does NOT bind the character** — it yields a generic
+person. The reference attachment is what binds it (camping-v2 p03: text → generic
+financier; reference → the real Tarquin). `flow_generate_image` only fills text, so
+character panels need the reference attached via the UI (Playwright) for now.
+
 ## Still to spike (before a full unattended comic run)
 
-1. **Reference/character consistency** — create a Character (or Add Media a sheet), then
-   generate a frame that uses it; confirm the agent honours it across frames. This is the
-   single biggest quality risk for a 50-frame comic.
-2. **Iterative correction** — how reliably a follow-up message fixes a weak frame.
+1. **Iterative correction** — how reliably a follow-up message fixes a weak frame.
 3. **Aspect ratio control** — got 1376×768 (≈16:9) by asking for "landscape"; confirm how
    to pin a target ratio/size for the comic page model.
 4. **Rate limits / session longevity** over a long batch.
