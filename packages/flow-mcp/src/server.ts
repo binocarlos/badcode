@@ -67,15 +67,18 @@ server.registerTool(
   {
     title: 'Generate image',
     description:
-      'Generate ONE image in Flow from a prompt and save it to outPath (absolute). Returns { path, mediaId, width, height }.',
+      'Generate ONE image in Flow from a prompt and save it to outPath (absolute). Pass character to cast a project Character (created via flow_create_character) for cross-slide consistency. Returns { path, mediaId, width, height }.',
     inputSchema: {
       prompt: z.string().min(1),
       outPath: z.string().min(1),
+      character: z.string().min(1).optional(),
     },
   },
-  async ({ prompt, outPath }) => {
+  async ({ prompt, outPath, character }) => {
     try {
-      return await withClient(async (c) => ok(await c.generateImage(prompt, outPath)))
+      return await withClient(async (c) =>
+        ok(await c.generateImage(prompt, outPath, character ? { character } : undefined)),
+      )
     } catch (err) {
       return toToolError(err)
     }
@@ -138,6 +141,26 @@ server.registerTool(
   async ({ prompts, outDir }) => {
     try {
       return await withClient(async (c) => ok(await c.generateBatch(prompts, outDir)))
+    } catch (err) {
+      return toToolError(err)
+    }
+  },
+)
+
+server.registerTool(
+  'flow_create_character',
+  {
+    title: 'Create character',
+    description:
+      'Create a reusable Flow Character from one or more reference image paths (absolute), for cross-slide consistency. Cast it later by typing "@" in the prompt. Returns { name }.',
+    inputSchema: {
+      name: z.string().min(1),
+      refImages: z.array(z.string().min(1)).min(1),
+    },
+  },
+  async ({ name, refImages }) => {
+    try {
+      return await withClient(async (c) => ok(await c.createCharacter(name, refImages)))
     } catch (err) {
       return toToolError(err)
     }

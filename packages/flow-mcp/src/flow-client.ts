@@ -14,6 +14,7 @@ const POLL_MS = 5_000
 export interface ImageResult { path: string; mediaId: string; width: number; height: number }
 export interface MediaResult { path: string; mediaId: string }
 export interface BatchItem { index: number; prompt: string; path: string; mediaId: string; width: number; height: number }
+export interface CharacterRef { name: string }
 export interface FlowStatus { loggedIn: boolean; projectOpen: boolean; url: string }
 
 export class FlowClient {
@@ -97,9 +98,22 @@ export class FlowClient {
    * Idempotent — safe to call when already in image mode.
    */
   private async ensureImageMode(): Promise<void> {
-    // The mode/config button is the only create-bar button whose label carries
-    // an aspect-ratio icon ("crop_…"); open its menu.
-    await this.page.getByRole('button', { name: /crop_/ }).first().click()
+    // Wait for the create bar to hydrate (it renders after navigation).
+    await this.page
+      .locator('div[role="textbox"][contenteditable="true"]')
+      .first()
+      .waitFor({ state: 'visible', timeout: TURN_TIMEOUT_MS })
+    // The bar toggles between "Agent" (conversational) and direct generation; the image config
+    // (the "crop_…" button) only exists in generation mode. If it isn't showing we're in Agent
+    // mode — click the Agent toggle to leave it. (Gating on crop_'s presence is more reliable
+    // than reading the toggle's aria-pressed, which lags after navigation.)
+    const crop = this.page.getByRole('button', { name: /crop_/ }).first()
+    if (!(await crop.count())) {
+      const agent = this.page.getByRole('button', { name: 'Agent', exact: true })
+      if (await agent.count()) await agent.click()
+    }
+    // Open the config menu (auto-waits for crop_ to appear after any mode switch).
+    await crop.click()
     // The tab's accessible name concatenates the icon ligature with the label, no space.
     await this.page.getByRole('tab', { name: /image\s*Image/i }).click()
     const oneX = this.page.getByRole('tab', { name: '1x', exact: true })
@@ -137,14 +151,43 @@ export class FlowClient {
     throw new Error('TIMEOUT')
   }
 
-  async generateImage(prompt: string, outPath: string): Promise<ImageResult> {
+  async generateImage(
+    prompt: string,
+    outPath: string,
+    opts?: { character?: string },
+  ): Promise<ImageResult> {
     await this.ensureProject()
     await this.ensureImageMode()
     const before = await this.snapshotMediaNames()
-    await this.submitPrompt(prompt)
+    if (opts?.character) await this.submitWithCharacter(opts.character, prompt)
+    else await this.submitPrompt(prompt)
     const { name, width, height } = await this.waitForNewCanvas(before, TURN_TIMEOUT_MS)
     await harvestToFile(this.page.request, name, outPath)
     return { path: outPath, mediaId: name, width, height }
+  }
+
+  /**
+   * Cast a project Character into the next generation. Mapped live 2026-06-30: type "@" to open
+   * the asset picker, select the "<Name> — Character" option, "Add to Prompt" (which inserts an
+   * inline character-reference chip), then APPEND the scene text after the chip and submit.
+   * The scene text must be appended, not filled — `fill()` would clear the chip and lose the
+   * reference (a plain "@Name" typed as text does NOT bind the character).
+   */
+  private async submitWithCharacter(name: string, prompt: string): Promise<void> {
+    const box = this.page.locator('div[role="textbox"][contenteditable="true"]').first()
+    await box.click()
+    await box.pressSequentially('@')
+    const esc = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+    await this.page
+      .getByRole('option', { name: new RegExp(`${esc}\\s*Character`, 'i') })
+      .first()
+      .click()
+    await this.page.getByRole('button', { name: /Add to Prompt/i }).click()
+    // Move to the end of the chip and append the scene text (fill() would wipe the chip).
+    await box.click()
+    await this.page.keyboard.press('End')
+    await this.page.keyboard.type(` ${prompt}`)
+    await this.page.getByRole('button', { name: /arrow_forward\s*Create/i }).click()
   }
 
   async generateBatch(prompts: string[], outDir: string): Promise<BatchItem[]> {
@@ -170,6 +213,34 @@ export class FlowClient {
     const { name } = await this.waitForNewCanvas(before, TURN_TIMEOUT_MS)
     await harvestToFile(this.page.request, name, outPath)
     return { path: outPath, mediaId: name }
+  }
+
+  /**
+   * Create a reusable, castable Flow Character from one or more reference images.
+   * Mapped live 2026-06-30: Characters sidebar -> "New Character" card -> Upload (file chooser)
+   * -> fill "Character Name" -> Done. Returns once the character editor is left.
+   */
+  async createCharacter(name: string, refImages: string[]): Promise<CharacterRef> {
+    await this.ensureProject()
+    await this.page.getByRole('button', { name: /accessibility_new\s*Characters/i }).click()
+    // "New Character" is a clickable card (a div with an icon ligature), not a <button>.
+    await this.page.getByText('New Character', { exact: true }).first().click()
+    await this.page.waitForURL(/\/characters\b/, { timeout: TURN_TIMEOUT_MS })
+    // Upload the reference(s); the file chooser accepts the array.
+    const chooser = this.page.waitForEvent('filechooser')
+    await this.page.getByRole('button', { name: /upload\s*Upload/i }).first().click()
+    await (await chooser).setFiles(refImages)
+    // After upload the character editor opens with a "Character Name" field defaulting to
+    // "Untitled Character"; set it, then finalize.
+    const nameInput = this.page.locator('input[placeholder="Character Name"]')
+    await nameInput.waitFor({ state: 'visible', timeout: TURN_TIMEOUT_MS })
+    await nameInput.fill(name)
+    await this.page.getByRole('button', { name: /^Done$/ }).click()
+    // Done returns to the project root (leaves /character/<id>).
+    await this.page.waitForURL((u) => /\/project\/[0-9a-f-]+$/.test(u.toString()), {
+      timeout: TURN_TIMEOUT_MS,
+    })
+    return { name }
   }
 
   async generateVideo(

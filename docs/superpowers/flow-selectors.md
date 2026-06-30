@@ -135,6 +135,20 @@ Key corrections to the spike-era selectors above:
 - **Detect a NEW image, not "any image".** Each turn yields a fresh media UUID while the previous
   image stays on-canvas. Snapshot the media-name set BEFORE submit and wait for a name not in it
   (`waitForNewCanvas`), otherwise refine/batch turns harvest the stale previous frame.
+- **Agent vs generation mode.** The create bar has an `Agent` toggle button (`aria-pressed`). When
+  pressed (Agent/chat mode) the image config (`crop_…`) button is ABSENT, so `ensureImageMode` must
+  check whether `crop_` is present and, if not, click the `Agent` toggle to drop into generation
+  mode first. The mode is stateful and varies (e.g. it engages after the character flow), so gate
+  on `crop_`'s presence, not on `aria-pressed` (which lags after navigation).
+- **Create a character** (`createCharacter`): `Characters` sidebar button (`accessibility_newCharacters`)
+  → click the **"New Character"** card (a `div`, not a `<button>`) → URL goes to `/characters` →
+  click `Upload` (`uploadUpload`) → file chooser `setFiles(refs)` → fill `input[placeholder="Character Name"]`
+  (defaults to "Untitled Character") → click `Done` → returns to `/project/<id>`.
+- **Cast a character into a generation** (`generateImage` with `{ character }`): type `@` in the prompt
+  box → asset-picker opens with `role="option"` entries named `<Name>Character` → click the option →
+  click `Add to Prompt` (inserts an inline character-reference chip into the box) → APPEND the scene
+  text after the chip (`End` then type — `fill()` would wipe the chip) → submit. Confirmed live:
+  the reference composition is faithfully reproduced, so the chip genuinely binds the character.
 
 ## Still to spike (before a full unattended comic run)
 
