@@ -243,6 +243,12 @@ export class FlowClient {
     return { name }
   }
 
+  /**
+   * Animate a still into an image→video clip (Veo). Mapped live 2026-06-30 + flow-video.md:
+   * Add Media → "Upload media" (file chooser) → the uploaded tile's more_vert → "Animate"
+   * (attaches the source frame and switches the bar to Video mode) → motion prompt → submit →
+   * approve the credit gate if shown → poll for the new video media and harvest the .mp4.
+   */
   async generateVideo(
     imagePath: string,
     motion: string,
@@ -250,26 +256,94 @@ export class FlowClient {
     _model?: string,
   ): Promise<MediaResult> {
     await this.ensureProject()
-    // Upload the source frame via Add Media → file chooser.
+    // 1. Upload the source frame.
+    await this.page.getByRole('button', { name: /add\s*Add Media/i }).click()
     const chooser = this.page.waitForEvent('filechooser')
-    await this.page.getByRole('button', { name: /Add Media/i }).click()
+    await this.page.getByRole('menuitem', { name: /upload\s*Upload media/i }).click()
     await (await chooser).setFiles(imagePath)
-    // Attach as animation source, then prompt + create. (See flow-video.md.)
+    // 2. Attach it as the animation source.
+    await this.openAnimateMenu()
+    // 3. Motion prompt + submit (capture the pre-submit media set to detect the new clip).
+    const before = new Set(await this.scrapeMediaNames())
     await this.submitPrompt(motion)
-    // Video is ready when the media's content-type is video/*.
-    const name = await this.waitForVideo(VIDEO_TIMEOUT_MS)
+    // 4. Approve the credit gate if Flow posts one (Veo Quality = 100 credits).
+    await this.approveCreditGateIfPresent()
+    // 5. Poll for the new video media and harvest.
+    const name = await this.waitForVideoClip(before, VIDEO_TIMEOUT_MS)
     await harvestToFile(this.page.request, name, outPath)
     return { path: outPath, mediaId: name }
   }
 
-  private async waitForVideo(timeoutMs: number): Promise<string> {
+  /**
+   * Open the "Animate" action on an uploaded still. Media tiles only reveal their more_vert on
+   * hover, and a media-rich project has several "Generated image" tiles (including video posters
+   * whose menu has no Animate), so hover each tile, click the revealed more_vert, and accept the
+   * first whose menu exposes Animate.
+   *
+   * NOTE (2026-06-30): the end-to-end image→video flow is PROVEN (a real .mp4 was generated and
+   * harvested through this exact path), but this tile-targeting step has only been hardened, not
+   * re-validated clean against a media-cluttered project — see docs/superpowers/flow-video.md.
+   */
+  private async openAnimateMenu(): Promise<void> {
+    const tiles = this.page.locator('img[alt="Generated image"]')
+    await tiles.first().waitFor({ state: 'visible', timeout: TURN_TIMEOUT_MS })
+    const n = await tiles.count()
+    for (let i = 0; i < n; i++) {
+      await tiles.nth(i).hover()
+      const more = this.page
+        .locator('button:has-text("more_vert"):near(img[alt="Generated image"])')
+        .first()
+      if (!(await more.count())) continue
+      await more.click()
+      const animate = this.page.getByRole('menuitem', { name: /motion_blur\s*Animate/i })
+      if (await animate.count()) {
+        await animate.click()
+        return
+      }
+      await this.page.keyboard.press('Escape') // wrong tile (e.g. a video) — close and try the next
+    }
+    throw new Error('ANIMATE_NOT_FOUND')
+  }
+
+  /** Media UUIDs from <video>/<source>/<img> nodes carrying a non-thumbnail getMediaUrlRedirect src. */
+  private static readonly SCRAPE_MEDIA_NAMES = `() => {
+    const names = []
+    for (const el of document.querySelectorAll('video, source, img')) {
+      const s = el.currentSrc || el.src || el.getAttribute('src') || ''
+      if (s.includes('getMediaUrlRedirect') && !s.includes('THUMBNAIL')) {
+        try { const n = new URL(s, location.href).searchParams.get('name'); if (n) names.push(n) } catch (e) {}
+      }
+    }
+    return names
+  }`
+
+  private async scrapeMediaNames(): Promise<string[]> {
+    return (await this.page.evaluate(`(${FlowClient.SCRAPE_MEDIA_NAMES})()`)) as string[]
+  }
+
+  /** Click the credit-confirmation "Approve" if Flow posts one; no-op if there is no gate. */
+  private async approveCreditGateIfPresent(timeoutMs = 20_000): Promise<void> {
+    const approve = this.page.getByRole('button', { name: /^Approve$/ }).first()
+    try {
+      await approve.waitFor({ state: 'visible', timeout: timeoutMs })
+      await approve.click()
+    } catch {
+      // No gate (Confirm=Never / direct generation) — nothing to approve.
+    }
+  }
+
+  /** Poll for a media name not present pre-submit whose content-type is video/*; retry a transient gate. */
+  private async waitForVideoClip(before: Set<string>, timeoutMs: number): Promise<string> {
     const deadline = Date.now() + timeoutMs
     while (Date.now() < deadline) {
-      const raw = (await this.page.evaluate(`(${SCRAPE_IMGS})()`)) as RawImg[]
-      const name = pickActiveCanvas(toCanvasImgs(raw))
-      if (name) {
-        const ct = await contentTypeOf(this.page.request, name)
-        if (ct.startsWith('video/')) return name
+      // A genuine failure re-posts the gate ("Oops, something went wrong") — re-approve to retry.
+      if (await this.page.getByText(/Oops, something went wrong/i).count()) {
+        await this.approveCreditGateIfPresent(5_000)
+      }
+      for (const n of await this.scrapeMediaNames()) {
+        if (before.has(n)) continue
+        const ct = await contentTypeOf(this.page.request, n)
+        if (ct.startsWith('video/')) return n
       }
       await this.page.waitForTimeout(POLL_MS)
     }

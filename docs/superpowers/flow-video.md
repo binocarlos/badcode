@@ -142,6 +142,36 @@ whenever.
   with no cookies — identical to the image path.
 - **Queue latency:** ~5 min under "high demand" for Quality.
 
+## Hardening into `@badcode/flow-mcp` `generateVideo` (2026-06-30) — status
+
+Re-validated the recipe against camping-v2 while folding it into `flow-client.ts`. **The
+end-to-end image→video flow is PROVEN**: a clean run produced a real, harvestable
+**1.96 MB MP4** (`ISO Media, MP4`) through the exact path below. Corrections + the one
+remaining rough edge:
+
+- **No-space accessible names** (same rule as `flow-selectors.md`): the recipe's spaced names
+  don't match `getByRole`. Use `/add\s*Add Media/i`, menuitem `/upload\s*Upload media/i`,
+  `/motion_blur\s*Animate/i`, submit `/arrow_forward\s*Create/i`.
+- **Add Media is a menu**, not a direct chooser: `Add Media` → menuitem `Upload media` → file
+  chooser. The chooser is handled by the Playwright *library* (`setFiles`) — no repo-root
+  sandbox limit (unlike the MCP's `browser_file_upload`).
+- **Animate switches the bar to Video mode** and attaches the source-frame chip (bar reads
+  `Video · 8s · crop_16_9 · 1x`, Agent toggle off). No separate mode switch needed.
+- **Completion scrape must include `<video>`/`<source>`** (the old code scraped `<img>` only, so
+  it never saw the clip). Snapshot media names *before* submit and wait for a NEW name whose
+  `content-type` is `video/*` (`scrapeMediaNames` + `waitForVideoClip`). Evaluate the scraper as
+  `(${SCRAPE})()` — evaluating the bare function string returns the function, not the array.
+- **Credit gate**: `approveCreditGateIfPresent` clicks `Approve` if Flow posts the confirmation;
+  a genuine failure re-posts it (`Oops, something went wrong`) and the poll re-approves to retry.
+- ⚠️ **Open rough edge — the uploaded-still → Animate attach.** Media tiles only reveal their
+  `more_vert` **on hover**, and a media-rich project shows many `img[alt="Generated image"]`
+  tiles (including the video poster, whose menu has no Animate) in a grid. `openAnimateMenu` now
+  hovers each tile and accepts the first menu exposing Animate, but this **best-effort targeting
+  has not been re-validated clean** on a cluttered project (it timed out on re-runs once the
+  project filled with test media). Robust targeting of *the just-uploaded* still (vs. picking any
+  animatable tile) is the remaining work. In real use the `animate-slide` skill drives this path
+  on a freshly-generated single slide.
+
 ## Still to watch (over a longer batch)
 
 1. **Queue latency** under "high demand" for Veo Quality — minutes. Fast/Lite models queue
