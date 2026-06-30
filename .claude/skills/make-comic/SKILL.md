@@ -164,6 +164,25 @@ revision line.
 
 ---
 
+## Fast slide loop: plan → batch → iterate
+
+Work in batches of 1–4 slides, not one at a time:
+
+1. **Plan the prompts first.** Write the full prompt for every slide in the batch
+   before generating anything. Get them agreed.
+2. **Batch-generate unattended.** Call `flow_generate_batch` with the ordered
+   prompt list and an `outDir`. It opens the project once and fires all N
+   sequentially in one Flow session — no page-reading between slides.
+3. **Review the batch together.** Look at all N harvested frames at once.
+4. **Iterate only the weak ones.** A single slide is a cheap same-session
+   follow-up: `flow_refine` with the correction. Don't regenerate the batch.
+
+Precondition: the Flow browser is up and logged in (`./scripts/flow-chrome.sh`,
+then `flow_status` → loggedIn: true) and the project is opened with
+`flow_open_project` (e.g. "camping-v2").
+
+---
+
 ## Stage 6 — Assemble
 
 Derive the comic from the storyboard (`docs/<story>/` stays the source). Read
