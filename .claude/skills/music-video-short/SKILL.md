@@ -112,3 +112,59 @@ human's ear is the source of truth for section boundaries.
 
 4. **Gate:** the track is chosen and its measured duration + sections are
    recorded before Stage 3.
+
+## Stage 3 — Look & cast
+
+Discuss the visual world and 1–3 characters using the **`badcode-art-direction`**
+identity — 35mm documentary look, muted cool-neutral palette, observational
+framing (point at the skill, don't restate it). Write
+`docs/shorts/<name>/look.md` — the world, and the cast, each character with a
+class-coded visual description in house style.
+
+If a character recurs across scenes, set up a **Flow Character** once for
+cross-scene consistency:
+
+- Prerequisite: `./scripts/flow-chrome.sh` running and logged in; confirm with
+  `flow_status()` → `loggedIn: true`, then `flow_open_project({ name })`.
+- Generate a portrait via **`badcode-art-direction`** → `flow_generate_image`,
+  harvest to `docs/shorts/<name>/look/img/<char>.jpg`, then
+  `flow_create_character({ name: "<Char>", refImages: ["<abs path to that jpg>"] })`.
+  Record the returned character name in `look.md`.
+
+**Gate:** approve the look + cast (and any Flow Characters) before Stage 4.
+
+## Stage 4 — Scene breakdown
+
+Map the **actual** song — its measured duration from Stage 2 plus the human's
+section boundaries — to N scenes (~4–8 for 15s). Each scene is one shot
+description plus a **motion note** (what moves — used verbatim as the Stage 5
+motion prompt), which character(s) it references, and which song section it
+lands on. Write `scenes/index.md` (numbered scenes, one-line intent + section
+each) and one `scenes/sNN.md` per scene with `status: planned`.
+
+**Gate:** approve the board before any clip is generated.
+
+### Scene record — `docs/shorts/<name>/scenes/sNN.md`
+
+```markdown
+---
+scene: 3
+song_section: drop            # intro | build | drop | outro …
+characters: [karen]           # names of Flow Characters to cast (may be empty)
+still_media_id:               # filled when the still is generated
+clip_media_id:                # filled when the clip is generated
+status: planned               # planned | done
+---
+![scene 3 still](img/s03.jpg)  ·  clip: `../clips/s03.mp4`
+
+**Still prompt (exact, sent to Flow):**
+> <house-style preamble + scene; cast each character in `characters:` by name>
+
+**Motion prompt (exact, sent to Flow):**
+> <what moves — e.g. slow push-in, banners ripple, embers drift>
+
+**Beat note:** <where it lands, e.g. "on the drop (~00:07)">
+
+**Revisions:**
+- v1 (<date>) — initial
+```
