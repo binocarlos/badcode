@@ -127,7 +127,9 @@ cross-scene consistency:
 - Prerequisite: `./scripts/flow-chrome.sh` running and logged in; confirm with
   `flow_status()` → `loggedIn: true`, then `flow_open_project({ name })`.
 - Generate a portrait via **`badcode-art-direction`** → `flow_generate_image`,
-  harvest to `docs/shorts/<name>/look/img/<char>.jpg`, then
+  harvest to `docs/shorts/<name>/scenes/img/<char>-ref.jpg` (the same
+  `scenes/img/` directory the folder convention already defines for scene
+  stills), then
   `flow_create_character({ name: "<Char>", refImages: ["<abs path to that jpg>"] })`.
   Record the returned character name in `look.md`.
 
