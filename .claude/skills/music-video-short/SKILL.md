@@ -202,3 +202,45 @@ To change one scene: open its `sNN.md`, read the recorded prompts, re-run via
 `flow_generate_video`, harvest the new files, **append a revision line**
 describing the change, and replace the still + clip. Touch only that one
 record/scene — leave the rest untouched.
+
+## Stage 6 — Edit plan (⏸ manual gate)
+
+Given the measured audio duration, the section boundaries, and the generated
+clips, emit `docs/shorts/<name>/edit-plan.md` — the hand-off for the human's
+cut. The skill's contract **ends at the plan**; it does not mux the final
+`.mp4`. Use this exact template:
+
+```markdown
+# Edit plan — <name>
+
+**Track:** `audio/track.mp3` · measured <D>s · <BPM by ear>
+**Sections:** intro 0.0–a · build a–b · drop b–c · outro c–<D>
+
+## Timeline (cuts sum to the track length)
+
+| t (s) | clip | in→out | scene / section | note |
+|-------|------|--------|-----------------|------|
+| 0.00 | clips/s01.mp4 | 0.0→a | intro | establishing hold |
+| a    | clips/s02.mp4 | 0.0→… | build | cut on snare |
+| b    | clips/s03.mp4 | 0.0→… | drop | HARD cut on the drop |
+| …    | …             | …     | …    | … |
+
+**Total:** <D>s — matches the track.
+
+## Optional convenience (not the deliverable)
+A ready-to-run `ffmpeg` concat+mux command MAY be appended here for the human, but
+auto-rendering is out of scope — the plan is the contract.
+```
+
+**Gate:** the short is done for the skill's purposes when the human has the
+plan; they cut it.
+
+## Out of scope
+
+- Rendering the final `.mp4` — the contract ends at the plan; an optional
+  `ffmpeg` command is allowed, auto-mux is a later cycle.
+- Automating Suno — a manual gate by design.
+- Automatic beat/section detection — the human's ear is the source of truth
+  in v1.
+- Anchoring to existing story canon — standalone-lightweight only in v1.
+- Publishing the short to the website — a separate concern.

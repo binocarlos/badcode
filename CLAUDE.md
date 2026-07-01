@@ -40,7 +40,7 @@ Full guide: [`docs/voice.md`](./docs/voice.md). When writing lyrics or story cop
 | `docs/` | Vision, voice, story bible, method | …you need context |
 | `docs/ideas/` | The idea inbox — raw ideas (minimal prose) before they become stories | …you have a new idea to park, or want to develop one |
 | `docs/suno-gpt/` | Suno-prompting toolkit (operating procedure + reference files) | …you're turning a song idea into a Suno prompt |
-| `.claude/skills/` | `new-idea`, `new-story`, `suno-prompt`, `make-comic`, `animate-slide` — orchestrators for parking an idea, story capture, Suno prompting, the full idea→comic pipeline, and animating a finished panel | …you're capturing an idea, developing a story, making a track, building a comic, or animating a slide |
+| `.claude/skills/` | `new-idea`, `new-story`, `suno-prompt`, `make-comic`, `animate-slide`, `music-video-short` — orchestrators for parking an idea, story capture, Suno prompting, the full idea→comic pipeline, animating a finished panel, and the full idea→short-form music-video pipeline (Suno track + Flow clips + edit plan) | …you're capturing an idea, developing a story, making a track, building a comic, animating a slide, or making a short |
 | `docs/<story>/` | Per-story canon (concept, characters, beats, songs) — source of truth | …you're capturing or producing a story's media |
 | `packages/comic` | `@badcode/comic` — code-first comic rendering library (authoring guide: [`AUTHORING.md`](./packages/comic/AUTHORING.md)) | …you're building the viewer |
 | `apps/web` | The website (Vite + React + TS SPA) | …you're building pages/routes |
@@ -88,6 +88,14 @@ Full guide: [`docs/voice.md`](./docs/voice.md). When writing lyrics or story cop
   (`.claude/skills/animate-slide/`). Turns a finished comic's slide into a
   Flow-generated scroll-scrubbed video. Requires the comic to be on the bucket
   pipeline (`assets.manifest.json` with `basePath "comics-v2/<comic>"`).
+- **Make a short (idea → short-form music video):** run the
+  **`music-video-short`** skill (`.claude/skills/music-video-short/`). A
+  gated, six-stage workflow (concept → Suno song → look & cast → scene
+  breakdown → clips → edit plan) that composes **`suno-prompt`** (the track,
+  a manual gate), **`badcode-art-direction`** (the stills), and **Flow**
+  (image→video clips, the one automated link) into a cut-ready package under
+  `docs/shorts/<name>/`. The skill's contract ends at `edit-plan.md` — the
+  human does the final cut. See [`docs/shorts/README.md`](./docs/shorts/README.md).
 
 ## Deeper context
 
