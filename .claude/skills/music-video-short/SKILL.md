@@ -168,3 +168,37 @@ status: planned               # planned | done
 **Revisions:**
 - v1 (<date>) — initial
 ```
+
+## Stage 5 — Clips (⚙ auto)
+
+Prerequisite: Flow connected — `flow_status()` → `loggedIn: true`, then
+`flow_open_project({ name })`. Do **not** hand-puppeteer Flow via the
+Playwright MCP.
+
+For each `scenes/sNN.md` with `status: planned`, run this exact routine:
+
+1. **Still** — invoke **`badcode-art-direction`** to plan/critique the still
+   prompt, then generate it:
+   `flow_generate_image({ prompt, outPath: "<abs>/docs/shorts/<name>/scenes/img/sNN.jpg", character: "<Char>" })`
+   (pass `character` only if the scene lists one — the `character` param
+   casts the Flow Character, the proven cross-scene consistency path). Judge
+   the result against the scene + house style; use `flow_refine` to correct
+   in-session if weak.
+2. **Animate** —
+   `flow_generate_video({ imagePath: "<abs>/…/scenes/img/sNN.jpg", motion: "<the scene's Motion prompt>", outPath: "<abs>/docs/shorts/<name>/clips/sNN.mp4" })`.
+   (`flow_generate_video` may take minutes and can post a credit gate — the
+   MCP tool already handles the gate + harvest.)
+3. **Record** — in `sNN.md`: fill `still_media_id` and `clip_media_id`, embed
+   the still, set `status: done`, write the **exact** still + motion prompts
+   used, and add a `v1` revision line.
+
+**Gate:** review the clips together; reroll weak ones (via the iteration
+loop below) before Stage 6.
+
+## Iterating on a scene
+
+To change one scene: open its `sNN.md`, read the recorded prompts, re-run via
+**`badcode-art-direction`** (`flow_refine` for the still) and/or re-run
+`flow_generate_video`, harvest the new files, **append a revision line**
+describing the change, and replace the still + clip. Touch only that one
+record/scene — leave the rest untouched.
