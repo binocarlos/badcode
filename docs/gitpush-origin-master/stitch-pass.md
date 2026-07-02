@@ -1,5 +1,10 @@
 # Stitch pass — the cohesion gate
 
+> **Superseded in places (2026-07):** the [critique pass](./critique-pass.md) later reworked Acts
+> 3–5 and the Coda (the ghosts; the coin; deadpan Act 4; Galileo moved out; beat renumbering).
+> This note remains accurate as a record of the v1 cross-read; where the two disagree,
+> `critique-pass.md` wins. Re-run a cohesion read at Script stage.
+
 *A one-time **note** (not a beat sheet) recording the cross-arc read of all eight beat sheets of the
 [GitPush Origin Master](./README.md) arc, now beat-complete end-to-end. It records: the cohesion
 checklist (pass/fix per item), the surgical fixes applied this pass, and the arc-level open threads

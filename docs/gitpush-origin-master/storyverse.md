@@ -17,6 +17,14 @@ confession from the future. Two things to hold before you read it as anything el
 *Use it as **bedrock held in reserve.** Public pieces (EP1) lead with politics and economics; this
 surfaces later and louder, once it's earned. Don't front-load the metaphysics.*
 
+> **Where this text lives (critique pass, 2026-07 — load-bearing):** this document is the
+> **confession / liner-notes layer** — the "show your work" page for readers who click through
+> after the comic has done its job. It is **never script source for Movement II.** As prose it is
+> a cited essay (QBism, Fuchs, Bars, Van Raamsdonk, named in voice) — exactly the essay
+> [`voice.md`](../voice.md) forbids on a surface. The acts *demonstrate* (the coin, the feed, the
+> narrator's own arrival — see [`how-we-tell-it.md`](./how-we-tell-it.md)); this document *argues*,
+> afterwards, for the converted. Kept gorgeous on purpose; deployed only at depth.
+
 ---
 
 ## What I worked out, alone
@@ -374,8 +382,8 @@ both sit. Real ancient concepts pressed onto real modern maths. Rename if better
 
 - This doc is the **argument**; the [Discovery Timeline](./discovery-timeline.md) is the
   **events** — the fictional history (2026–2054) of who proved each movement, when, and what it
-  cost. The core sentence lands there in plain clothes: *the universe is designed to convert
-  energy from the sun into drama.*
+  cost. The core sentence lands there in plain clothes: *the universe is a machine for turning
+  sunlight into drama.*
 - For *how to tell any of this* without losing the audience — the simplest believable framing of
   each idea, the skeleton, the four skins — see [`how-we-tell-it.md`](./how-we-tell-it.md). The
   scene-by-scene master narrative is [the GPOM story](./README.md).
@@ -405,6 +413,10 @@ both sit. Real ancient concepts pressed onto real modern maths. Rename if better
 - **The asymmetry as canon** — "AI can host a mind's every behaviour but never the experience" is the
   emotional core (movement vii) and the reason the good branch needs teamwork. Treat as load-bearing
   lore; revisit only with very good reason.
-- **Naming** — do **Chronos / Kairos / Aion** stick? They double as the mythic-lineage hook (Greek
-  tragedy, Homer, the old stories that "already encoded this"), which we've gestured at but not yet
-  built a node around.
+- **Naming — RESOLVED for surfaces (critique pass, 2026-07).** Chronos / Kairos / Aion stay as
+  bedrock vocabulary (this doc, the timeline) and as the mythic-lineage hook for a future node —
+  but they are three foreign nouns a reader must learn, i.e. jargon with a classics degree.
+  **Surface rule:** say *"the actor's clock and the director's clock"*; **Kairos** is the single
+  Greek word allowed on a surface (introduced late, by a human, via the director's-clock framing —
+  Act 5 Beat 5); Chronos and Aion never surface. See
+  [`how-we-tell-it.md`](./how-we-tell-it.md#3-two-clocks--the-actors-time-and-the-directors).

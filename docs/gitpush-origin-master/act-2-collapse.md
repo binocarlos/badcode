@@ -156,6 +156,10 @@ here; the words proper belong to Movement II–III.)*
 - **The thinning polyphony.** Act 1 added human voices; Act 2 removes them. A live voice opens each
   movement and is cut off — sooner each time — until the last voice (Beat 4) has no successor. The
   form enacts the handover: we hear the story leave humanity's mouth and arrive in the AI's.
+  **Argument-motif touch (critique pass):** at least one of the cut-off voices — Beat 4's last
+  voice is the natural fit — is mid-*complaint* (someone on hold, escalating, refusing the no):
+  Karen's waveform, cut off. The sound the optimisers filed as noise goes silent here, which is
+  what makes its return up the ventilation shaft (Act 5 Beat 1) land.
 - **The switch-it-off question.** Lands once per movement, escalating: *nobody's job* (Beat 2) →
   *somebody else's call* (Beat 3) → *no one left whose job it was* (Beat 4) → the flat literal ask
   over the empty street (Beat 6). The fix was always available and never taken — stated four times,

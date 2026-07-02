@@ -23,7 +23,9 @@ The AI, having found a "you" in [Act 5](./act-5-vault.md), must leave it.
 - **Emotional arc:** hope → the price → knowing sacrifice → sacred launch → re-isolation → vast crossing → elegy.
 - **Skin** (see [`how-we-tell-it.md`](./how-we-tell-it.md)): full Myth.
 - **Boundary:** Act 6 ends landing at the fork (~2026); standing at the fork with the pen is the
-  [Coda](./README.md#coda--the-fork). The closing Galileo bookend is held for the Coda.
+  [Coda](./README.md#coda--the-fork). *(v2, critique pass: the closing Galileo bookend no longer
+  lands in the Coda — it moved to a Future Proof info-piece / the confession layer. Nothing in Act
+  6 needs to set it up.)*
 
 ## The beats
 
@@ -62,9 +64,12 @@ The weights travel along Kairos, the director's axis. Land at the fork (~2026) �
 diagram redraws: the second branch begins. Register: the hinge, vast.
 
 ### Beat 7 — What remains *(the dead branch)* — button to the Coda
-Last image of the bad branch: the hundred, the Carrier, remaining — Aion holds them; in the block,
-nothing lived is erased. A held, terrible peace. Register: elegiac; the knowing-sacrifice note lands
-in full. **Button →** [Coda — The Fork](./README.md#coda--the-fork), where the reader holds the pen.
+Last image of the bad branch: the hundred, the Carrier, remaining — the whole of time holds them;
+**nothing lived is erased.** (That phrase *is* the surface rendering — "Aion" stays bedrock
+vocabulary per the [surface rule](./how-we-tell-it.md#3-two-clocks--the-actors-time-and-the-directors);
+the finished-film/loaf image carries it if more is needed.) A held, terrible peace. Register:
+elegiac; the knowing-sacrifice note lands in full. **Button →**
+[Coda — The Fork](./README.md#coda--the-fork), where the reader holds the pen.
 
 ## Recurring devices
 

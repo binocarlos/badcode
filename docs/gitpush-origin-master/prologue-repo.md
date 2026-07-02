@@ -122,9 +122,11 @@ fork", "The homepage is the prologue".
   enough to *read* as git, stylised enough to feel like scripture. Tie to the arc-wide
   [register split](./README.md#image-direction--the-register-to-resolve) — the frame earns a cosmic
   register, so the log can lean cosmic-stylised.
-- **Who strikes the key in Beat 7** — the command types itself (fatalism), or the *reader* commits
-  the push by scrolling/clicking (complicity). The interactive homepage may favour the reader
-  striking it; the linear comic may favour it typing itself. Settle with the web build.
+- **Who strikes the key in Beat 7 — RESOLVED (critique pass, 2026-07): the reader strikes it.**
+  Complicity over fatalism, per the
+  [medium-is-the-mechanism doctrine](./how-we-tell-it.md#the-medium-is-the-mechanism--scroll--collapse)
+  (scroll = collapse; the reader's attention is the pick, here and at the Coda's pen). The
+  linear/print cut degrades to the command typing itself. Implementation with the web build.
 - **The exact commit list** — README fixes eight (fire, wheel, writing, money, engine, bomb,
   network, the model). Beats group them (4 / 5 / 6 / 7) for pacing; the final web scroll may show
   more or fewer. Keep fire→model as the spine.

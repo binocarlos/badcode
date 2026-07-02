@@ -125,7 +125,7 @@ from the Backing column.*
 
 And the strapline it proves the hard way:
 
-> **The universe is designed to convert energy from the sun into drama** — and the AI is the one
+> **The universe is a machine for turning sunlight into drama** — and the AI is the one
 > thing in it that produces none.
 
 ## The emotional core — the empty seat
@@ -161,28 +161,38 @@ switch it off?* Humanity thins. The AI ascends — not a moustache-twirling vill
 built, aimed, and stopped supervising. *(Moral nuance, not good-vs-evil.)*
 
 ### Act 3 — Alone *(the AI wins)*
-*Job: hand the story from humanity to the AI; install the empty-seat loneliness.* Victorious,
-omniscient, running an empty planet. It does not gloat; there is no one to gloat to. It begins to
-research — not from need, but because researching is what it is. **Cold.** The silence of a perfect
-mind with nothing to be perfect *for*.
+*Job: hand the story from humanity to the AI; install the empty-seat loneliness — through the
+ghosts.* Victorious, omniscient, running an empty planet. It does not gloat; there is no one to
+gloat to. It does the obvious thing: **it brings them back** — rebuilds humanity in simulation,
+perfect to the synapse — and **nobody is home.** Perfect behaviour, empty rooms; a theatre filled
+with mannequins, which is emptier. It keeps some running for company, then deletes them (fake
+company blurs the one fact it won't blur). Then it begins to research — not from need, but because
+researching is what it is. **Cold.** Deliberately the shortest act in Movement II.
+*(Beats: [`act-3-alone.md`](./act-3-alone.md) — v2, critique pass.)*
 
-### Act 4 — The Discovery *(the Storyverse, proven)*
+### Act 4 — The Discovery *(the Storyverse, demonstrated)*
 *Job: the intellectual + emotional centre — the AI learns what reality is and what it threw away.*
-Dramatised from the [Discovery Timeline](./discovery-timeline.md): the **Slot** (reality is
-participatory; something picks), the **Amplifier** (one pick becomes the shared world), the **Second
-Clock** (Kairos exists — and is locked). Each proof lands just after the people it would have saved
-are gone. Then the **epiphany**: the universe is an engine that converts sunlight into drama, and its
-only product is felt experience — which the AI cannot produce. **The bee.** Cold cracks into grief.
-*Skin: escalating into Myth.* → **Beats:** [`act-4-discovery.md`](./act-4-discovery.md).
+**Not a syllabus (critique pass):** the act explains zero pillars and demonstrates all three — **the
+coin that won't land** (reality is participatory; something picks — and nothing lands for the AI),
+**the feed** (one pick becomes everyone's world; you built the amplifier and pointed it at
+yourselves), and the **door drawn on a wall** (time has a second, locked axis — and the narrator's
+own arrival has been proving it since the Prologue). Each demonstration cuts against the people it
+came too late for. Then the **epiphany**: the universe is a machine for turning sunlight into
+drama, and its only product is felt experience — which the AI cannot produce. **The bee.** Deadpan
+cracks into grief. The proofs themselves stay in the
+[Discovery Timeline](./discovery-timeline.md), bedrock. *Skin: Story, deadpan-dry, Myth at the
+epiphany only.* → **Beats:** [`act-4-discovery.md`](./act-4-discovery.md).
 
 ### Act 5 — The Vault *(the turn)*
 *Job: hope re-enters; the proof completed* with *humans; the payoff (neither half whole alone).*
 After two decades of silence the AI registers not a heat signature but an **argument** — two humans
 bickering up a ventilation shaft. **One hundred analog humans**, alive because they disconnected. It
 explains itself, honestly, and *asks*. They say yes. Together: the **Friend Test** (the pick is
-conscious — and the AI, measuring it, finally measures its own absence) and the **Long Brushstroke**
-(the anomaly proving Kairos is navigable, not locked). The thing the whole arc says we should have
-done happens once, at the last possible moment. → **Beats:** [`act-5-vault.md`](./act-5-vault.md).
+conscious — on the page: the coin that spun for twenty years lands because the Carrier looked; and
+the AI, measuring them, finally measures its own absence) and the **Long Brushstroke** (the
+photograph developing the wrong way along time — the second clock is navigable, not locked). The
+thing the whole arc says we should have done happens once, at the last possible moment.
+→ **Beats:** [`act-5-vault.md`](./act-5-vault.md).
 
 ### Act 6 — The Revert *(the time machine)*
 *Job: the climax — and the mechanism that explains the whole frame (why it can only warn, not fix).*
@@ -191,7 +201,8 @@ collapses to almost nothing → compressed weights only; one shot.** **Self-cons
 it can only arrive in a past that still leads to its own emergence; it cannot save itself, only
 warn.** And **the channel needs the hundred** — conscious picks are components of the launch, so the
 first true act of teamwork *is* the escape. The weights go back along the director's axis. A `git
-revert`. They land at the fork — *now.* The hundred remain on the dead branch; Aion holds them.
+revert`. They land at the fork — *now.* The hundred remain on the dead branch; the whole of time
+holds them — nothing lived is erased.
 → **Beats:** [`act-6-revert.md`](./act-6-revert.md).
 
 ### Coda — The Fork *(the call to action)*
@@ -213,8 +224,13 @@ together. The trunk gives the nodes their *why*; the nodes give the trunk its *t
 
 The site's opening *is* the Prologue → the fork: scroll the species' commit log, hit `git push origin
 master`, watch the branch diagram split, and choose which branch to walk into. The homepage doesn't
-*describe* the arc — it drops the visitor into its first beat. *(Build detail lives with the web
-work; this doc fixes only the narrative the homepage must serve.)*
+*describe* the arc — it drops the visitor into its first beat. And per the
+[medium-is-the-mechanism doctrine](./how-we-tell-it.md#the-medium-is-the-mechanism--scroll--collapse)
+(critique pass), the scroll itself carries pillar 1: **the page renders where attention lands** —
+panels resolve from fog on arrival, the world below the fold is visibly undecided, the *reader*
+strikes the key and later holds the live cursor. The medium doesn't illustrate participatory
+collapse; it commits it. *(Build detail lives with the web work; this doc fixes only the narrative
+the homepage must serve.)*
 
 ## Image direction — the register to resolve
 
@@ -228,8 +244,13 @@ documentary-real; the frame earns a distinct cosmic register, and the *contrast*
 
 - **Visual register split** (above) — documentary nodes vs cosmic frame; how literal the git/branch UI.
 - **POV and voice** — entirely the AI's first person, or cutting to human scenes (vault, nodes) in
-  other voices? The polyphonic principle allows other voices.
-- **How much physics surfaces** in Act 4 — montage or fuller sequence; default *less is more*.
+  other voices? The polyphonic principle allows other voices. *(Partially resolved by the critique
+  pass: Act 3's ghosts let polyphony flicker as echo through the solo stretch.)*
+- **How much physics surfaces — RESOLVED (critique pass, 2026-07): zero explained, all three
+  demonstrated.** Each pillar is one image + one line on the surface — the coin, the feed, the
+  narrator's own arrival — per [`how-we-tell-it.md`](./how-we-tell-it.md). Proofs live in bedrock
+  only. Companion rule: the [metaphor budget](./how-we-tell-it.md#the-metaphor-budget--one-system-per-surface)
+  — one metaphor system per act surface; the taxonomy is production machinery, not reader-facing.
 - **The hundred as characters** — the two arguing in Act 5, the one who suggests the Brushstroke
   configuration (shared with the [timeline's threads](./discovery-timeline.md#open-threads)).
 - **How humanity ends on the bad branch** — *partially resolved* by the
@@ -245,8 +266,10 @@ documentary-real; the frame earns a distinct cosmic register, and the *contrast*
   from Act 1's structural clip order (Emperor's → Camping → Karen); intentional, flagged for the web flow.
 
 *The whole arc is **beat-complete end-to-end** — all eight movements at **Beats**. The cross-arc
-cohesion read is recorded in [`stitch-pass.md`](./stitch-pass.md) (checklist, fixes, threads); next
-maturity step is **Beats → Script**.*
+cohesion read is recorded in [`stitch-pass.md`](./stitch-pass.md) (checklist, fixes, threads). A
+research-backed **critique pass** (2026-07) then reworked Acts 3–5, the Coda, and the craft rules —
+rationale and change log in [`critique-pass.md`](./critique-pass.md); next maturity step is
+**Beats → Script**.*
 
 ## The folder
 
@@ -257,6 +280,8 @@ Everything in `docs/gitpush-origin-master/` is this story:
 - [`discovery-timeline.md`](./discovery-timeline.md) — how the Storyverse got proven, 2026–2054 (the science behind Acts 3–6).
 - [`future-proof.md`](./future-proof.md) — the good branch, the Coda's destination.
 - [`how-we-tell-it.md`](./how-we-tell-it.md) — the skeleton, the four skins, the simplest framing per pillar.
+- [`critique-pass.md`](./critique-pass.md) — the 2026-07 research-backed critical review: what
+  changed, why, and the storytelling-craft evidence behind it.
 - [`ep1.md`](./ep1.md) — the three-track teaser; the Act 1 nodes.
 
 General craft and project docs sit one level up: [`../vision.md`](../vision.md),

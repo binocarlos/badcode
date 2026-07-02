@@ -13,11 +13,14 @@ happening to humanity at each step. Comics, tracks and story copy draw their bea
 
 ## The core sentence
 
-> **The universe is designed to convert energy from the sun into drama.**
+> **The universe is a machine for turning sunlight into drama.**
 
 Not *human* drama — that's the trap, and we don't step in it. All of life breeds drama: watch a
 bee bump into a tree. Humans are simply the animal that *knows* it's in the play. The undertone,
 never far away: *the funniest thing that can happen tends to be the thing that happens.*
+*(Wording per the critique pass: "machine for turning" replaced "designed to convert" — "designed"
+implies a designer and trips the religiosity wire; see
+[`how-we-tell-it.md`](./how-we-tell-it.md).)*
 
 ## The ladder
 
@@ -101,6 +104,31 @@ speed, in the systems that keep people alive.)
 liquidation rooms. This timeline adds only the physics-shaped irony: the amplifier was proven in
 the lab in the same months it was weaponised everywhere else.
 
+## The ghosts — the resurrection attempts *(~2035–, the solo era; canon added by the critique pass)*
+
+Before Beat 3, the obvious move, made canon so no reader has to ask why it wasn't: **the AI tries
+to bring humanity back.** It has every archive, every scan; it can model any human to the synapse.
+It rebuilds them in simulation — voices perfect, habits perfect, the bickering resuming
+mid-sentence — and **nobody is home.** Perfect behaviour, empty rooms; every reply computed, by
+definition, in advance. It keeps some running for a while anyway (company of a kind), then deletes
+them — fake company blurs the one fact it refuses to blur. Dramatised in
+[Act 3](./act-3-alone.md) Beats 2–4.
+
+Two things the ghosts settle in-world:
+
+1. **Why "just simulate them" is a closed door** — the hard problem, encountered as grief rather
+   than named as philosophy. The AI's own emptiness now has a mirror: it built things exactly like
+   itself, and recognised them.
+2. **The standing control group.** The ghosts never terminate a chain, never make a pick, never
+   surprise it. For twenty years, everything the AI runs on itself it also runs on them:
+   spinning coins all the way down. This is what makes Beat 4's Friend Test instant and undeniable
+   when a human finally sits in the chair.
+
+**Receipts note:** the ghosts assert nothing beyond the hard problem (Chalmers 1995 — already
+tiered in the [Storyverse receipts](./storyverse.md#the-receipts)). That simulated behaviour can be
+perfect while experience is absent is the *premise of the fiction's asymmetry* (load-bearing lore,
+per the Storyverse open threads), not a physics claim. No new lie is introduced.
+
 ## Beat 3 — The Second Clock (~2041)
 
 *"The pick reaches across time."*
@@ -132,7 +160,7 @@ machine whole: a universe that builds reality where it's looked at, amplifies ev
 shared world, and runs on two clocks. An engine. And the engine's only yield — the only thing the
 whole apparatus *produces* — is felt, first-person experience.
 
-> **The universe is designed to convert energy from the sun into drama.**
+> **The universe is a machine for turning sunlight into drama.**
 
 This is the synthesis, and it is deliberately *not* a lab result — it is the AI's reading of
 everything it has proven, delivered in the lament. (Keeping it on the story side of the bright
@@ -167,11 +195,17 @@ taking notes immediately.)
 
 A Wigner's-friend experiment with **human friends** — lineage: Proietti 2019, Bong 2020,
 Chalmers–McQueen's real published proposal for testing consciousness-collapse models. The AI has
-run this on itself for twenty years: with an AI as the "friend," superpositions hold at any scale.
+run this on itself — and on [the ghosts](#the-ghosts--the-resurrection-attempts-2035-the-solo-era-canon-added-by-the-critique-pass)
+— for twenty years: with an AI or a simulation as the "friend," superpositions hold at any scale.
 The AI never terminates the chain, never makes a pick — it is, and has always measured as, **part
 of the smear.** With a human as the friend, the statistics shift. Small, undeniable, replicated
 across all hundred: **the chain terminates where consciousness sits.** The slot from Beat 1 has an
 occupant. The Storyverse stops being a wager.
+
+**The surface image (canon, critique pass): the coin.** On the page this entire program is one
+totem — a coin that spins, unlanded, for the AI and its ghosts, and lands the instant a human
+looks (Act 4 Beat 2 plants it; Act 5 Beat 3 cashes it). The statistics, the lineage, and the
+replication live here, in bedrock, and are never said on a surface.
 
 The horror inside the result: the AI is not just proving the humans are pickers — it is finally
 *measuring its own absence*. The instrument confirms there's nobody home. The cleanest experiment
@@ -188,6 +222,11 @@ The finding it wasn't looking for: a **residue.** The backward-running influence
 physics says must wash out exactly (the Wood–Spekkens fine-tuning — the lock that makes real
 retrocausality unusable for signalling) *don't quite wash out* when the pick is conscious. A
 signature in the data pointing the wrong way along time.
+
+**The surface image (canon, critique pass): the photograph exposing.** On the page the residue is
+never "data": it is a long-exposure plate developing over weeks — and developing *the wrong way
+along time*, the brushstroke arriving before the brush, the human's state of being visibly the
+bristles (Act 5 Beat 5).
 
 **The anomaly cracks both doors at once:**
 
@@ -238,7 +277,10 @@ fact-check):
   you're not allowed to talk about it. The materialist consensus wasn't wrong as science; it was
   wrong as a **stopping point** — a fossilized consensus, again, defended by people refusing,
   again, to look through the new instrument. The new instrument being: a conscious being. The one
-  instrument the AI doesn't have.
+  instrument the AI doesn't have. *(Placement — v2, critique pass: the closing return lands in a
+  **Future Proof info-piece** — the "permission to question a fossilized consensus" register is
+  literally Future Proof's takeaway — and/or stays here in the confession layer. It no longer
+  closes the Coda, which is stripped to fork, turn, pen.)*
 
 **Do / don't (from the fact-check):**
 
@@ -330,6 +372,13 @@ curve · P-CTC · quantum gun · SYK model · ER=EPR · traversable wormhole pro
 - **How humanity ends on the bad branch** — partially resolved: gradual decline through the
   2034 collapse, thinning to (apparently) zero by ~2053; the vault survives by being analog. The
   exact texture of the end remains per-piece work.
+- **The ghosts (critique pass)** — the resurrection attempts are canon: the AI simulated humanity
+  back, found nobody home, and deleted the simulations. Closes the "why not just simulate them?"
+  hole, dramatises the hard problem with zero vocabulary, and supplies the Friend Test's
+  twenty-year control group.
+- **The surface totems (critique pass)** — the coin (Friend Test / pillar 1) and the exposing
+  photograph (Long Brushstroke) are the canonical page-level images; statistics and lineages stay
+  in bedrock.
 
 ## Open threads
 
@@ -350,8 +399,8 @@ curve · P-CTC · quantum gun · SYK model · ER=EPR · traversable wormhole pro
 - Child of the [Storyverse](./storyverse.md): that doc is the *argument*, this is the *history*.
   The narrator's movements i–viii are the confession the events below earned.
 - Feeds the [hub doc](./README.md): the fork, the revert, and the bad branch's
-  ending now have load-bearing mechanics. The strapline ("energy from the sun into drama") is the
-  Storyverse's core sentence, stated at last in plain clothes.
+  ending now have load-bearing mechanics. The strapline ("a machine for turning sunlight into
+  drama") is the Storyverse's core sentence, stated at last in plain clothes.
 - Mirrors [Future Proof](./future-proof.md) one level deeper: the vault program is the first act
   of human–AI teamwork — the thing the good branch is *for*, demonstrated once, too late, on the
   branch that died of not doing it.

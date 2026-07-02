@@ -201,6 +201,14 @@ Three commitments for presentation:
 
 - **The full in-voice epic** — Future Proof's equivalent of the Storyverse's confession, written
   once this plan settles. The three anchors above set its register.
+- **The Galileo piece (received from the Coda — critique pass, 2026-07).** The closing
+  [Galileo bookend](./discovery-timeline.md#the-galileo-bookends) and
+  [the light and the dark](./discovery-timeline.md#the-light-and-the-dark) no longer close the
+  master arc's Coda (stripped to fork, turn, pen). Their natural home is a **straight-register
+  Future Proof info-piece**: "the strongest dogma since the one Galileo broke is the one his
+  victory built" *is* permission-to-question-a-fossilized-consensus — this epic's exact takeaway,
+  aimed at science's stopping point instead of democracy's. Same bright lines apply (point at the
+  commonality, never found a church).
 - **A receipts layer** — the Storyverse's receipts mark where settled science ends and the wager
   begins. Future Proof's would be the inverse, and stronger: the engineering claims (CI at scale,
   testing culture, composition) are *settled fact* — the only open experiment is their application

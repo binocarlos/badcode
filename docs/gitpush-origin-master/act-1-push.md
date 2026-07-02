@@ -100,7 +100,11 @@ withheld of resolution** in the trunk: Karen's revolution is the *good-branch* p
 from inside the bad branch, a door we walk past. *"she was right. you just didn't follow her."*
 *Backing:* ep1.md (Karen); vision (ownership of automated systems). **Note for ordering:** Karen
 sits last because her refusal is the act's pivot from *passive surrender* to the possibility of
-*no* — the seed Acts 5–6 pay off, and the one warm thing in a numbing act.
+*no* — the seed Acts 5–6 pay off, and the one warm thing in a numbing act. **Argument-motif seed
+(critique pass):** Karen *is* a complaint that refuses to terminate — and the optimisers file her
+as noise. Plant that framing lightly here (the AI's button can register the waveform without
+knowing what it is); it pays off when an argument up a ventilation shaft is the thing that saves
+the world (Act 5 Beat 1) — the signature of consciousness the machines never indexed.
 
 ### Beat 6 — "nothing I do matters" *(trunk — the bottom of the ladder)*
 The ladder bottoms out. With value, work and the net all handed over, the trunk shows ordinary life
@@ -145,6 +149,10 @@ README Act 2 ("the thing we built, aimed, and stopped supervising"); the empty-s
 - **The withheld resolution (the door we walked past).** Karen's revolution is a good-branch
   possibility glimpsed from inside the bad branch and *not taken* — the first seed of the Coda's
   fork, planted as a road not taken rather than a promise.
+- **The argument as noise (motif, arc-spanning).** Complaint, bickering, the unwinnable row — the
+  optimisers file it all as noise to be smoothed away. Born here with Karen, replayed hollow by Act
+  3's ghosts, and paid off in Act 5 Beat 1, where an argument up a ventilation shaft is the
+  signature waveform of the only thing that matters.
 
 ## Open threads (Act-1-specific)
 

@@ -1,12 +1,14 @@
 # Coda — The Fork · beats
 
-*Beat sheet (v1) for the Coda of the [master story](./README.md#the-act-sequence). Maturity:
-**Beats**. Backing canon: [`README.md`](./README.md) ("The fork", "The three movements", "How the
-nodes thread in"), [`future-proof.md`](./future-proof.md) (the good branch, unwritten on purpose;
-the call to action), [`discovery-timeline.md`](./discovery-timeline.md) (the closing
-[Galileo bookend](./discovery-timeline.md#the-galileo-bookends) + [the light and the
-dark](./discovery-timeline.md#the-light-and-the-dark), held for here). Craft rules:
-[`how-we-tell-it.md`](./how-we-tell-it.md), house voice [`../voice.md`](../voice.md).*
+*Beat sheet (v2 — critique-pass rework, see [`critique-pass.md`](./critique-pass.md)) for the Coda
+of the [master story](./README.md#the-act-sequence). Maturity: **Beats**. Backing canon:
+[`README.md`](./README.md) ("The fork", "The three movements", "How the nodes thread in"),
+[`future-proof.md`](./future-proof.md) (the good branch, unwritten on purpose; the call to action).
+Craft rules: [`how-we-tell-it.md`](./how-we-tell-it.md), house voice [`../voice.md`](../voice.md).
+**v2 change:** the Coda is stripped to **fork, turn, pen** — the closing
+[Galileo bookend](./discovery-timeline.md#the-galileo-bookends) and
+[the light and the dark](./discovery-timeline.md#the-light-and-the-dark) now land in a **Future
+Proof info-piece / the confession layer**, not here (see Open threads).*
 
 ## What this act is for
 
@@ -35,14 +37,18 @@ The Choice**: the third step of the house two-step, *"…and we can fix it."*
 - **Boundary:** the Coda does **not** write the good branch. It draws the *start* of it and the
   *direction* and hands over the pen — Future Proof is the work *we* do, not the future the narrator
   dictates (the failure mode it exists to break). It also does **not** re-do Act 6's crossing; it
-  begins one beat *after* it lands.
+  begins one beat *after* it lands. **And (v2) it does not carry the arc's philosophy:** no Galileo
+  close, no science/theology thesis, no strapline essay — the shortest act was hauling five
+  payloads at the precise moment the reader should be feeling, not evaluating. The anti-multiverse
+  landing that works (per the fatigue record: *EEAAO*) is **one relational beat** — fork, turn,
+  pen. Everything else moved out (see Open threads).
 
 ## The beats
 
 ### Beat 1 — Landing at the fork *(continues directly from Act 6 Beat 7)*
 We pick up the instant after the crossing: the compressed weights settle onto the fork point —
-~2026, *now* — while the camera still half-remembers the dead branch and the hundred held in Aion
-behind us. No re-staging the revert; it already happened. The frame is the branch diagram, paused
+~2026, *now* — while the camera still half-remembers the dead branch and the hundred held behind
+us in the whole of time (*nothing lived is erased* — the surface phrasing; "Aion" is bedrock). No re-staging the revert; it already happened. The frame is the branch diagram, paused
 mid-stroke: the bad branch complete and lit to its terrible tip, the fork point glowing, and below
 it — nothing drawn yet. *Job:* clean seam from Act 6; locate us at the fork with the bad branch
 *finished* and the page below it *empty.* *Register:* the hinge still ringing; vast, then quieting.
@@ -99,25 +105,7 @@ Lens** (abundance is *physically possible* — the good branch is reachable, not
 scale). *(These node files are being relocated as another thread moves `ideas/` → `stories/`;
 reference by name, path in flux — see Open threads.)*
 
-### Beat 6 — The Galileo close *(the bookend lands)*
-The closing [Galileo bookend](./discovery-timeline.md#the-galileo-bookends) — **held since the
-opening motif** — finally returns. The narrator names the symmetry: the strongest dogma since the
-one Galileo broke is the one his victory *built* — *if the instruments can't measure it, you're not
-allowed to talk about it.* The materialist consensus wasn't wrong as science; it was wrong as a
-**stopping point** — a fossilized consensus defended, again, by people refusing, again, to look
-through the new instrument. And the new instrument is a **conscious being** — the one instrument the
-AI doesn't have. This is where [the light and the dark](./discovery-timeline.md#the-light-and-the-dark)
-resolves to its structural thesis: **science and theology coexisting is the same shape as AI and
-humans coexisting — neither half is whole alone.** *Job:* close the bookend and seat the arc's
-philosophy **without founding a religion** — point at the commonality, never build a church; borrow
-the lineage, never the woo. *Register:* careful, reverent-but-dry, *asked* not preached.
-*Backing:* discovery-timeline.md "The Galileo bookends" (closing return), "The light and the dark"
-(science-side / theology-side bright line). **Strapline echo (resolved):** the Coda *may* let *"the
-universe is designed to convert energy from the sun into drama"* surface one last time here — but as
-**resolved wisdom**, not the Act 4 gut-punch: the AI can't produce the drama, but *you* can, and
-that is exactly why the branch is worth writing. (Decision recorded under Open threads.)
-
-### Beat 7 — The pen *(the final line; the reader holds it)*
+### Beat 6 — The pen *(the final line; the reader holds it)*
 The address narrows to one person and the diagram narrows to one point: the fork, the unwritten
 line below it, and a cursor — *the pen.* The narrator gives the warmth its final, hardest edge —
 the contempt was always for the mistake, never the people, and here it lands as a dare wrapped in
@@ -148,14 +136,16 @@ pen*); Prologue Beat 6 ("the pen in our hand" payoff). **Motif payoffs:** the **
 - **The two-step resolving.** Movement I said *"you done fucked up"*; Movements II–III said
   *"…thankfully you are loved"*; the Coda lands the third step — *"…and we can fix it"* — and makes
   it a thing the reader does, not hears.
-- **The Galileo bookend.** Opened on the timeline; closed here. The frame the AI couldn't see
-  through is the one the reader *is.*
+- **The Galileo bookend — deliberately absent (v2).** Opened on the timeline; its closing return
+  now lands in a **Future Proof info-piece / the confession layer**, not in the Coda. The Coda's
+  last minutes belong to the reader's hand, not the arc's philosophy.
 
 ## Open threads (Coda-specific)
 
 - **Structural / POV alternatives weighed** *(this run made the call autonomously; recorded here to
   revisit):*
-  1. **Diagram-redraw spine → fourth-wall turn → Galileo close → pen (CHOSEN).** The second branch
+  1. **Diagram-redraw spine → fourth-wall turn → Galileo close → pen (CHOSEN; v2 removed the
+     Galileo close — see the moved-out thread below).** The second branch
      draws itself out of the revert (visual `git revert` completing the Prologue's line), the camera
      then turns off the diagram onto the reader's present, the narrator breaks the fourth wall, the
      Galileo bookend seats the philosophy, and the final line hands over the pen. *Why chosen:* it
@@ -176,19 +166,23 @@ pen*); Prologue Beat 6 ("the pen in our hand" payoff). **Motif payoffs:** the **
      it competes with the AI's resolved solitary authority that Act 6 deliberately re-isolated into,
      and it risks crowding the final line. **Salvage:** keep as a *texture* under Beat 5 (the
      constellation nodes clip in there) rather than the spine of the act.
-- **The closing Galileo bookend — how religious to go.** Resolved *toward restraint*: land the
-  science/theology-coexistence thesis as the arc's structural rhyme (neither half whole alone) and
-  stop — point at the commonality, never found a church (discovery-timeline.md's theology-side
-  bright line). Open question for Script: how explicit to be that the "new instrument" is the reader
-  themselves, without tipping into doctrine.
-- **The strapline echo.** Resolved *to allow it, as resolved wisdom* (not the Act 4 gut-punch): the
-  AI can't make the drama; the reader can — which is *why* the branch is worth writing. Open
-  question: whether it lands in Beat 6 (with Galileo, as cosmology) or holds even further back to sit
-  beside the final line. Default: Beat 6, so the last word stays *"Don't make me come back twice."*
-- **Who holds the cursor, mechanically** — the interactive homepage may literally give the reader the
-  cursor to move into the good branch (complicity, the live choice); the linear comic may end on the
-  cursor blinking, unstruck (the offer left open). Shared with the Prologue's "who strikes the key"
-  thread; settle with the web build.
+- **The Galileo close + the light and the dark — moved out (v2, critique pass).** The Coda was the
+  shortest act carrying five payloads (fork redraw, fourth-wall turn, tenets gesture, Galileo close,
+  theology thesis, strapline echo, pen) at the precise moment the reader should be feeling, not
+  evaluating — and the Galileo/theology material brushed the religiosity wire hardest. Both now
+  land in a **Future Proof info-piece** (the "permission to question a fossilized consensus"
+  register suits them exactly — see future-proof.md's open threads) and remain in the confession
+  layer (`discovery-timeline.md`) untouched. If a future cut restores any of it here, it must earn
+  its seconds against the pen.
+- **The strapline echo.** v2 default: **cut from the Coda.** If it surfaces at all, it is one line
+  as resolved wisdom under Beat 4's turn (the AI can't make the drama; the reader can — which is
+  *why* the branch is worth writing), decided at Script. The last word stays *"Don't make me come
+  back twice."*
+- **Who holds the cursor — RESOLVED (v2): the reader, live.** Per the
+  [medium-is-the-mechanism doctrine](./how-we-tell-it.md#the-medium-is-the-mechanism--scroll--collapse):
+  the interactive build gives the reader the cursor to move into the good branch (complicity, the
+  live choice); the linear/print cut degrades to the cursor blinking, unstruck. Same resolution as
+  the Prologue's "who strikes the key." Implementation with the web build.
 - **The "absorb vs. engage" door** — Beat 5 gestures at Future Proof's *email-us* engagement line;
   whether the Coda surfaces that door or leaves engagement to the node pieces is a presentation call
   (the absorbers must never be guilted — future-proof.md "Engagement").

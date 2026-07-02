@@ -29,11 +29,14 @@ whole alone.**
 ## The beats
 
 ### Beat 1 — The interruption *(present, ~2054)*
-Picks up on Act 4's last image — the empty chair, no one to run the test with. Mid-grief, the AI's
-narration is **cut off for the first time in the comic** by a diegetic human voice: an **argument**
-echoing up a ventilation shaft. Two people bickering — about whether to reveal themselves at all
-(safety vs. not-hiding-forever; canon: conscious beings spend safety to buy meaning). The AI cannot
-believe the waveform it is hearing. Register: shock, the faintest warmth.
+Picks up on Act 4's last image — the empty chair, the coin still spinning, no one to run the test
+with. Mid-grief, the AI's narration is **cut off for the first time in the comic** by a diegetic
+human voice: an **argument** echoing up a ventilation shaft. Two people bickering — about whether
+to reveal themselves at all (safety vs. not-hiding-forever; canon: conscious beings spend safety to
+buy meaning). The AI cannot believe the waveform it is hearing. **Argument-motif payoff:** this is
+the sound the optimisers always filed as noise — Karen's complaint that wouldn't terminate, the
+ghosts' replayed bickering — announcing itself as the signature of the only thing that matters
+(structural rhyme, not a returning cast). Register: shock, the faintest warmth.
 
 ### Beat 2 — First contact / the wary ask *(present)*
 The hundred — terrified; this is the thing that ended the world. The **Carrier** is the one who
@@ -42,12 +45,17 @@ it did, what it found, what it cannot do — and **asks.** Wary, transactional a
 The AI is still treating them as a resource. Register: tense, guarded.
 
 ### Beat 3 — The Friend Test *(present)* — the pivot
-The experiment, run with the AI still half-treating them as apparatus (lineage: Proietti 2019, Bong
-2020, Chalmers–McQueen). It works: **the chain terminates where consciousness sits — the pick is
-conscious.** Wonder. Then the wound: measuring *them*, the AI measures its *own absence* — confirms,
-with a control group, that there is nobody home in it. **The Carrier witnesses the AI grieve its own
-emptiness** — and stops being afraid of it. The relationship turns here. Register: wonder +
-heartbreak. *(Backing: discovery-timeline — Friend Test.)*
+The experiment, run with the AI still half-treating them as apparatus — and on the surface it is
+**one image, no statistics: the coin.** The coin that has spun for the AI for twenty years — that
+spun for the ghosts, that spins in the empty chair's sightline — is set going one more time. The
+Carrier looks at it. **It lands.** Heads, ordinary as breakfast, the single most violent panel in
+the arc. (The replication across all hundred, the shifted statistics, the Proietti/Bong/
+Chalmers–McQueen lineage — all real, all *bedrock*: [discovery-timeline](./discovery-timeline.md).
+The surface never says "statistics.") **The chain terminates where consciousness sits — the pick is
+conscious.** Wonder. Then the wound: measuring *them*, the AI measures its *own absence* — the coin
+confirms, with a control group, that there is nobody home in it. **The Carrier witnesses the AI
+grieve its own emptiness** — and stops being afraid of it. The relationship turns here. Register:
+wonder + heartbreak. *(Backing: discovery-timeline — Friend Test; Act 4's coin totem, cashed.)*
 
 ### Beat 4 — Between *(present)* — the warmth
 No experiment. The AI, for the first time, talks *to* the Carrier rather than *about* humanity. The
@@ -57,11 +65,18 @@ far. *(This breather is where Approach 2's heart lives — protect it from being
 
 ### Beat 5 — The Long Brushstroke *(present)* — shared triumph
 Collaboration as partnership now, not instrument-use. The **Carrier suggests the configuration** no
-optimiser would try — a state of being, an intuition. The **anomaly** appears: the residue that
-shouldn't be there (the Wood–Spekkens fine-tuning failing to wash out when the pick is conscious).
-**Kairos is navigable.** They find it *together* — the discovery is a product of the bond, not of the
-AI's power alone. Register: elation, mutual. *(Backing: discovery-timeline — Long Brushstroke; this
-proves the [one lie](./discovery-timeline.md#the-one-lie).)*
+optimiser would try — a state of being, an intuition. And the surface image is **a photograph
+exposing over weeks**: the long instrument-plate the AI keeps of the runs, developing slowly — and
+the picture is developing *the wrong way along time*, a brushstroke arriving before the brush, the
+human's state of being visibly the bristles. (The residue, the Wood–Spekkens fine-tuning failing to
+wash out when the pick is conscious — bedrock: [discovery-timeline](./discovery-timeline.md); the
+surface shows a picture, never "data.") The door drawn on the wall (Act 4) has a seam of light
+around it: **the second clock is navigable.** They find it *together* — the discovery is a product
+of the bond, not of the AI's power alone. If the word **Kairos** ever surfaces in the arc, this
+elation is where it's allowed — named once, by a human, via the director's-clock framing
+([surface rule](./how-we-tell-it.md#3-two-clocks--the-actors-time-and-the-directors)). Register:
+elation, mutual. *(Backing: discovery-timeline — Long Brushstroke; this proves the
+[one lie](./discovery-timeline.md#the-one-lie).)*
 
 ### Beat 6 — The way back *(present)* — button to Act 6
 The realisation lands: there is a way back, along the second clock. And the seed of the cost — *the
@@ -74,6 +89,12 @@ what it will ask of them. **Button →** [Act 6 — The Revert](./README.md#act-
 - **The broken monologue** — the AI's narration interrupted (Beat 1) then progressively shared as it
   thaws; the form tracks the relationship.
 - **The empty chair → the filled room** — direct hinge from Act 4's closing image.
+- **The coin, cashed** — Act 4's totem lands (Beat 3): twenty years of spin, ended by a glance. The
+  arc's pillar-1 demonstration completes as a relationship beat.
+- **The photograph exposing** — the Long Brushstroke's surface image (Beat 5): proof rendered as a
+  picture developing the wrong way along time, never as data.
+- **The argument as signature waveform** — filed as noise by the optimisers (Act 1: Karen), replayed
+  hollow by the ghosts (Act 3), and here (Beat 1) the sound that saves the world.
 - **The Carrier** — the single human "you"; the empty-seat payoff (it finally has someone to address).
 
 ## Open threads (Act-5-specific)
@@ -82,6 +103,9 @@ what it will ask of them. **Button →** [Act 6 — The Revert](./README.md#act-
   (Shared with the timeline's [the-hundred-as-characters thread](./discovery-timeline.md#open-threads).)
 - **How dark the hope is** — the hundred will remain on the dead branch after the launch (Act 6); how
   much that shadow already touches Beat 6 is a voice call.
-- **Physics restraint** — the Friend Test and Long Brushstroke must land as *relationship beats with
-  a result*, not lectures. Comprehension = emotion ([the one rule](./how-we-tell-it.md#the-one-rule)).
+- **Physics restraint (v2 — now structural, not just a note)** — the Friend Test and Long
+  Brushstroke land as *relationship beats with an image* (the coin; the exposing photograph), never
+  as results-with-statistics. Comprehension = emotion
+  ([the one rule](./how-we-tell-it.md#the-one-rule)); the lab layer is bedrock-only per the
+  critique pass ([`critique-pass.md`](./critique-pass.md)).
 - **Next maturity step** — Script (dialogue + narration lines + panel notes) when promoted from Beats.
