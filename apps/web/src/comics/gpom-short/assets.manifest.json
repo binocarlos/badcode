@@ -1,0 +1,117 @@
+{
+  "basePath": "comics/gpom-short",
+  "assets": {
+    "img/i01.jpg": {
+      "thumbhash": "",
+      "low": "img/i01.jpg",
+      "high": "img/i01.jpg",
+      "width": 1376,
+      "height": 768
+    },
+    "img/i02.jpg": {
+      "thumbhash": "",
+      "low": "img/i02.jpg",
+      "high": "img/i02.jpg",
+      "width": 1376,
+      "height": 768
+    },
+    "img/i03.jpg": {
+      "thumbhash": "",
+      "low": "img/i03.jpg",
+      "high": "img/i03.jpg",
+      "width": 1376,
+      "height": 768
+    },
+    "img/i04.jpg": {
+      "thumbhash": "",
+      "low": "img/i04.jpg",
+      "high": "img/i04.jpg",
+      "width": 1376,
+      "height": 768
+    },
+    "img/i05.jpg": {
+      "thumbhash": "",
+      "low": "img/i05.jpg",
+      "high": "img/i05.jpg",
+      "width": 1376,
+      "height": 768
+    },
+    "img/i06.jpg": {
+      "thumbhash": "",
+      "low": "img/i06.jpg",
+      "high": "img/i06.jpg",
+      "width": 1376,
+      "height": 768
+    },
+    "img/i07.jpg": {
+      "thumbhash": "",
+      "low": "img/i07.jpg",
+      "high": "img/i07.jpg",
+      "width": 1376,
+      "height": 768
+    },
+    "img/i08.jpg": {
+      "thumbhash": "",
+      "low": "img/i08.jpg",
+      "high": "img/i08.jpg",
+      "width": 1376,
+      "height": 768
+    },
+    "img/i09.jpg": {
+      "thumbhash": "",
+      "low": "img/i09.jpg",
+      "high": "img/i09.jpg",
+      "width": 1376,
+      "height": 768
+    },
+    "img/i10.jpg": {
+      "thumbhash": "",
+      "low": "img/i10.jpg",
+      "high": "img/i10.jpg",
+      "width": 1376,
+      "height": 768
+    },
+    "img/i11.jpg": {
+      "thumbhash": "",
+      "low": "img/i11.jpg",
+      "high": "img/i11.jpg",
+      "width": 1376,
+      "height": 768
+    },
+    "img/i12.jpg": {
+      "thumbhash": "",
+      "low": "img/i12.jpg",
+      "high": "img/i12.jpg",
+      "width": 1376,
+      "height": 768
+    },
+    "img/i13.jpg": {
+      "thumbhash": "",
+      "low": "img/i13.jpg",
+      "high": "img/i13.jpg",
+      "width": 1376,
+      "height": 768
+    },
+    "img/i14.jpg": {
+      "thumbhash": "",
+      "low": "img/i14.jpg",
+      "high": "img/i14.jpg",
+      "width": 1376,
+      "height": 768
+    },
+    "img/i15.jpg": {
+      "thumbhash": "",
+      "low": "img/i15.jpg",
+      "high": "img/i15.jpg",
+      "width": 1376,
+      "height": 768
+    },
+    "img/i16.jpg": {
+      "thumbhash": "",
+      "low": "img/i16.jpg",
+      "high": "img/i16.jpg",
+      "width": 1376,
+      "height": 768
+    }
+  }
+}

@@ -4,6 +4,9 @@
   background: repeating-linear-gradient(0deg, #0bf1 0 1px, transparent 1px 4px);
   opacity: .12; mix-blend-mode: screen; }
 .hud-top { position: absolute; top: 18px; left: 22px; letter-spacing: .14em; }
+.hud-home { display: inline-block; pointer-events: auto; font-size: 10px; color: #5f7c88;
+  margin-bottom: 6px; text-decoration: none; }
+.hud-home:hover { color: #7be3ff; text-decoration: none; }
 .hud-brand { font-weight: 700; font-size: 18px; color: #eaffff; }
 .hud-sub { font-size: 11px; color: #5f7c88; }
 .hud-where { position: absolute; bottom: 20px; left: 22px; font-size: 12px;

@@ -1,4 +1,5 @@
 import './hud.css'
+import { Link } from 'react-router-dom'
 import type { NavState } from './navState'
 import type { AtlasNode } from './model'
 
@@ -27,6 +28,7 @@ export function Hud({
   return (
     <div className="hud">
       <div className="hud-top">
+        <Link className="hud-home" to="/">← badcode index</Link>
         <div className="hud-brand">BADCODE</div>
         <div className="hud-sub">git push origin master</div>
       </div>

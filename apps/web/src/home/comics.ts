@@ -2,6 +2,7 @@ import type { ComponentType } from 'react'
 import { CampingComic } from '../comics/camping/CampingComic'
 import { KarenComic } from '../comics/karen/KarenComic'
 import { MagicMoneyTreeComic } from '../comics/magic-money-tree/MagicMoneyTreeComic'
+import { GpomShortComic } from '../comics/gpom-short/GpomShortComic'
 import { homeSteps } from './timeline'
 
 export type ComicResolution =
@@ -14,6 +15,7 @@ const liveComics: Record<string, ComponentType> = {
   camping: CampingComic,
   karen: KarenComic,
   'magic-money-tree': MagicMoneyTreeComic,
+  'gpom-short': GpomShortComic,
 }
 
 export function resolveComic(slug: string): ComicResolution {

@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BadCodeHome } from './routes/BadCodeHome'
 import { Home } from './routes/Home'
 import { ComicPage } from './routes/ComicPage'
 import { About } from './routes/About'
@@ -10,7 +11,8 @@ export function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<BadCodeHome />} />
+        <Route path="/gitpush-origin-master" element={<Home />} />
         <Route path="/comics/:slug" element={<ComicPage />} />
         <Route path="/about" element={<About />} />
         <Route path="/storyverse" element={<Storyverse />} />
