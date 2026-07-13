@@ -1,7 +1,6 @@
 import type { CSSProperties } from 'react'
 import { Link } from 'react-router-dom'
-import { arc, music, physics, stories, type Transmission } from '../catalog'
-import { ForkGlyph } from './ForkGlyph'
+import { channels, music, physics, stories, type Channel, type Transmission } from '../catalog'
 import './landing.css'
 
 const STATUS_LABEL: Record<Transmission['status'], string> = {
@@ -46,6 +45,33 @@ function Row({ t, i }: { t: Transmission; i: number }) {
   )
 }
 
+function ChannelRow({ c, i }: { c: Channel; i: number }) {
+  const body = (
+    <>
+      <span className="tx-index" aria-hidden="true" />
+      <span className="tx-name">
+        <span className="tx-title">{c.title}</span>
+        <span className="tx-blurb">{c.blurb}</span>
+      </span>
+      <span className="tx-medium">LINK</span>
+      <span className={`tx-status is-${c.status}`}>{STATUS_LABEL[c.status]}</span>
+    </>
+  )
+  // A channel is only a link once it has somewhere to go.
+  if (c.url && c.status === 'received') {
+    return (
+      <a className="tx-row is-received" style={delay(i)} href={c.url} target="_blank" rel="noreferrer">
+        {body}
+      </a>
+    )
+  }
+  return (
+    <div className={`tx-row is-${c.status}`} style={delay(i)}>
+      {body}
+    </div>
+  )
+}
+
 function SectionHead({ label, note, i }: { label: string; note?: string; i: number }) {
   return (
     <div className="tx-head" style={delay(i)}>
@@ -75,16 +101,6 @@ export function TransmissionIndex() {
         </p>
       </header>
 
-      <Link to={arc.route} className="bc-arc" style={delay(i++)}>
-        <div className="bc-arc-eyebrow">{arc.eyebrow}</div>
-        <ForkGlyph />
-        <div className="bc-arc-body">
-          <h2 className="bc-arc-title">GITPUSH ORIGIN MASTER</h2>
-          <p className="bc-arc-logline">{arc.logline}</p>
-          <span className="bc-arc-cta">{arc.cta}</span>
-        </div>
-      </Link>
-
       <section aria-label="Stories">
         <SectionHead label="TRANSMISSIONS · STORIES" i={i++} />
         {stories.map((t) => (
@@ -100,6 +116,13 @@ export function TransmissionIndex() {
         />
         {music.map((t) => (
           <Row key={t.id} t={t} i={i++} />
+        ))}
+      </section>
+
+      <section aria-label="Channels">
+        <SectionHead label="CHANNELS" note="where the signal lands in 2026" i={i++} />
+        {channels.map((c) => (
+          <ChannelRow key={c.id} c={c} i={i++} />
         ))}
       </section>
 

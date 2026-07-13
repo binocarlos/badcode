@@ -19,7 +19,6 @@
 .bc-landing .bc-brand,
 .bc-landing .bc-thesis,
 .bc-landing .bc-note,
-.bc-landing .bc-arc,
 .bc-landing .tx-head,
 .bc-landing .tx-row,
 .bc-landing .bc-foot {
@@ -67,82 +66,6 @@
   color: var(--grey);
   max-width: 44ch;
 }
-
-/* ── The ARC card (flagship) ── */
-
-.bc-arc {
-  display: block;
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  padding: clamp(1.25rem, 4vw, 2rem);
-  color: var(--white);
-  text-decoration: none;
-  transition: border-color 0.25s ease, background 0.25s ease;
-}
-.bc-arc:hover,
-.bc-arc:focus-visible {
-  border-color: var(--cyan);
-  background: rgba(70, 213, 255, 0.04);
-  text-decoration: none;
-}
-
-.bc-arc-eyebrow {
-  font-size: 10px;
-  letter-spacing: 0.24em;
-  color: var(--signal);
-  margin-bottom: 1.25rem;
-}
-
-.fork-glyph { display: block; width: 100%; max-width: 22rem; height: auto; margin-bottom: 1.25rem; }
-
-.fg-trunk,
-.fg-branch { stroke: rgba(255, 255, 255, 0.85); stroke-width: 1.5; }
-.fg-commit { fill: var(--black); stroke: rgba(255, 255, 255, 0.85); stroke-width: 1.5; }
-.fg-push   { fill: var(--white); }
-.fg-tip    { fill: none; stroke: var(--cyan); stroke-width: 1.5; }
-
-/* Draw-in: trunk first, then the branches; dots and tips arrive after. */
-.fg-trunk,
-.fg-branch {
-  stroke-dasharray: 1;
-  stroke-dashoffset: 1;
-  animation: bc-draw 0.7s ease forwards;
-}
-.fg-trunk  { animation-delay: 0.45s; }
-.fg-branch { animation-delay: 1.05s; }
-
-@keyframes bc-draw { to { stroke-dashoffset: 0; } }
-
-.fg-commit {
-  opacity: 0;
-  animation: bc-appear 0.3s ease forwards;
-  animation-delay: 1.15s;
-}
-.fg-tip {
-  opacity: 0;
-  animation: bc-appear 0.4s ease 1.75s forwards, bc-pulse 2.6s ease-in-out 2.4s infinite;
-}
-@keyframes bc-appear { to { opacity: 1; } }
-@keyframes bc-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
-
-.bc-arc-title {
-  margin: 0 0 0.6rem;
-  font-size: clamp(1.15rem, 3.4vw, 1.6rem);
-  font-weight: 700;
-  letter-spacing: 0.04em;
-}
-.bc-arc-logline {
-  margin: 0 0 1.1rem;
-  font-size: 0.85rem;
-  line-height: 1.65;
-  color: var(--grey);
-  max-width: 52ch;
-}
-.bc-arc-cta {
-  font-size: 12px;
-  letter-spacing: 0.14em;
-  color: var(--cyan);
-}
-.bc-arc:hover .bc-arc-cta { text-decoration: underline; }
 
 /* ── Manifest sections ── */
 
@@ -206,8 +129,7 @@ a.tx-row:hover .tx-title,
 a.tx-row:focus-visible .tx-title { color: var(--cyan); }
 
 /* Keyboard focus */
-a.tx-row:focus-visible,
-.bc-arc:focus-visible { outline: 1px solid var(--cyan); outline-offset: 2px; }
+a.tx-row:focus-visible { outline: 1px solid var(--cyan); outline-offset: 2px; }
 
 /* ── Footer ── */
 
@@ -237,6 +159,5 @@ a.tx-row:focus-visible,
 
 /* Reduced motion: everything lands instantly, nothing loops. */
 @media (prefers-reduced-motion: reduce) {
-  .fg-tip { animation: none; opacity: 1; }
   .bc-rec-dot { animation: none; }
 }

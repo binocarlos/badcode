@@ -47,17 +47,19 @@ const fromStep = (id: string, index: string, blurb?: string): Transmission => {
   }
 }
 
-/** The flagship — the GitPush Origin Master timeline (the Atlas). */
-export const arc = {
-  title: 'GitPush Origin Master',
-  route: '/gitpush-origin-master',
-  eyebrow: 'THE ARC · FLAGSHIP TRANSMISSION',
-  logline:
-    'Humanity is a repo. Every commit was a choice. Scroll the log, find the push that ended us — and the fork where you get to differ.',
-  cta: '▶ enter the timeline',
-}
-
 export const stories: Transmission[] = [
+  // GPOM is the Atlas itself, not a node on it — declared inline. BC-000: the
+  // origin transmission everything else forks from.
+  {
+    id: 'gitpush-origin-master',
+    index: 'BC-000',
+    title: 'GitPush Origin Master',
+    medium: 'story',
+    status: 'received',
+    route: '/comics/gitpush-origin-master',
+    blurb:
+      'Humanity is a repo. Scroll the log, find the push that ended us — and the fork where you get to differ.',
+  },
   fromStep('camping', 'BC-001'),
   fromStep('karen', 'BC-002'),
   {
@@ -69,20 +71,8 @@ export const stories: Transmission[] = [
     route: '/comics/magic-money-tree',
     blurb: 'There is no magic money tree. Except the one they shook for the banks.',
   },
-  {
-    id: 'gpom-short',
-    index: 'BC-004',
-    title: 'GPOM — The Short',
-    medium: 'story',
-    status: 'received',
-    route: '/comics/gpom-short',
-    blurb: 'The whole arc in sixteen panels, for the attention span you have left.',
-  },
-  fromStep(
-    'emperors-coin',
-    'BC-005',
-    'The coin is worth whatever the crowd won’t admit it isn’t.',
-  ),
+  // BC-004 (gpom-short) and BC-005 (emperors-coin) stay live at their routes
+  // but are deliberately not indexed here.
 ]
 
 export const music: Transmission[] = [
@@ -117,6 +107,41 @@ export const music: Transmission[] = [
     medium: 'track',
     status: 'pending',
     blurb: 'The title track. The whole story in one drop.',
+  },
+]
+
+/**
+ * Channels — where the signal lands in 2026. Distribution endpoints, not
+ * numbered transmissions. A channel goes live by gaining a `url` and flipping
+ * to `received`.
+ */
+export interface Channel {
+  id: string
+  title: string
+  status: TransmissionStatus
+  /** External link; the row renders as an <a> only when set. */
+  url?: string
+  blurb: string
+}
+
+export const channels: Channel[] = [
+  {
+    id: 'youtube',
+    title: 'YouTube',
+    status: 'incoming',
+    blurb: 'The comics, animated. The shorts. The receipts.',
+  },
+  {
+    id: 'soundcloud',
+    title: 'SoundCloud',
+    status: 'incoming',
+    blurb: 'Drum & bass from the end of the world, streamable.',
+  },
+  {
+    id: 'community',
+    title: 'Community',
+    status: 'incoming',
+    blurb: 'The other humans who got the transmission. Compare notes.',
   },
 ]
 
