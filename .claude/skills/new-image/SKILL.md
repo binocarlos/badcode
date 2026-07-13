@@ -20,7 +20,8 @@ Image generation runs through the `flow` MCP server (`flow_generate_image`,
 
 ## Register — what a BadCode brand image looks like
 
-The anchor is [`docs/images/gpom-short-opener.jpeg`](../../../docs/images/gpom-short-opener.jpeg):
+The anchor is [`docs/gpom-short/storyboard/img/p01.jpg`](../../../docs/gpom-short/storyboard/img/p01.jpg)
+(its exact Flow prompt is in [`p01.md`](../../../docs/gpom-short/storyboard/p01.md)):
 a data-center corridor in near-total darkness, racks receding to vanishing point,
 one thin vertical blade of white light, constellations of status LEDs. **Read the
 anchor image before your first generation of a session** — calibrate against it,
