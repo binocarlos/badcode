@@ -1,0 +1,19 @@
+# docs/images — BadCode brand imagery
+
+The home for **standalone BadCode-branded images** — the pieces that carry the
+collective's visual identity outside a specific comic: site headers, openers,
+social frames. Images here are produced by the **`new-image`** skill
+(`.claude/skills/new-image/`), which pads a short description into the brand
+register (near-black, one thin light, monumental machine architecture) and drives
+Google Flow to generate it.
+
+**Convention:** every generated image is `<slug>.jpg` with a sibling `<slug>.md`
+record holding the exact Flow prompt, media id, and revision log — so "just like
+that, but change X" is one cheap `flow_refine`. Brand images that live elsewhere
+(a story dir, an `apps/web` asset path) still get an index row here.
+
+## Index
+
+| Image | Record | Note |
+| --- | --- | --- |
+| [`gpom-short-opener.jpeg`](./gpom-short-opener.jpeg) | — (predates the skill) | **The register anchor.** A viewer screenshot capturing the look: near-black data-center corridor, one thin blade of light, LED constellations. No prompt record — it is the calibration reference the `new-image` skill reads before generating. |
