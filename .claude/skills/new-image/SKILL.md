@@ -12,11 +12,21 @@ superintelligence's timeline, not sci-fi concept art. The user gives you a short
 description; **your job is to enhance it** — pad the subject into the full brand
 register before a single pixel is generated.
 
-## Prerequisite
+## Prerequisite — launch Chrome yourself
 Image generation runs through the `flow` MCP server (`flow_generate_image`,
-`flow_refine`, `flow_generate_video`). If a call returns
-`{ error: true, code: "NOT_RUNNING" }`, tell the user to run
-`./scripts/flow-chrome.sh` and log in, then retry. (See `packages/flow-mcp/README.md`.)
+`flow_refine`, `flow_generate_video`). If `flow_status` (or any flow call)
+returns `{ error: true, code: "NOT_RUNNING" }`, do NOT bounce this to the user —
+launch the browser yourself:
+
+1. `Bash` with `run_in_background: true` → `./scripts/flow-chrome.sh`
+   (Chrome with CDP on port 9222 and the persistent `.flow-profile/` session).
+2. Wait for the CDP port, e.g.
+   `for i in $(seq 1 20); do curl -s -m 2 http://localhost:9222/json/version >/dev/null && break; sleep 1; done`.
+3. `flow_status` → if `loggedIn: true`, proceed. Only if `loggedIn: false`
+   (first run or expired session) ask the user to log into Google in the window
+   that opened, then re-check.
+
+(See `packages/flow-mcp/README.md`.)
 
 ## Register — what a BadCode brand image looks like
 
