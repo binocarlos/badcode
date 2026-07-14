@@ -73,7 +73,7 @@ the character is **attached as a reference** — naming them in prose is not eno
 
 ## Record
 Write `docs/<story>/storyboard/pNN.md` with the EXACT prompt sent and a revision-log
-entry matching the existing storyboard record format — `panel`, `flow_media_id`, `model`, `status`, the prompt, and a Revisions block — so "just like that but change X" is one cheap `flow_refine`.
+entry matching the existing storyboard record format — `panel`, `flow_media_id`, `model`, `status`, `asset_key` (the `img/iNN.jpg` comic asset the panel renders as — the `badcode panel` resolver and the `edit-panel` skill depend on it), the prompt, and a Revisions block — so "just like that but change X" is one cheap edit.
 
 ## Scope
 Stills only. Motion/Veo direction is future work; `animate-slide` is unchanged.

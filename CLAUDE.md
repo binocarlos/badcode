@@ -40,7 +40,7 @@ Full guide: [`docs/voice.md`](./docs/voice.md). When writing lyrics or story cop
 | `docs/` | Vision, voice, story bible, method | …you need context |
 | `docs/ideas/` | The idea inbox — raw ideas (minimal prose) before they become stories | …you have a new idea to park, or want to develop one |
 | `docs/suno-gpt/` | Suno-prompting toolkit (operating procedure + reference files) | …you're turning a song idea into a Suno prompt |
-| `.claude/skills/` | `new-idea`, `new-story`, `suno-prompt`, `make-comic`, `animate-slide`, `music-video-short`, `new-image` — orchestrators for parking an idea, story capture, Suno prompting, the full idea→comic pipeline, animating a finished panel, the full idea→short-form music-video pipeline (Suno track + Flow clips + edit plan), and standalone brand imagery | …you're capturing an idea, developing a story, making a track, building a comic, animating a slide, making a short, or making a brand image |
+| `.claude/skills/` | `new-idea`, `new-story`, `suno-prompt`, `make-comic`, `edit-panel`, `animate-slide`, `music-video-short`, `new-image` — orchestrators for parking an idea, story capture, Suno prompting, the full idea→comic pipeline, editing an existing panel image, animating a finished panel, the full idea→short-form music-video pipeline (Suno track + Flow clips + edit plan), and standalone brand imagery | …you're capturing an idea, developing a story, making a track, building a comic, editing a panel, animating a slide, making a short, or making a brand image |
 | `docs/<story>/` | Per-story canon (concept, characters, beats, songs) — source of truth | …you're capturing or producing a story's media |
 | `packages/comic` | `@badcode/comic` — code-first comic rendering library (authoring guide: [`AUTHORING.md`](./packages/comic/AUTHORING.md)) | …you're building the viewer |
 | `apps/web` | The website (Vite + React + TS SPA) | …you're building pages/routes |
@@ -84,6 +84,12 @@ Full guide: [`docs/voice.md`](./docs/voice.md). When writing lyrics or story cop
   `docs/<story>/storyboard/`), and `@badcode/comic` (assembly). Each generated
   image keeps its exact prompt + revision log so "just like that, but change X"
   is one cheap step. Worked reference: [`docs/magic-money-tree/`](./docs/magic-money-tree/README.md).
+- **Edit an existing panel image:** run the **`edit-panel`** skill
+  (`.claude/skills/edit-panel/`). "Take page 4 of `<comic>` and change X" —
+  resolves the page to its image + exact recorded prompt with **`badcode panel`**
+  (no browser), then loops `flow_edit_image` (reference-anchored, 2 candidates a
+  round, always from the golden original) until the user accepts; updates the
+  panel record's revision log and the rendered frame.
 - **Animate a finished panel:** run the **`animate-slide`** skill
   (`.claude/skills/animate-slide/`). Turns a finished comic's slide into a
   Flow-generated scroll-scrubbed video. Requires the comic to be on the bucket

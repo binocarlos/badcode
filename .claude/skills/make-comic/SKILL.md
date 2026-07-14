@@ -131,6 +131,7 @@ characters: [dawn]
 flow_media_id:                 # filled when generated
 model: nano-banana-2
 status: planned                # planned | done
+asset_key: img/i03.jpg         # comic asset this panel renders as (badcode panel resolves via it)
 ---
 ![panel 3](img/p03.jpg)        # added when generated
 
@@ -210,18 +211,11 @@ Derive the comic from the storyboard (`docs/<story>/` stays the source). Read
 
 ## Iterating on an image
 
-The records exist so *"just like that image, but change X"* is one cheap
-operation:
-
-1. Open the record (`storyboard/pNN.md` or `characters/<name>.md`) and read the
-   recorded prompt.
-2. Invoke **`badcode-art-direction`** with a correction — "just like that but
-   `<change>`" — which calls `flow_refine` in-session and harvests the new version.
-3. **Append a revision line** describing the change; replace the image; if it's a
-   storyboard panel that's already assembled, recopy that one frame into the web
-   app.
-
-Touch only that one record/image — leave the rest of the comic untouched.
+Editing an existing panel — *"take page 4 and change X"* — is the **`edit-panel`**
+skill's job: it resolves the page to its record + golden image (`badcode panel`),
+generates reference-anchored candidates with `flow_edit_image`, and maintains the
+revision log. Invoke it instead of hand-rolling refine calls. (Character-sheet
+records under `characters/` still iterate via `badcode-art-direction` + `flow_refine`.)
 
 ## Out of scope
 

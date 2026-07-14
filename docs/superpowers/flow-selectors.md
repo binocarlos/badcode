@@ -150,6 +150,82 @@ Key corrections to the spike-era selectors above:
   text after the chip (`End` then type — `fill()` would wipe the chip) → submit. Confirmed live:
   the reference composition is faithfully reproduced, so the chip genuinely binds the character.
 
+## Reference images (ingredients) — mapped live 2026-07-14 (edit-panel spike)
+
+The reference-image workflow ("Add" / ingredients) exists and works end-to-end. Proven
+live: uploaded `gpom-short` p04 golden, applied a Google-template delta prompt at x2, got
+2 edited candidates that honoured "keep everything else the same".
+
+- **Attach a reference**: the create bar's `button "add_2 Create"` (`aria-haspopup="dialog"`)
+  opens an **asset-picker dialog**: project dropdown (cross-project assets!), tabs
+  `All / Images / Videos / Voices / Characters / Uploads`, a `button "upload Upload media"`
+  (file chooser — `setFiles()` works), and a searchable asset grid. Pick/upload an asset →
+  hover/select its tile → **"Add to Prompt"**.
+- **The media chip lives OUTSIDE the contenteditable** — it renders as a sibling
+  `button` whose `<img alt>` is *"A piece of media generated or uploaded by you, that is
+  present in your collection."* with a `cancel` icon child to detach. Because it is outside
+  the box, **`fill()` on the prompt box does NOT wipe it** (unlike character chips).
+  Probe for it via the img alt, not textContent (the accessible name comes from the alt).
+- **`@` now opens the SAME asset-picker dialog** — the old `role="option"`
+  `"<Name>Character"` entries are GONE (UI update since 2026-06-30). To cast a character:
+  open the picker (`@` or `add_2`), click the `Characters` tab, select the character tile,
+  "Add to Prompt". The character chip is still INLINE in the contenteditable (` Name `),
+  so once a character chip is present, APPEND text (`End` + type) — never `fill()`.
+  `submitWithCharacter`'s option-based flow is dead and needs porting to this picker.
+- **Composition confirmed**: a media ingredient chip + an inline character chip coexist
+  in one prompt (tested in camping-v2 with an existing asset + SmokeChar).
+- **Multi-output (x2/x3/x4)**: count tab selection in the `crop_` config menu **persists
+  after Escape** (trigger label updates, e.g. `…crop_16_9x2`). An x2 generation yields
+  2 fresh media UUIDs; observed arrival skew between the two candidates ≈ 9–15 s —
+  use a ~20–30 s grace window after the first before declaring a partial result.
+- **Harvest unchanged**: candidates resolve via `media.getMediaUrlRedirect?name=<uuid>`
+  (full-res `image/jpeg`, ~770 KB at 16:9).
+- **Uploads become project assets** (alt `"Generated image"` in the grid, original
+  filename in the picker) — re-usable in later rounds without re-uploading; the picker
+  hides assets already attached to the prompt.
+
+### Click reliability on WSLg (2026-07-14, refined during the smoke hardening) — REQUIRED reading
+
+Playwright's default actionability checks stall on this UI (elements never report
+"stable" — persistent animation), and **coordinate-based input is untrustworthy on this
+rig**: the WSLg window's input pipeline scales coordinates (`window.innerWidth` 3828 vs a
+1538-px screenshot), so trusted CDP clicks and even `force:true` clicks can land on the
+wrong element (observed: a force-click aimed at "Add to Prompt" hit "Upload media").
+What works, per control type (all in-page via `locator.evaluate` — coordinate-free):
+
+| Control | Working recipe |
+| --- | --- |
+| Plain buttons (Upload media, Add to Prompt, add_2 picker trigger) | native `el.click()` via `evaluate` |
+| Submit (`arrow_forwardCreate`) | native `el.click()` **after waiting for it to enable** (it enables async after fill; clicks on the disabled button are silently swallowed) — then VERIFY the prompt box cleared, retry with focus+`Enter` if not |
+| Radix menu trigger (`crop_` config) | synthetic `PointerEvent` sequence via `dispatchEvent` (`pointerdown`→`pointerup`→`click`); native click, focus+Enter and CDP mouse all failed |
+| Radix tabs (Image / aspect / count) | `el.focus()` + `MouseEvent` sequence (`mousedown`→`mouseup`→`click`); bare `PointerEvent` dispatch did not select |
+
+These stalls (5–30 s timeout-retry per click) are almost certainly the "Flow automation
+is slow" experience — every hand-driven or locator-driven click paid them.
+
+### More live corrections (2026-07-14 smoke hardening)
+
+- **Never use `waitForEvent('filechooser')` + `setFiles`** — when a second Playwright
+  client (e.g. the Playwright MCP) is attached to the same Chrome with chooser
+  interception armed, the chooser hangs and the upload never lands. Instead set the
+  page's persistent hidden input directly: `locator('input[type="file"][accept*="image"]')
+  .setInputFiles(path)` — no dialog interaction at all. (`generateVideo`'s chooser path
+  has the same latent conflict — port it when it next breaks.)
+- **The asset picker has two layout variants**: a full-width dialog (button "Add to
+  Prompt") and a compact popover (button "Add to **p**rompt", left rail + list + preview
+  pane). Match buttons **case-insensitively and page-globally**, not scoped to
+  `getByRole('dialog').last()`.
+- **Submit verification is mandatory**: Flow clears the prompt box on a successful
+  submit — poll for that instead of trusting the click.
+- **KNOWN ISSUE — project tiles lost their `<a href>`**: the projects grid can render
+  div-based tiles with no anchors (breaks `SCRAPE_PROJECTS`/`openProject` → spurious
+  PROJECT_NOT_FOUND). Synthetic clicks on those tiles do NOT navigate. Workaround: a
+  direct `goto` to the known `/project/<uuid>` URL (retry through the "Application
+  error" boundary with a reload), or rely on the already-open project page
+  (`flow_edit_image` needs no specific project — the uploaded reference anchors it).
+- **Project rename via the title textbox could not be automated** (fill and keystrokes
+  both revert on blur) — name projects at creation time, in the UI, by hand.
+
 ## Still to spike (before a full unattended comic run)
 
 1. **Iterative correction** — how reliably a follow-up message fixes a weak frame.

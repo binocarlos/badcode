@@ -7,6 +7,7 @@ import { flowPrep } from './flow-prep'
 import { push } from './push'
 import { status } from './status'
 import { pull } from './pull'
+import { resolvePanel } from './resolve-panel'
 import { generate } from './generate'
 import { assetsBuild } from './assets-build'
 import { SharpImageProcessor } from './image-processor'
@@ -65,6 +66,16 @@ program
     console.log('\nREFERENCE FILES (attach in order):')
     for (const ref of result.refs) console.log(`  ${ref.label} ${ref.file}`)
     console.log('')
+  })
+
+program
+  .command('panel')
+  .description('Resolve "page N of comic C" to its image file, exact Flow prompt, and character refs (no browser). JSON to stdout.')
+  .argument('<comic>', 'comic id (folder under apps/web/src/comics)')
+  .argument('<page>', 'page number as rendered in the comic (1-based)')
+  .action(async (comicId: string, page: string) => {
+    const resolved = await resolvePanel(process.cwd(), comicId, Number(page))
+    console.log(JSON.stringify(resolved, null, 2))
   })
 
 program

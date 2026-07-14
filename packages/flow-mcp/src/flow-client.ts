@@ -1,9 +1,11 @@
-import { chromium, type Browser, type Page } from 'playwright'
-import { pickActiveCanvas } from './canvas'
+import { basename } from 'node:path'
+import { chromium, type Browser, type Locator, type Page } from 'playwright'
+import { collectNewCanvases, pickActiveCanvas, type CanvasImg } from './canvas'
 import { toCanvasImgs, SCRAPE_IMGS, type RawImg } from './dom'
 import { harvestToFile, contentTypeOf } from './harvest'
 import { pickProject, SCRAPE_PROJECTS, type ProjectTile } from './project'
 import { batchOutPath } from './batch'
+import { candidateOutPath } from './candidates'
 
 const FLOW_URL = 'https://labs.google/fx/tools/flow'
 const DEFAULT_ENDPOINT = `http://localhost:${process.env.FLOW_CDP_PORT ?? '9222'}`
@@ -16,6 +18,7 @@ const POLL_MS = 1_000
 const VIDEO_POLL_MS = 3_000
 
 export interface ImageResult { path: string; mediaId: string; width: number; height: number }
+export interface EditResult { candidates: ImageResult[]; partial?: boolean }
 export interface MediaResult { path: string; mediaId: string }
 export interface BatchItem { index: number; prompt: string; path: string; mediaId: string; width: number; height: number }
 export interface CharacterRef { name: string }
@@ -52,7 +55,7 @@ export class FlowClient {
   private async ensureProject(): Promise<void> {
     if (/\/project\//.test(this.page.url())) return
     const newProject = this.page.getByRole('button', { name: /New project/i })
-    await newProject.click()
+    await newProject.click({ force: true })
     await this.page.waitForURL(/\/project\//, { timeout: TURN_TIMEOUT_MS })
   }
 
@@ -75,7 +78,7 @@ export class FlowClient {
     if (!href) throw new Error('PROJECT_NOT_FOUND')
     // SPA-navigate by clicking the project tile. A second hard goto (list -> project)
     // races the app's hydration and tips it into its client-side error boundary.
-    await this.page.locator(`a[href="${href}"]`).first().click()
+    await this.page.locator(`a[href="${href}"]`).first().click({ force: true })
     await this.page.waitForURL(/\/project\//, { timeout: TURN_TIMEOUT_MS })
     // The create bar hydrates after navigation; wait for the (enabled) prompt textbox
     // before returning so callers never interact with a half-rendered editor.
@@ -85,28 +88,98 @@ export class FlowClient {
       .waitFor({ state: 'visible', timeout: TURN_TIMEOUT_MS })
   }
 
-  private async submitPrompt(prompt: string): Promise<void> {
+  // --- Click hardening (mapped live 2026-07-14, flow-selectors.md "Click reliability on WSLg") ---
+  // Playwright's actionability "stable" check stalls on this UI (persistent animation) and
+  // trusted CDP pointer input can silently miss, so each control type gets the recipe that
+  // actually fires its handler. A bare click with default actionability is banned in this file.
+
+  /**
+   * Plain React buttons (submit, Upload media, Add to Prompt): in-page native el.click().
+   * Coordinate-based clicks (even force:true) are untrustworthy on this rig — the WSLg
+   * window's input pipeline scales coordinates, so pointer clicks can land on the wrong
+   * element entirely (observed live 2026-07-14: a force-click on "Add to Prompt" hit
+   * "Upload media" and opened a second file chooser).
+   */
+  private async forceClick(locator: Locator): Promise<void> {
+    await locator.evaluate((el) => (el as HTMLElement).click())
+  }
+
+  /** Radix menu/dialog triggers (crop_ config, add_2 picker): synthetic pointer sequence. */
+  private async pointerClick(locator: Locator): Promise<void> {
+    await locator.evaluate((el) => {
+      const opts: PointerEventInit = { bubbles: true, cancelable: true, pointerId: 1, pointerType: 'mouse', isPrimary: true, button: 0, buttons: 1 }
+      el.dispatchEvent(new PointerEvent('pointerdown', opts))
+      el.dispatchEvent(new PointerEvent('pointerup', { ...opts, buttons: 0 }))
+      el.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, button: 0 }))
+    })
+  }
+
+  /** Radix tabs (Image / aspect / count / picker tabs): focus + mouse sequence selects. */
+  private async tabClick(locator: Locator): Promise<void> {
+    await locator.evaluate((el) => {
+      ;(el as HTMLElement).focus()
+      for (const type of ['mousedown', 'mouseup', 'click'] as const) {
+        el.dispatchEvent(new MouseEvent(type, { bubbles: true, cancelable: true, button: 0 }))
+      }
+    })
+  }
+
+  private promptBox(): Locator {
     // Confirmed live 2026-06-30: the prompt box is a contenteditable div with role="textbox"
-    // and NO own placeholder text (the old hasText filter matched nothing). A sibling <textarea>
-    // also exposes the textbox role, so target the contenteditable div directly.
-    const box = this.page.locator('div[role="textbox"][contenteditable="true"]').first()
-    await box.fill(prompt)
-    // Submit is the arrow_forward button; its accessible name renders as "arrow_forwardCreate"
-    // (no space) — allow optional whitespace between the icon ligature and the label.
-    await this.page.getByRole('button', { name: /arrow_forward\s*Create/i }).click()
+    // and NO own placeholder text. A sibling <textarea> also exposes the textbox role.
+    return this.page.locator('div[role="textbox"][contenteditable="true"]').first()
+  }
+
+  private async clickSubmit(): Promise<void> {
+    // Accessible name renders as "arrow_forwardCreate" (no space). The button enables
+    // asynchronously after the prompt fills — a click while it is still disabled is silently
+    // swallowed (observed live 2026-07-14), so wait for enabled, click, and VERIFY the box
+    // cleared (Flow empties the prompt on a successful submit); retry with Enter if not.
+    const submit = this.page.getByRole('button', { name: /arrow_forward\s*Create/i }).first()
+    const box = this.promptBox()
+    const deadline = Date.now() + TURN_TIMEOUT_MS
+    while (Date.now() < deadline) {
+      if (await submit.isEnabled().catch(() => false)) break
+      await this.page.waitForTimeout(250)
+    }
+    const boxCleared = async (): Promise<boolean> => {
+      const text = ((await box.textContent()) ?? '')
+        .replace(/[\u200B\uFEFF]/g, '')
+        .replace('What do you want to create?', '')
+        .trim()
+      return text === ''
+    }
+    for (let attempt = 0; attempt < 3; attempt++) {
+      if (attempt === 0) await this.forceClick(submit)
+      else {
+        await box.evaluate((el) => (el as HTMLElement).focus())
+        await this.page.keyboard.press('Enter')
+      }
+      const settle = Date.now() + 5_000
+      while (Date.now() < settle) {
+        if (await boxCleared()) return
+        await this.page.waitForTimeout(300)
+      }
+      // box still holds the prompt — submission didn't fire; try the next mechanism
+    }
+    throw new Error('SUBMIT_FAILED')
+  }
+
+  private async submitPrompt(prompt: string): Promise<void> {
+    // Media-reference chips live OUTSIDE the contenteditable and survive fill(); only inline
+    // character chips forbid it (submitWithCharacter appends instead).
+    await this.promptBox().fill(prompt)
+    await this.clickSubmit()
   }
 
   /**
-   * Force the create bar into single-image mode. The bar defaults to
-   * "Video · 8s"; opening the mode menu exposes an Image tab and a 1x count.
-   * Idempotent — safe to call when already in image mode.
+   * Force the create bar into image mode at the requested output count (1–4).
+   * Idempotent — when the config trigger's label already shows the target state
+   * the menu is not even opened, which keeps repeat calls in an edit loop cheap.
    */
-  private async ensureImageMode(): Promise<void> {
+  private async ensureImageMode(count = 1): Promise<void> {
     // Wait for the create bar to hydrate (it renders after navigation).
-    await this.page
-      .locator('div[role="textbox"][contenteditable="true"]')
-      .first()
-      .waitFor({ state: 'visible', timeout: TURN_TIMEOUT_MS })
+    await this.promptBox().waitFor({ state: 'visible', timeout: TURN_TIMEOUT_MS })
     // The bar toggles between "Agent" (conversational) and direct generation; the image config
     // (the "crop_…" button) only exists in generation mode. If it isn't showing we're in Agent
     // mode — click the Agent toggle to leave it. (Gating on crop_'s presence is more reliable
@@ -114,14 +187,22 @@ export class FlowClient {
     const crop = this.page.getByRole('button', { name: /crop_/ }).first()
     if (!(await crop.count())) {
       const agent = this.page.getByRole('button', { name: 'Agent', exact: true })
-      if (await agent.count()) await agent.click()
+      if (await agent.count()) await this.forceClick(agent)
     }
-    // Open the config menu (auto-waits for crop_ to appear after any mode switch).
-    await crop.click()
-    // The tab's accessible name concatenates the icon ligature with the label, no space.
-    await this.page.getByRole('tab', { name: /image\s*Image/i }).click()
-    const oneX = this.page.getByRole('tab', { name: '1x', exact: true })
-    if (await oneX.count()) await oneX.click().catch(() => {})
+    await crop.waitFor({ state: 'visible', timeout: TURN_TIMEOUT_MS })
+    // Count tabs are named `1x` for one output and `x2`/`x3`/`x4` beyond (mapped live 2026-07-14).
+    const countTab = count <= 1 ? '1x' : `x${count}`
+    // Short-circuit: the trigger label concatenates model+aspect+count ("🍌 Nano Banana 2crop_16_91x").
+    const label = ((await crop.textContent()) ?? '').trim()
+    if (/Nano Banana/i.test(label) && label.endsWith(countTab)) return
+    // Open the config menu — a Radix trigger; needs the synthetic pointer sequence.
+    await this.pointerClick(crop)
+    const imageTab = this.page.getByRole('tab', { name: /image\s*Image/i })
+    await imageTab.waitFor({ state: 'visible', timeout: TURN_TIMEOUT_MS })
+    await this.tabClick(imageTab)
+    const countLocator = this.page.getByRole('tab', { name: countTab, exact: true })
+    if (await countLocator.count()) await this.tabClick(countLocator)
+    // Escape closes the menu; the selection sticks (verified live 2026-07-14).
     await this.page.keyboard.press('Escape')
   }
 
@@ -155,43 +236,199 @@ export class FlowClient {
     throw new Error('TIMEOUT')
   }
 
+  /**
+   * Poll until `expected` fresh media UUIDs appear. Multi-output turns land their
+   * candidates staggered (observed skew ≈ 9–15 s), so after the first arrival keep
+   * polling for a grace window rather than the full turn timeout. Returns what
+   * arrived (≥1) — the caller decides whether fewer than expected is `partial`.
+   */
+  private async waitForNewCanvases(
+    before: Set<string>,
+    expected: number,
+    timeoutMs: number,
+    graceMs = 30_000,
+  ): Promise<CanvasImg[]> {
+    const deadline = Date.now() + timeoutMs
+    let graceDeadline = Number.POSITIVE_INFINITY
+    const found = new Map<string, CanvasImg>()
+    while (Date.now() < Math.min(deadline, graceDeadline)) {
+      const raw = (await this.page.evaluate(`(${SCRAPE_IMGS})()`)) as RawImg[]
+      for (const im of collectNewCanvases(toCanvasImgs(raw), before)) {
+        const prev = found.get(im.name)
+        if (!prev || im.width * im.height > prev.width * prev.height) found.set(im.name, im)
+      }
+      if (found.size >= expected) break
+      if (found.size > 0 && graceDeadline === Number.POSITIVE_INFINITY) graceDeadline = Date.now() + graceMs
+      await this.page.waitForTimeout(POLL_MS)
+    }
+    if (found.size === 0) throw new Error('TIMEOUT')
+    return [...found.values()].map((im) => ({ name: im.name, width: Math.round(im.width), height: Math.round(im.height) }))
+  }
+
+  /** Harvest each canvas to its candidate path (suffixed -a/-b… when numOutputs > 1). */
+  private async harvestCandidates(canvases: CanvasImg[], outPath: string, numOutputs: number): Promise<ImageResult[]> {
+    const out: ImageResult[] = []
+    for (let i = 0; i < canvases.length; i++) {
+      const c = canvases[i]!
+      const path = candidateOutPath(outPath, i, numOutputs)
+      await harvestToFile(this.page.request, c.name, path)
+      out.push({ path, mediaId: c.name, width: c.width, height: c.height })
+    }
+    return out
+  }
+
   async generateImage(
     prompt: string,
     outPath: string,
-    opts?: { character?: string },
-  ): Promise<ImageResult> {
+    opts?: { character?: string; numOutputs?: number },
+  ): Promise<ImageResult & { candidates?: ImageResult[]; partial?: boolean }> {
+    const numOutputs = opts?.numOutputs ?? 1
     await this.ensureProject()
-    await this.ensureImageMode()
+    await this.ensureImageMode(numOutputs)
     const before = await this.snapshotMediaNames()
     if (opts?.character) await this.submitWithCharacter(opts.character, prompt)
     else await this.submitPrompt(prompt)
-    const { name, width, height } = await this.waitForNewCanvas(before, TURN_TIMEOUT_MS)
-    await harvestToFile(this.page.request, name, outPath)
-    return { path: outPath, mediaId: name, width, height }
+    const canvases = await this.waitForNewCanvases(before, numOutputs, TURN_TIMEOUT_MS)
+    const candidates = await this.harvestCandidates(canvases, outPath, numOutputs)
+    if (numOutputs === 1) return candidates[0]!
+    return { ...candidates[0]!, candidates, ...(canvases.length < numOutputs ? { partial: true } : {}) }
   }
 
   /**
-   * Cast a project Character into the next generation. Mapped live 2026-06-30: type "@" to open
-   * the asset picker, select the "<Name> — Character" option, "Add to Prompt" (which inserts an
-   * inline character-reference chip), then APPEND the scene text after the chip and submit.
-   * The scene text must be appended, not filled — `fill()` would clear the chip and lose the
-   * reference (a plain "@Name" typed as text does NOT bind the character).
+   * Edit an existing image: attach the reference file(s) as prompt ingredients (the
+   * create-bar "Add" asset picker, mapped live 2026-07-14), apply the delta prompt,
+   * and harvest all fresh candidates. References should be the ORIGINAL/golden image,
+   * not a previous edit output — chained edits accumulate artifacts.
    */
+  async editImage(
+    prompt: string,
+    referenceImages: string[],
+    outPath: string,
+    opts?: { numOutputs?: number; character?: string },
+  ): Promise<EditResult> {
+    const numOutputs = opts?.numOutputs ?? 2
+    await this.ensureProject()
+    await this.ensureImageMode(numOutputs)
+    await this.attachReferences(referenceImages)
+    if (opts?.character) await this.addCharacterToPrompt(opts.character)
+    // Snapshot AFTER attaching: the uploads themselves land in the media grid as new UUIDs.
+    const before = await this.snapshotMediaNames()
+    const box = this.promptBox()
+    if (opts?.character) {
+      // An inline character chip is now in the box — append, never fill().
+      await box.evaluate((el) => (el as HTMLElement).focus())
+      await this.page.keyboard.press('End')
+      await this.page.keyboard.type(` ${prompt}`)
+    } else {
+      await box.fill(prompt) // media chips live outside the box and survive fill()
+    }
+    await this.clickSubmit()
+    const canvases = await this.waitForNewCanvases(before, numOutputs, TURN_TIMEOUT_MS)
+    const candidates = await this.harvestCandidates(canvases, outPath, numOutputs)
+    return { candidates, ...(canvases.length < numOutputs ? { partial: true } : {}) }
+  }
+
+  /**
+   * Open the create-bar asset picker (the `add_2 Create` trigger; `@` in the box opens the
+   * same dialog). Mapped live 2026-07-14: a dialog with a project dropdown, tabs
+   * All/Images/Videos/Voices/Characters/Uploads, an "upload Upload media" button and a
+   * searchable asset grid. Resolves once the dialog's Upload button is visible.
+   */
+  private async openAssetPicker(): Promise<Locator> {
+    const trigger = this.page.getByRole('button', { name: /add_2\s*Create/i }).first()
+    await trigger.waitFor({ state: 'visible', timeout: TURN_TIMEOUT_MS })
+    const dialog = this.page.getByRole('dialog').last()
+    const uploadBtn = dialog.getByRole('button', { name: /upload\s*Upload media/i })
+    // Native click opens this trigger (proven live on a fresh CDP connection); the synthetic
+    // pointer sequence only works once the dialog has mounted before. Try native, then fall back.
+    await this.forceClick(trigger)
+    try {
+      await uploadBtn.waitFor({ state: 'visible', timeout: 5_000 })
+    } catch {
+      await this.pointerClick(trigger)
+      await uploadBtn.waitFor({ state: 'visible', timeout: TURN_TIMEOUT_MS })
+    }
+    return dialog
+  }
+
+  /** Close the asset picker if it is still open (Add to Prompt usually closes it). */
+  private async closeAssetPicker(): Promise<void> {
+    const dialog = this.page.getByRole('dialog').last()
+    try {
+      await dialog.waitFor({ state: 'hidden', timeout: 2_000 })
+    } catch {
+      await this.page.keyboard.press('Escape')
+    }
+  }
+
+  /**
+   * Attach local image file(s) to the prompt as ingredient references. Each upload lands
+   * selected in the picker with an "Add to Prompt" button; the resulting media chip sits
+   * OUTSIDE the contenteditable (probe it via the img alt — the accessible name comes from
+   * the alt text "A piece of media generated or uploaded by you…").
+   */
+  private async attachReferences(refPaths: string[]): Promise<void> {
+    const chip = this.page.locator('button:has(img[alt*="piece of media"])')
+    const base = await chip.count() // pre-existing chips (e.g. left over on the bar) don't count
+    for (let i = 0; i < refPaths.length; i++) {
+      const ref = refPaths[i]!
+      await this.openAssetPicker()
+      // Upload by setting the page's persistent hidden file input directly — NO file chooser.
+      // waitForEvent('filechooser') breaks when another Playwright client (e.g. the Playwright
+      // MCP) is attached to the same Chrome with chooser interception armed (observed live
+      // 2026-07-14: the chooser hangs open and the upload never lands).
+      const fileInput = this.page.locator('input[type="file"][accept*="image"]').first()
+      await fileInput.setInputFiles(ref)
+      // The uploaded asset lands in the picker (Recent-first) named after the file; select it
+      // if it isn't auto-selected, then attach. Match page-globally and case-insensitively:
+      // the picker has two layout variants ("Add to Prompt" dialog / "Add to prompt" compact
+      // popover) and stale dialog containers can outlive their content (observed 2026-07-14).
+      const tile = this.page.locator(`[role="dialog"] img[alt="${basename(ref)}"]`).first()
+      const addToPrompt = this.page.getByRole('button', { name: /add to prompt/i }).first()
+      await tile.or(addToPrompt).first().waitFor({ state: 'visible', timeout: TURN_TIMEOUT_MS })
+      if (!(await addToPrompt.isVisible().catch(() => false))) await this.forceClick(tile)
+      await addToPrompt.waitFor({ state: 'visible', timeout: TURN_TIMEOUT_MS })
+      await this.forceClick(addToPrompt)
+      try {
+        await chip.nth(base + i).waitFor({ state: "visible", timeout: 10_000 })
+      } catch {
+        // One retry — the first click occasionally lands on a picker mid-render.
+        await this.forceClick(addToPrompt)
+        await chip.nth(base + i).waitFor({ state: "visible", timeout: TURN_TIMEOUT_MS })
+      }
+      await this.closeAssetPicker()
+    }
+  }
+
+  /**
+   * Cast a project Character into the next generation via the unified asset picker
+   * (the 2026-06-30 `role="option"` flow is gone — UI update mapped 2026-07-14):
+   * picker → Characters tab → select the named tile → Add to Prompt. The character chip
+   * is INLINE in the contenteditable, so callers must APPEND prompt text afterwards.
+   */
+  private async addCharacterToPrompt(name: string): Promise<void> {
+    const dialog = await this.openAssetPicker()
+    const charactersTab = dialog.getByRole('tab', { name: /Characters/i })
+    await charactersTab.waitFor({ state: 'visible', timeout: TURN_TIMEOUT_MS })
+    await this.tabClick(charactersTab)
+    // Select the tile carrying the character's name, then attach it.
+    const tile = dialog.getByText(name, { exact: true }).first()
+    await tile.waitFor({ state: 'visible', timeout: TURN_TIMEOUT_MS })
+    await this.forceClick(tile)
+    const addToPrompt = this.page.getByRole('button', { name: /add to prompt/i }).first()
+    await addToPrompt.waitFor({ state: 'visible', timeout: TURN_TIMEOUT_MS })
+    await this.forceClick(addToPrompt)
+    await this.closeAssetPicker()
+  }
+
+  /** Character cast + scene text + submit (append after the inline chip — fill() wipes it). */
   private async submitWithCharacter(name: string, prompt: string): Promise<void> {
-    const box = this.page.locator('div[role="textbox"][contenteditable="true"]').first()
-    await box.click()
-    await box.pressSequentially('@')
-    const esc = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-    await this.page
-      .getByRole('option', { name: new RegExp(`${esc}\\s*Character`, 'i') })
-      .first()
-      .click()
-    await this.page.getByRole('button', { name: /Add to Prompt/i }).click()
-    // Move to the end of the chip and append the scene text (fill() would wipe the chip).
-    await box.click()
+    await this.addCharacterToPrompt(name)
+    const box = this.promptBox()
+    await box.evaluate((el) => (el as HTMLElement).focus())
     await this.page.keyboard.press('End')
     await this.page.keyboard.type(` ${prompt}`)
-    await this.page.getByRole('button', { name: /arrow_forward\s*Create/i }).click()
+    await this.clickSubmit()
   }
 
   async generateBatch(prompts: string[], outDir: string): Promise<BatchItem[]> {
@@ -226,20 +463,20 @@ export class FlowClient {
    */
   async createCharacter(name: string, refImages: string[]): Promise<CharacterRef> {
     await this.ensureProject()
-    await this.page.getByRole('button', { name: /accessibility_new\s*Characters/i }).click()
+    await this.page.getByRole('button', { name: /accessibility_new\s*Characters/i }).click({ force: true })
     // "New Character" is a clickable card (a div with an icon ligature), not a <button>.
-    await this.page.getByText('New Character', { exact: true }).first().click()
+    await this.page.getByText('New Character', { exact: true }).first().click({ force: true })
     await this.page.waitForURL(/\/characters\b/, { timeout: TURN_TIMEOUT_MS })
     // Upload the reference(s); the file chooser accepts the array.
     const chooser = this.page.waitForEvent('filechooser')
-    await this.page.getByRole('button', { name: /upload\s*Upload/i }).first().click()
+    await this.page.getByRole('button', { name: /upload\s*Upload/i }).first().click({ force: true })
     await (await chooser).setFiles(refImages)
     // After upload the character editor opens with a "Character Name" field defaulting to
     // "Untitled Character"; set it, then finalize.
     const nameInput = this.page.locator('input[placeholder="Character Name"]')
     await nameInput.waitFor({ state: 'visible', timeout: TURN_TIMEOUT_MS })
     await nameInput.fill(name)
-    await this.page.getByRole('button', { name: /^Done$/ }).click()
+    await this.page.getByRole('button', { name: /^Done$/ }).click({ force: true })
     // Done returns to the project root (leaves /character/<id>).
     await this.page.waitForURL((u) => /\/project\/[0-9a-f-]+$/.test(u.toString()), {
       timeout: TURN_TIMEOUT_MS,
@@ -261,9 +498,9 @@ export class FlowClient {
   ): Promise<MediaResult> {
     await this.ensureProject()
     // 1. Upload the source frame.
-    await this.page.getByRole('button', { name: /add\s*Add Media/i }).click()
+    await this.page.getByRole('button', { name: /add\s*Add Media/i }).click({ force: true })
     const chooser = this.page.waitForEvent('filechooser')
-    await this.page.getByRole('menuitem', { name: /upload\s*Upload media/i }).click()
+    await this.page.getByRole('menuitem', { name: /upload\s*Upload media/i }).click({ force: true })
     await (await chooser).setFiles(imagePath)
     // 2. Attach it as the animation source.
     await this.openAnimateMenu()
@@ -298,10 +535,10 @@ export class FlowClient {
         .locator('button:has-text("more_vert"):near(img[alt="Generated image"])')
         .first()
       if (!(await more.count())) continue
-      await more.click()
+      await more.click({ force: true })
       const animate = this.page.getByRole('menuitem', { name: /motion_blur\s*Animate/i })
       if (await animate.count()) {
-        await animate.click()
+        await animate.click({ force: true })
         return
       }
       await this.page.keyboard.press('Escape') // wrong tile (e.g. a video) — close and try the next
@@ -330,7 +567,7 @@ export class FlowClient {
     const approve = this.page.getByRole('button', { name: /^Approve$/ }).first()
     try {
       await approve.waitFor({ state: 'visible', timeout: timeoutMs })
-      await approve.click()
+      await approve.click({ force: true })
     } catch {
       // No gate (Confirm=Never / direct generation) — nothing to approve.
     }
@@ -352,6 +589,11 @@ export class FlowClient {
       await this.page.waitForTimeout(VIDEO_POLL_MS)
     }
     throw new Error('TIMEOUT')
+  }
+
+  /** Whether the cached CDP attachment (and its page) is still usable. */
+  isAlive(): boolean {
+    return this.browser.isConnected() && !this.page.isClosed()
   }
 
   async close(): Promise<void> {

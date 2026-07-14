@@ -1,5 +1,10 @@
 # The Magic Money Tree — storyboard (10 panels)
 
+> **Per-panel records now live in [`storyboard/`](./storyboard/) (`pNN.md`)** — they are the
+> source of truth for each panel's exact prompt, characters, and revision log (the
+> edit-panel loop reads them via `badcode panel magic-money-tree <N>`). This file stays as
+> the narrative overview.
+
 > Per-panel plan for the comic. Each panel: the **Flow scene prompt** (fed to the
 > Google Flow agent, with house style + Dawn as a reference character) and the
 > **narration / speech** copy in BadCode's voice. Landscape 16:9.
