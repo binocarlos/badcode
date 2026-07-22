@@ -1066,15 +1066,15 @@ Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>"
 - Create: `.claude/skills/badcode-art-direction/SKILL.md`
 
 **Interfaces:**
-- Consumes: the `flow_generate_image` / `flow_refine` tools (Phase 1); `docs/voice.md`; existing comics under `apps/web/src/comics/` and storyboards under `docs/<story>/`.
+- Consumes: the `flow_generate_image` / `flow_refine` tools (Phase 1); `docs/voice.md`; existing comics under `apps/web/src/comics/` and storyboards under `docs/stories/<story>/`.
 - Produces: a skill that orchestrators reference for image prompt craft + critique.
 
 - [ ] **Step 1: Study the existing comics for the calibration section**
 
 Read, and take notes on the concrete visual identity (palette, framing, line/render quality, mood) of:
-- `docs/camping/` storyboard records + `apps/web/src/comics/camping/`
-- `docs/karen/` (or the Karen comic dir) storyboard + comic component
-- `docs/magic-money-tree/`
+- `docs/stories/camping/` storyboard records + `apps/web/src/comics/camping/`
+- `docs/stories/karen/` (or the Karen comic dir) storyboard + comic component
+- `docs/stories/magic-money-tree/`
 Capture 4–6 concrete, BadCode-specific visual traits and 3–4 generic-AI-comic traits to avoid. These notes become the Identity + Calibration sections — they must be specific, not generic.
 
 - [ ] **Step 2: Write `.claude/skills/badcode-art-direction/SKILL.md`**
@@ -1107,18 +1107,18 @@ symmetrical hero framing>. These are defaults, not choices. Where the beat pins 
 follow it; where it leaves an axis free, do NOT spend that freedom on these defaults.
 
 ## The loop (per panel)
-1. **Plan** the prompt from the panel beat + canon (`docs/<story>/storyboard/`), in the
+1. **Plan** the prompt from the panel beat + canon (`docs/stories/<story>/storyboard/`), in the
    BadCode house style. Shape: house-style preamble + scene; for character scenes name
    the character.
 2. **Critique the prompt** before sending: does it read like a generic comic panel, or
    like THIS beat and our voice (`docs/voice.md`)? Revise; say what you changed.
-3. **Generate** → `flow_generate_image({ prompt, outPath: "<abs>/docs/<story>/storyboard/img/pNN.png" })`.
+3. **Generate** → `flow_generate_image({ prompt, outPath: "<abs>/docs/stories/<story>/storyboard/img/pNN.png" })`.
 4. **Look** at the returned file. Critique against the beat and the Calibration list.
 5. **Refine or accept** → if weak, `flow_refine({ prompt: "<correction>", outPath })` in
    the same session; else accept.
 
 ## Record
-Write `docs/<story>/storyboard/pNN.md` with the EXACT prompt sent and a revision-log
+Write `docs/stories/<story>/storyboard/pNN.md` with the EXACT prompt sent and a revision-log
 entry (matching the existing storyboard record format), so "just like that but change X"
 is one cheap `flow_refine`.
 
@@ -1167,7 +1167,7 @@ Image generation is now deterministic via the `flow` MCP server, and prompt craf
 critique live in the **`badcode-art-direction`** skill — invoke it for every image.
 Per image: the art-direction skill plans + critiques the prompt, calls
 `flow_generate_image({ prompt, outPath })` (or `flow_refine` to correct in-session),
-and records the prompt + revision in `docs/<story>/storyboard/pNN.md`.
+and records the prompt + revision in `docs/stories/<story>/storyboard/pNN.md`.
 
 Prerequisite: `./scripts/flow-chrome.sh` running and logged in (see
 `packages/flow-mcp/README.md`). Do NOT puppeteer Flow via the Playwright MCP by hand.

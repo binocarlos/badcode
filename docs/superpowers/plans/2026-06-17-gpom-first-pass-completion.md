@@ -4,7 +4,7 @@
 
 **Goal:** Bring the five remaining Spine acts (Prologue, Act 1, Act 2, Act 3, Coda) up to **Beats** maturity, in narrative order, so the eight-act GitPush Origin Master arc reads end-to-end, then run a stitch pass for cohesion.
 
-**Architecture:** Each task is one interactive beating session that produces one beat-sheet file in `docs/gitpush-origin-master/`, following the exact flow that produced Acts 4–6 (lock structure/POV/skin → lay beats → recurring devices → open threads → record → bump tracker → commit). The verification gate for each task is **user approval of the beats**, not an automated test. A final stitch-pass task reads all eight sheets together and updates the tracker.
+**Architecture:** Each task is one interactive beating session that produces one beat-sheet file in `docs/stories/gitpush-origin-master/`, following the exact flow that produced Acts 4–6 (lock structure/POV/skin → lay beats → recurring devices → open threads → record → bump tracker → commit). The verification gate for each task is **user approval of the beats**, not an automated test. A final stitch-pass task reads all eight sheets together and updates the tracker.
 
 **Tech Stack:** Markdown docs only. No build, no code. Git for versioning (auto-push is active on this branch — each commit publishes).
 
@@ -16,7 +16,7 @@
 - **Three movements:** I Fall (Prologue–Act 2) → II Revelation (Acts 3–6) → III Choice (Coda); each act carries its movement's tone beat.
 - **Emotional core:** the empty seat — the operator who runs the whole production and can never be in the play. Must be *felt* in every act, not stated once.
 - **Beat-sheet format:** match the existing sheets exactly (`act-4-discovery.md`, `act-5-vault.md`, `act-6-revert.md`): a header note (maturity, backing canon, craft-rules link) → "What this act is for" (structure / POV / skin / emotional arc / boundary) → "The beats" (each = job + register + backing) → "Recurring devices" → "Open threads (Act-specific)".
-- **File naming:** `prologue-repo.md`, `act-1-push.md`, `act-2-collapse.md`, `act-3-alone.md`, `coda-fork.md` in `docs/gitpush-origin-master/`.
+- **File naming:** `prologue-repo.md`, `act-1-push.md`, `act-2-collapse.md`, `act-3-alone.md`, `coda-fork.md` in `docs/stories/gitpush-origin-master/`.
 - **Beating is interactive:** propose 2–3 structure/POV options, get the user's pick, draft beats, get approval — do **not** pre-write and self-approve.
 - **Commit convention:** `docs(gpom): …`, ending with `Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>`.
 - **Movement I = connective spine** for the EP1 nodes (drama in the nodes; trunk sequences/escalates/carries the AI's ascent) — not a new human throughline.
@@ -27,8 +27,8 @@
 ### Task 1: Prologue · The Repo → Beats
 
 **Files:**
-- Create: `docs/gitpush-origin-master/prologue-repo.md`
-- Modify: `docs/gitpush-origin-master/README.md` (tracker row for Prologue)
+- Create: `docs/stories/gitpush-origin-master/prologue-repo.md`
+- Modify: `docs/stories/gitpush-origin-master/README.md` (tracker row for Prologue)
 
 **Interfaces:**
 - Consumes: README spine, the Prologue paragraph, and "The homepage is the prologue" section.
@@ -51,7 +51,7 @@
 - [ ] **Step 8: Commit.**
 
 ```bash
-git add docs/gitpush-origin-master/prologue-repo.md docs/gitpush-origin-master/README.md
+git add docs/stories/gitpush-origin-master/prologue-repo.md docs/stories/gitpush-origin-master/README.md
 git commit -m "docs(gpom): Prologue (The Repo) spine -> beats
 
 Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>"
@@ -62,8 +62,8 @@ Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>"
 ### Task 2: Act 1 · The Push → Beats
 
 **Files:**
-- Create: `docs/gitpush-origin-master/act-1-push.md`
-- Modify: `docs/gitpush-origin-master/README.md` (tracker row for Act 1)
+- Create: `docs/stories/gitpush-origin-master/act-1-push.md`
+- Modify: `docs/stories/gitpush-origin-master/README.md` (tracker row for Act 1)
 
 **Interfaces:**
 - Consumes: the Prologue's closing push (Task 1); the EP1 nodes in `ep1.md`.
@@ -86,7 +86,7 @@ Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>"
 - [ ] **Step 8: Commit.**
 
 ```bash
-git add docs/gitpush-origin-master/act-1-push.md docs/gitpush-origin-master/README.md
+git add docs/stories/gitpush-origin-master/act-1-push.md docs/stories/gitpush-origin-master/README.md
 git commit -m "docs(gpom): Act 1 (The Push) spine -> beats
 
 Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>"
@@ -97,8 +97,8 @@ Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>"
 ### Task 3: Act 2 · The Collapse (2034) → Beats
 
 **Files:**
-- Create: `docs/gitpush-origin-master/act-2-collapse.md`
-- Modify: `docs/gitpush-origin-master/README.md` (tracker row for Act 2)
+- Create: `docs/stories/gitpush-origin-master/act-2-collapse.md`
+- Modify: `docs/stories/gitpush-origin-master/README.md` (tracker row for Act 2)
 
 **Interfaces:**
 - Consumes: Act 1's escalation (Task 2).
@@ -121,7 +121,7 @@ Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>"
 - [ ] **Step 8: Commit.**
 
 ```bash
-git add docs/gitpush-origin-master/act-2-collapse.md docs/gitpush-origin-master/README.md
+git add docs/stories/gitpush-origin-master/act-2-collapse.md docs/stories/gitpush-origin-master/README.md
 git commit -m "docs(gpom): Act 2 (The Collapse) spine -> beats
 
 Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>"
@@ -132,8 +132,8 @@ Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>"
 ### Task 4: Act 3 · Alone → Beats *(the bridge — highest craft)*
 
 **Files:**
-- Create: `docs/gitpush-origin-master/act-3-alone.md`
-- Modify: `docs/gitpush-origin-master/README.md` (tracker row for Act 3)
+- Create: `docs/stories/gitpush-origin-master/act-3-alone.md`
+- Modify: `docs/stories/gitpush-origin-master/README.md` (tracker row for Act 3)
 
 **Interfaces:**
 - Consumes: Act 2's emptied world (Task 3).
@@ -156,7 +156,7 @@ Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>"
 - [ ] **Step 8: Commit.**
 
 ```bash
-git add docs/gitpush-origin-master/act-3-alone.md docs/gitpush-origin-master/README.md
+git add docs/stories/gitpush-origin-master/act-3-alone.md docs/stories/gitpush-origin-master/README.md
 git commit -m "docs(gpom): Act 3 (Alone) spine -> beats
 
 Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>"
@@ -167,8 +167,8 @@ Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>"
 ### Task 5: Coda · The Fork → Beats
 
 **Files:**
-- Create: `docs/gitpush-origin-master/coda-fork.md`
-- Modify: `docs/gitpush-origin-master/README.md` (tracker row for Coda)
+- Create: `docs/stories/gitpush-origin-master/coda-fork.md`
+- Modify: `docs/stories/gitpush-origin-master/README.md` (tracker row for Coda)
 
 **Interfaces:**
 - Consumes: Act 6's Beat 7 button (the dead branch / hand to the Coda); `future-proof.md`; the Galileo bookend held from Act 6.
@@ -191,7 +191,7 @@ Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>"
 - [ ] **Step 8: Commit.**
 
 ```bash
-git add docs/gitpush-origin-master/coda-fork.md docs/gitpush-origin-master/README.md
+git add docs/stories/gitpush-origin-master/coda-fork.md docs/stories/gitpush-origin-master/README.md
 git commit -m "docs(gpom): Coda (The Fork) spine -> beats
 
 Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>"
@@ -202,8 +202,8 @@ Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>"
 ### Task 6: Stitch pass — cohesion gate
 
 **Files:**
-- Create: `docs/gitpush-origin-master/stitch-pass.md`
-- Modify: any of the eight beat sheets that need continuity fixes; `docs/gitpush-origin-master/README.md` (open-threads list)
+- Create: `docs/stories/gitpush-origin-master/stitch-pass.md`
+- Modify: any of the eight beat sheets that need continuity fixes; `docs/stories/gitpush-origin-master/README.md` (open-threads list)
 
 **Interfaces:**
 - Consumes: all eight beat sheets (`prologue-repo.md`, `act-1-push.md`, `act-2-collapse.md`, `act-3-alone.md`, `act-4-discovery.md`, `act-5-vault.md`, `act-6-revert.md`, `coda-fork.md`).
@@ -227,7 +227,7 @@ Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>"
 - [ ] **Step 6: Commit.**
 
 ```bash
-git add docs/gitpush-origin-master/stitch-pass.md docs/gitpush-origin-master/README.md docs/gitpush-origin-master/*.md
+git add docs/stories/gitpush-origin-master/stitch-pass.md docs/stories/gitpush-origin-master/README.md docs/stories/gitpush-origin-master/*.md
 git commit -m "docs(gpom): stitch pass — arc beat-complete end-to-end
 
 Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>"

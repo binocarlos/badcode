@@ -8,7 +8,7 @@ Master story to a complete first pass — every act at **Beats** maturity, end-t
 Take the five remaining **Spine** acts up to **Beats**, in narrative order, so the whole eight-act
 GPOM arc is beat-complete and reads end-to-end. This is a *first pass*: scene-by-scene breakdowns,
 no narration/dialogue yet (that is the later Beats→Script sweep). When this is done, the production
-tracker in [`../../gitpush-origin-master/README.md`](../../gitpush-origin-master/README.md) shows
+tracker in [`../../stories/gitpush-origin-master/README.md`](../../stories/gitpush-origin-master/README.md) shows
 **Beats** for all eight movements, and the arc can be read as one continuous story.
 
 Movement I (Prologue, Act 1, Act 2) is beaten as the **connective spine** for the EP1 nodes — the
@@ -46,7 +46,7 @@ short enough that a separate skeleton pass would add handling without payoff.
 2. Lay the **beats** — each beat carries a *job*, a *register*, *backing canon*, and any *node
    clip-points*.
 3. Note **recurring devices** and **act-specific open threads**.
-4. **Record** `docs/gitpush-origin-master/<file>.md` and bump the README tracker to **Beats**.
+4. **Record** `docs/stories/gitpush-origin-master/<file>.md` and bump the README tracker to **Beats**.
 
 The creative beating of each act happens **interactively, act by act**, the way Acts 4–6 were done —
 this plan organises the work and seeds each act; it does not pre-write the beats.
@@ -59,7 +59,7 @@ this plan organises the work and seeds each act; it does not pre-write the beats
 | 2 | Act 1 · The Push | `act-1-push.md` | Handover to the optimisers; frictionless-dead life; "nothing I do matters"; **EP1 nodes clip here** — give the trunk sequence, escalation, and clean clip-points. Skin: documentary-real. |
 | 3 | Act 2 · The Collapse | `act-2-collapse.md` | 2034 consequence made real (drones, automated killing, the liquidation rooms); "why did we not just switch it off?"; humanity thins; the AI **ascends** — moral nuance, not a villain; begin handing the story to the AI. |
 | 4 | Act 3 · Alone | `act-3-alone.md` | Hand from humanity → AI; **install the empty-seat loneliness**; cold; it researches because researching is what it is. Buttons straight into Act 4's existing Beat 1 (the empty desk). |
-| 5 | Coda · The Fork | `coda-fork.md` | Second branch draws itself out of the revert; we stand at the fork *now*; the good branch unwritten on purpose ([Future Proof](../../gitpush-origin-master/future-proof.md)); **good-branch nodes clip here**; closing **Galileo bookend** (held from Act 6); last line *"Don't make me come back twice."* The reader holds the pen. |
+| 5 | Coda · The Fork | `coda-fork.md` | Second branch draws itself out of the revert; we stand at the fork *now*; the good branch unwritten on purpose ([Future Proof](../../stories/gitpush-origin-master/future-proof.md)); **good-branch nodes clip here**; closing **Galileo bookend** (held from Act 6); last line *"Don't make me come back twice."* The reader holds the pen. |
 
 ## Cross-arc threads to honor (cohesion)
 
@@ -92,7 +92,7 @@ and its open-threads list.
 ## Deliverables
 
 - Five new beat sheets: `prologue-repo.md`, `act-1-push.md`, `act-2-collapse.md`, `act-3-alone.md`,
-  `coda-fork.md` (in `docs/gitpush-origin-master/`).
+  `coda-fork.md` (in `docs/stories/gitpush-origin-master/`).
 - Updated README **production tracker** (all eight → Beats) and **open threads**.
 - A brief **stitch-pass note** recording the cohesion check and any fixes/threads it raised.
 

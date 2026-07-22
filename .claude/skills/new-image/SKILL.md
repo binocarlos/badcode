@@ -30,8 +30,8 @@ launch the browser yourself:
 
 ## Register — what a BadCode brand image looks like
 
-The anchor is [`docs/gpom-short/storyboard/img/p01.jpg`](../../../docs/gpom-short/storyboard/img/p01.jpg)
-(its exact Flow prompt is in [`p01.md`](../../../docs/gpom-short/storyboard/p01.md)):
+The anchor is [`docs/stories/gpom-short/storyboard/img/p01.jpg`](../../../docs/stories/gpom-short/storyboard/img/p01.jpg)
+(its exact Flow prompt is in [`p01.md`](../../../docs/stories/gpom-short/storyboard/p01.md)):
 a data-center corridor in near-total darkness, racks receding to vanishing point,
 one thin vertical blade of white light, constellations of status LEDs. **Read the
 anchor image before your first generation of a session** — calibrate against it,
@@ -99,7 +99,7 @@ Where the subject leaves an axis free, do NOT spend that freedom on these defaul
 1. **Ask two things up front** (if not already given): the **description** (what
    the image is of, and what it's for — a page header reads differently from a
    social frame) and the **destination**. Default `docs/images/<slug>.jpg`; a
-   story dir (`docs/<story>/…`) or an `apps/web/src/…` asset path are fine too.
+   story dir (`docs/stories/<story>/…`) or an `apps/web/src/…` asset path are fine too.
    The record `.md` always sits next to the image.
 2. **Plan** the prompt: house-style preamble + the subject, *enhanced* — this is
    the crucial step. Pad the user's line with the motivated light source, the

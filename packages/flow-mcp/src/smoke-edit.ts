@@ -8,7 +8,7 @@ import { tmpdir } from 'node:os'
 import { join, resolve } from 'node:path'
 import { FlowClient } from './flow-client'
 
-const ref = resolve(process.argv[2] ?? 'docs/gpom-short/storyboard/img/p04.jpg')
+const ref = resolve(process.argv[2] ?? 'docs/stories/gpom-short/storyboard/img/p04.jpg')
 const project = process.argv[3]
 const c = await FlowClient.connect()
 try {

@@ -15,7 +15,7 @@ floor: a currency-issuing government can't run out of money; the real constraint
 resources, and inflation is the signal you've exceeded them — not that you've "spent too
 much."
 
-This is explicitly the **solution companion** to [Magic Money Tree](../magic-money-tree/README.md):
+This is explicitly the **solution companion** to [Magic Money Tree](../stories/magic-money-tree/README.md):
 Magic Money Tree shows the mechanism of artificial scarcity (THE PROBLEM); this shows the
 possibility of genuine abundance (THE SOLUTION).
 

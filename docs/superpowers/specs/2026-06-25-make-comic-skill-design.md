@@ -22,7 +22,7 @@ approved. It **composes** existing pieces rather than duplicating them.
   stays usable standalone for canon-only work; `make-comic` is the full-pipeline
   entry point.
 - **Canon is the source of truth.** Everything the comic needs lives in
-  `docs/<story>/`; the comic in `apps/web` is *derived*.
+  `docs/stories/<story>/`; the comic in `apps/web` is *derived*.
 - **Every image is reproducible.** The exact prompt + provenance + revision log
   for each generated image is recorded in git, so iteration ("just like that, but
   change X") is a first-class operation.
@@ -34,7 +34,7 @@ approved. It **composes** existing pieces rather than duplicating them.
 Each stage gates on user approval before the next begins.
 
 1. **Idea** — discuss the concept and the one load-bearing political/economic
-   idea. Write `docs/<story>/story.md` (key concept, background, high-level beats,
+   idea. Write `docs/stories/<story>/story.md` (key concept, background, high-level beats,
    the twist) using `new-story`'s method. **Gate:** approve the spine.
 2. **Characters** — discuss each character; write `characters/<name>.md`,
    including the visual **sheet** description in house style. **Gate:** approve
@@ -61,7 +61,7 @@ Each stage gates on user approval before the next begins.
 
 ## Record format (the iteration mechanism)
 
-Each panel is one markdown file `docs/<story>/storyboard/pNN.md`, eyeball-able on
+Each panel is one markdown file `docs/stories/<story>/storyboard/pNN.md`, eyeball-able on
 GitHub, pairing the image with the **exact prompt** and a **revision log**:
 
 ```markdown
@@ -96,7 +96,7 @@ images. This is the primary reason the record exists.
 
 ## Source of truth vs derived
 
-- **Source of truth:** `docs/<story>/` — `story.md`, `characters/<name>.md`
+- **Source of truth:** `docs/stories/<story>/` — `story.md`, `characters/<name>.md`
   (+ portrait + record), `storyboard/index.md`, `storyboard/pNN.md`, and the
   canonical images in `storyboard/img/` (committed; render on GitHub).
 - **Derived (Stage 6):** the comic component + manifest in
@@ -139,7 +139,7 @@ URL via `page.request` → `curl` to disk), and the Flow **Character** workflow.
 
 Progress *is* the artifacts: `story.md`/`characters/*` present → stages 1–2 done;
 a character with a recorded portrait → stage 3 done for it; `pNN.md` with
-`status: done` → that panel done. The skill resumes by inspecting `docs/<story>/`
+`status: done` → that panel done. The skill resumes by inspecting `docs/stories/<story>/`
 and continues at the first incomplete stage/panel.
 
 ## Out of scope
@@ -158,5 +158,5 @@ and continues at the first incomplete stage/panel.
   prompt, provenance, and revision log committed to git.
 - "Change panel N like this" reliably re-generates that one image, appends a
   revision line, and updates the file — without disturbing other panels.
-- Re-invoking the skill on an existing `docs/<story>/` resumes rather than
+- Re-invoking the skill on an existing `docs/stories/<story>/` resumes rather than
   restarts.

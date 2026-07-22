@@ -7,7 +7,7 @@
 
 ## Purpose
 
-Turn `docs/gitpush-origin-master.md` from a thin stub into the **hub** of a coherent arc, and add the
+Turn `docs/stories/gitpush-origin-master.md` from a thin stub into the **hub** of a coherent arc, and add the
 two **epic** docs that sit at the tips of the story's central fork. Future stories, songs, comics and
 agents all hook into this structure. The docs are an internal story bible (source of truth for
 creators and, later, the per-story AI agents) — clear and structured, with the BadCode voice
@@ -84,7 +84,7 @@ We keep to **two epics only** (one per branch tip) to keep the fork balanced and
 adding a third would force a fourth.
 
 ### The hub
-`docs/gitpush-origin-master.md` (expanded): tells the git-repo/fork story, sets the polyphonic stance
+`docs/stories/gitpush-origin-master.md` (expanded): tells the git-repo/fork story, sets the polyphonic stance
 and the intro two-step, maps the constellation, and **links out** to the two epics. Stays readable;
 the heavy material lives in the epics.
 
@@ -103,7 +103,7 @@ top-level epic docs.
 
 | File | Action | Contents |
 | --- | --- | --- |
-| `docs/gitpush-origin-master.md` | expand | hub: stance, intro two-step, git-repo/fork spine, the 2034 bad branch, the revert/good branch, constellation map, links to epics, open threads |
+| `docs/stories/gitpush-origin-master.md` | expand | hub: stance, intro two-step, git-repo/fork spine, the 2034 bad branch, the revert/good branch, constellation map, links to epics, open threads |
 | `docs/storyverse.md` | new | the bad-branch epic (see Storyverse canon above) |
 | `docs/future-proof.md` | new | the good-branch epic (see Future Proof canon above) |
 | `ideas/concepts/an-optimistic-lens.md` | new | constellation node (good branch), from `concept.md` template, `status: seed` |

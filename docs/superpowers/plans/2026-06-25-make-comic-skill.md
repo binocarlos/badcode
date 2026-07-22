@@ -4,7 +4,7 @@
 
 **Goal:** Author `.claude/skills/make-comic/SKILL.md` — a single self-contained skill that runs the proven idea→comic pipeline as a six-stage, gated workflow — and make it discoverable.
 
-**Architecture:** One self-contained `SKILL.md` (repo convention: skills are single files pointing at `docs/` for depth). It orchestrates existing pieces: `new-story`'s method for canon (stages 1, 2, 4), a Flow generate→harvest→record engine for images (stages 3, 5), and `@badcode/comic` + `AUTHORING.md` for assembly (stage 6). Source of truth is `docs/<story>/`; the comic is derived. Each generated image gets a markdown record (exact prompt + provenance + revision log) so iteration is first-class.
+**Architecture:** One self-contained `SKILL.md` (repo convention: skills are single files pointing at `docs/` for depth). It orchestrates existing pieces: `new-story`'s method for canon (stages 1, 2, 4), a Flow generate→harvest→record engine for images (stages 3, 5), and `@badcode/comic` + `AUTHORING.md` for assembly (stage 6). Source of truth is `docs/stories/<story>/`; the comic is derived. Each generated image gets a markdown record (exact prompt + provenance + revision log) so iteration is first-class.
 
 **Tech Stack:** Markdown (the skill + records); the `badcode` CLI conventions; Playwright MCP over CDP for Flow; `@badcode/comic` for assembly. No application code is written by this plan.
 
@@ -13,7 +13,7 @@
 - Skill name is exactly **`make-comic`**; it lives at `.claude/skills/make-comic/SKILL.md` as **one self-contained file** (no separate references file).
 - **Compose, don't duplicate:** reuse `new-story` for canon, the Flow recipe (`docs/superpowers/flow-selectors.md`) for images, `packages/comic/AUTHORING.md` for assembly. Point at these; don't restate their content.
 - **Gated stages:** every stage is *discuss → approve → produce*; never generate an image before that stage's discussion is approved.
-- **Source of truth is `docs/<story>/`**; the comic in `apps/web` is derived (stage 6). For v1, derivation copies storyboard images into the web app `public/` with a local manifest via `createComic(manifest, { baseUrl: '' })`. Bucket/`assets-build` migration is an explicit follow-up, NOT in this skill.
+- **Source of truth is `docs/stories/<story>/`**; the comic in `apps/web` is derived (stage 6). For v1, derivation copies storyboard images into the web app `public/` with a local manifest via `createComic(manifest, { baseUrl: '' })`. Bucket/`assets-build` migration is an explicit follow-up, NOT in this skill.
 - **A Flow Character for every named character.** Multi-character casting is verified (cast every relevant Character by name in a scene).
 - **Voice is load-bearing:** all prose/captions follow `docs/voice.md`; one political/economic idea per story (`docs/storytelling.md`).
 - **Image download mechanism (exact):** read the generated `<img>` `?name=<id>`; resolve via Playwright `page.request.get('https://labs.google/fx/api/trpc/media.getMediaUrlRedirect?name=<id>')` → `resp.url()` gives a signed `flow-content.google` CDN URL → `curl` it to disk. Do NOT use `fs`/`require`/`import` inside `browser_run_code_unsafe` (sandbox has none — only `page`).
@@ -60,10 +60,10 @@ Append:
 
 | # | Stage | Produces | Tool |
 |---|---|---|---|
-| 1 | Idea | docs/<story>/story.md | new-story method |
-| 2 | Characters | docs/<story>/characters/<name>.md (+ sheet desc) | new-story method |
+| 1 | Idea | docs/stories/<story>/story.md | new-story method |
+| 2 | Characters | docs/stories/<story>/characters/<name>.md (+ sheet desc) | new-story method |
 | 3 | Character images | a Flow Character + portrait + record per character | Flow engine |
-| 4 | Storyboard | docs/<story>/storyboard/index.md + pNN.md (planned) | new-story method |
+| 4 | Storyboard | docs/stories/<story>/storyboard/index.md + pNN.md (planned) | new-story method |
 | 5 | Storyboard images | one image + record per panel | Flow engine |
 | 6 | Assemble | comic .tsx + manifest + route, verified rendering | @badcode/comic |
 
@@ -74,7 +74,7 @@ output. After each stage, summarise what was produced and ask to proceed.
 
 - [ ] **Step 4: Write "Resume"**
 
-Append a "Resume" section: progress IS the artifacts — `story.md`/`characters/*` present → stages 1–2 done; a character with a recorded portrait → stage 3 done for it; `pNN.md` with `status: done` → that panel done. On invocation, inspect `docs/<story>/` and continue at the first incomplete stage/panel.
+Append a "Resume" section: progress IS the artifacts — `story.md`/`characters/*` present → stages 1–2 done; a character with a recorded portrait → stage 3 done for it; `pNN.md` with `status: done` → that panel done. On invocation, inspect `docs/stories/<story>/` and continue at the first incomplete stage/panel.
 
 - [ ] **Step 5: Verify**
 
@@ -100,11 +100,11 @@ git commit -m "feat(skill): scaffold make-comic — frontmatter, stage map, gati
 
 - [ ] **Step 1: Write Stage 1 — Idea**
 
-Append a section instructing: discuss the concept and the single load-bearing political/economic idea in BadCode voice; using `new-story`'s method, write `docs/<story>/story.md` (key concept, background, high-level beats, the twist) and `docs/<story>/README.md` (tracker). Explicitly **do not invent a brief** — take a fragment/reference. **Gate:** present the spine, ask to approve before Stage 2.
+Append a section instructing: discuss the concept and the single load-bearing political/economic idea in BadCode voice; using `new-story`'s method, write `docs/stories/<story>/story.md` (key concept, background, high-level beats, the twist) and `docs/stories/<story>/README.md` (tracker). Explicitly **do not invent a brief** — take a fragment/reference. **Gate:** present the spine, ask to approve before Stage 2.
 
 - [ ] **Step 2: Write Stage 2 — Characters**
 
-Append a section: discuss each character; write `docs/<story>/characters/<name>.md` per `new-story`, and require the **visual `sheet` description** in house style (specific, class-coded; see `docs/voice.md` image direction and the `camping`/`magic-money-tree` characters as worked examples). State that **every named character** gets a file (each becomes a Flow Character in Stage 3). **Gate:** approve character descriptions before Stage 3.
+Append a section: discuss each character; write `docs/stories/<story>/characters/<name>.md` per `new-story`, and require the **visual `sheet` description** in house style (specific, class-coded; see `docs/voice.md` image direction and the `camping`/`magic-money-tree` characters as worked examples). State that **every named character** gets a file (each becomes a Flow Character in Stage 3). **Gate:** approve character descriptions before Stage 3.
 
 - [ ] **Step 3: Verify**
 
@@ -208,7 +208,7 @@ git commit -m "feat(skill): make-comic Flow engine (connection + harvest routine
 
 - [ ] **Step 1: Write Stage 3**
 
-Append: for **every named character**, in Flow create a **Character** (Characters → "Describe your character…" → Create → name it → Done) from the character's `sheet` description; harvest the portrait via the Flow engine; save it to `docs/<story>/characters/img/<name>.jpg`; set the character file's `sheet:` frontmatter to that path; append the character record (below). Note the verified fact that scenes can later cast multiple Characters. **Gate:** show portraits; reroll any the user rejects before Stage 4.
+Append: for **every named character**, in Flow create a **Character** (Characters → "Describe your character…" → Create → name it → Done) from the character's `sheet` description; harvest the portrait via the Flow engine; save it to `docs/stories/<story>/characters/img/<name>.jpg`; set the character file's `sheet:` frontmatter to that path; append the character record (below). Note the verified fact that scenes can later cast multiple Characters. **Gate:** show portraits; reroll any the user rejects before Stage 4.
 
 - [ ] **Step 2: Write the character record format**
 
@@ -247,14 +247,14 @@ git commit -m "feat(skill): make-comic stage 3 (character images) + character re
 
 - [ ] **Step 1: Write Stage 4 — Storyboard**
 
-Append: discuss the panel sequence (beats → panels); write `docs/<story>/storyboard/index.md` (overview: a numbered list / grid of panels with one-line intents) and one `docs/<story>/storyboard/pNN.md` per panel with `status: planned`, the planned scene, the narration/speech copy (BadCode voice), and which characters appear. **Gate:** approve the board before any image is generated.
+Append: discuss the panel sequence (beats → panels); write `docs/stories/<story>/storyboard/index.md` (overview: a numbered list / grid of panels with one-line intents) and one `docs/stories/<story>/storyboard/pNN.md` per panel with `status: planned`, the planned scene, the narration/speech copy (BadCode voice), and which characters appear. **Gate:** approve the board before any image is generated.
 
 - [ ] **Step 2: Write the per-panel record format**
 
 Append the exact template:
 
 ```markdown
-### Panel record — docs/<story>/storyboard/pNN.md
+### Panel record — docs/stories/<story>/storyboard/pNN.md
 ---
 panel: 3
 characters: [dawn]
@@ -275,7 +275,7 @@ status: planned               # planned | done
 
 - [ ] **Step 3: Write Stage 5 — Storyboard images**
 
-Append: for each `pNN.md` with `status: planned`, run the Flow engine — cast every character in `characters:` by name, generate, judge, harvest to `docs/<story>/storyboard/img/pNN.jpg`; then fill `flow_media_id`, set `status: done`, embed the image, record the exact prompt, and add a revision line. **Gate:** present a contact sheet of all panels; reroll weak ones before Stage 6.
+Append: for each `pNN.md` with `status: planned`, run the Flow engine — cast every character in `characters:` by name, generate, judge, harvest to `docs/stories/<story>/storyboard/img/pNN.jpg`; then fill `flow_media_id`, set `status: done`, embed the image, record the exact prompt, and add a revision line. **Gate:** present a contact sheet of all panels; reroll weak ones before Stage 6.
 
 - [ ] **Step 4: Verify**
 
@@ -305,9 +305,9 @@ Append, referencing `packages/comic/AUTHORING.md` (do not restate it):
 
 ```markdown
 ## Stage 6 — Assemble
-Derive the comic from the storyboard (docs/<story>/ is the source):
+Derive the comic from the storyboard (docs/stories/<story>/ is the source):
 1. Copy storyboard images to apps/web/public/comics/<slug>/img/iNN.jpg
-   (source of truth stays in docs/<story>/storyboard/img/). [v1 path; bucket
+   (source of truth stays in docs/stories/<story>/storyboard/img/). [v1 path; bucket
    pipeline via `badcode assets-build` is a later follow-up.]
 2. Write apps/web/src/comics/<slug>/assets.manifest.json: basePath
    "comics/<slug>", one asset per frame ({thumbhash:"", low/high:"img/iNN.jpg",

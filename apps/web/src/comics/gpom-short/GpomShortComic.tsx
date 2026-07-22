@@ -5,9 +5,9 @@ import manifest from './assets.manifest.json'
 
 // The GPOM short — the whole master arc in sixteen panels. Frames live in
 // apps/web/public/comics/gpom-short/img (Flow pipeline). Canon + storyboard:
-// docs/gpom-short/. The commit log / cursor overlays are v1 text renderings;
+// docs/stories/gpom-short/. The commit log / cursor overlays are v1 text renderings;
 // the scroll=collapse mechanics (fog resolve, coin lands on scroll) are the
-// noted Stage-6 follow-up in docs/gpom-short/README.md.
+// noted Stage-6 follow-up in docs/stories/gpom-short/README.md.
 const comic = createComic(manifest, { baseUrl: '' })
 
 const NARR = 'rgba(6,10,20,0.82)'

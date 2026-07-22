@@ -2,15 +2,15 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Establish a standard `docs/<story>/` canon structure and a `new-story` orchestrator skill, piloted by fully capturing the **camping** story.
+**Goal:** Establish a standard `docs/stories/<story>/` canon structure and a `new-story` orchestrator skill, piloted by fully capturing the **camping** story.
 
-**Architecture:** Each story is a folder of markdown under `docs/<story>/` (the single source of truth). One `new-story` skill walks idea → captured canon, reusing the existing `docs/storytelling.md` method and `suno-prompt` skill, and (on request) deriving `apps/web/src/comics/<story>/comic.meta.ts`. v1 ships the structure + skill + camping pilot; it does **not** rewrite camping's comic slides or build codegen/video/social tooling.
+**Architecture:** Each story is a folder of markdown under `docs/stories/<story>/` (the single source of truth). One `new-story` skill walks idea → captured canon, reusing the existing `docs/storytelling.md` method and `suno-prompt` skill, and (on request) deriving `apps/web/src/comics/<story>/comic.meta.ts`. v1 ships the structure + skill + camping pilot; it does **not** rewrite camping's comic slides or build codegen/video/social tooling.
 
 **Tech Stack:** Markdown + YAML frontmatter. Claude Code skills (`.claude/skills/<name>/SKILL.md`). No new runtime dependencies.
 
 ## Global Constraints
 
-- Source of truth is `docs/<story>/`; `comic.meta.ts` is *derived*, never hand-authored as canon. (Derivation is skill-driven, deferred per story — not exercised in this plan.)
+- Source of truth is `docs/stories/<story>/`; `comic.meta.ts` is *derived*, never hand-authored as canon. (Derivation is skill-driven, deferred per story — not exercised in this plan.)
 - Structure is **medium-agnostic**: nothing assumes a story becomes a slide-based comic. `story.md` holds high-level narrative beats, never a slide list.
 - Voice is load-bearing: all prose/lyrics follow `docs/voice.md` (sarcastic, dark, total authority; politics & economics first; story over sermon).
 - Do **not** rewrite camping's comic slides; the comic already exists in `apps/web/src/comics/camping/`.
@@ -22,15 +22,15 @@
 ### Task 1: Migrate camping song into the new structure
 
 **Files:**
-- Create: `docs/camping/songs/camping.md`
-- Delete: `docs/camping/suno.md`
+- Create: `docs/stories/camping/songs/camping.md`
+- Delete: `docs/stories/camping/suno.md`
 
 **Interfaces:**
-- Produces: `docs/camping/songs/camping.md` with frontmatter keys `title`, `status`, `suno.style`, `suno.exclude`, `bpm`, `voices` — Task 4 (README tracker) and Task 6 (skill) reference this path and shape.
+- Produces: `docs/stories/camping/songs/camping.md` with frontmatter keys `title`, `status`, `suno.style`, `suno.exclude`, `bpm`, `voices` — Task 4 (README tracker) and Task 6 (skill) reference this path and shape.
 
-- [ ] **Step 1: Create `docs/camping/songs/camping.md`**
+- [ ] **Step 1: Create `docs/stories/camping/songs/camping.md`**
 
-Preserve the existing lyrics and style verbatim from `docs/camping/suno.md`; add frontmatter on top and an exclude-styles list. Content:
+Preserve the existing lyrics and style verbatim from `docs/stories/camping/suno.md`; add frontmatter on top and an exclude-styles list. Content:
 
 ```markdown
 ---
@@ -165,18 +165,18 @@ but by the time it hits, we'll be gone
 
 - [ ] **Step 2: Delete the old file**
 
-Run: `git rm docs/camping/suno.md`
-Expected: `rm 'docs/camping/suno.md'`
+Run: `git rm docs/stories/camping/suno.md`
+Expected: `rm 'docs/stories/camping/suno.md'`
 
 - [ ] **Step 3: Verify frontmatter and lyrics survived**
 
-Run: `grep -c "voices: \[bob, tarquin\]" docs/camping/songs/camping.md && grep -c "Châteauneuf-du-Pap" docs/camping/songs/camping.md`
+Run: `grep -c "voices: \[bob, tarquin\]" docs/stories/camping/songs/camping.md && grep -c "Châteauneuf-du-Pap" docs/stories/camping/songs/camping.md`
 Expected: each prints `1`
 
 - [ ] **Step 4: Commit**
 
 ```bash
-git add docs/camping/songs/camping.md docs/camping/suno.md
+git add docs/stories/camping/songs/camping.md docs/stories/camping/suno.md
 git commit -m "docs(camping): migrate song into songs/ with frontmatter
 
 Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>"
@@ -187,14 +187,14 @@ Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>"
 ### Task 2: Capture camping characters
 
 **Files:**
-- Create: `docs/camping/characters/bob.md`
-- Create: `docs/camping/characters/tarquin.md`
+- Create: `docs/stories/camping/characters/bob.md`
+- Create: `docs/stories/camping/characters/tarquin.md`
 
 **Interfaces:**
 - Consumes: character blurbs + `sheet` paths from `apps/web/src/comics/camping/comic.meta.ts` (do not modify that file).
-- Produces: `docs/camping/characters/{bob,tarquin}.md` with frontmatter keys `name`, `role`, `voice`, `sheet`, `signals`. Task 3, 4, and the skill (Task 6) rely on this shape.
+- Produces: `docs/stories/camping/characters/{bob,tarquin}.md` with frontmatter keys `name`, `role`, `voice`, `sheet`, `signals`. Task 3, 4, and the skill (Task 6) rely on this shape.
 
-- [ ] **Step 1: Create `docs/camping/characters/bob.md`**
+- [ ] **Step 1: Create `docs/stories/camping/characters/bob.md`**
 
 ```markdown
 ---
@@ -218,7 +218,7 @@ kindness. The audience's first judgement of him is exactly the judgement the
 story dismantles.
 ```
 
-- [ ] **Step 2: Create `docs/camping/characters/tarquin.md`**
+- [ ] **Step 2: Create `docs/stories/camping/characters/tarquin.md`**
 
 ```markdown
 ---
@@ -244,7 +244,7 @@ not a villain to be punished — he is us, mistaken.
 
 - [ ] **Step 3: Verify both files exist with frontmatter**
 
-Run: `for f in bob tarquin; do grep -q "^name: " docs/camping/characters/$f.md && echo "$f ok"; done`
+Run: `for f in bob tarquin; do grep -q "^name: " docs/stories/camping/characters/$f.md && echo "$f ok"; done`
 Expected:
 ```
 bob ok
@@ -254,7 +254,7 @@ tarquin ok
 - [ ] **Step 4: Commit**
 
 ```bash
-git add docs/camping/characters/bob.md docs/camping/characters/tarquin.md
+git add docs/stories/camping/characters/bob.md docs/stories/camping/characters/tarquin.md
 git commit -m "docs(camping): capture Bob and Tarquin character canon
 
 Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>"
@@ -265,13 +265,13 @@ Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>"
 ### Task 3: Capture the camping story spine
 
 **Files:**
-- Create: `docs/camping/story.md`
+- Create: `docs/stories/camping/story.md`
 
 **Interfaces:**
 - Consumes: the spine format from `docs/storytelling.md` (Key concept + Background → beats); scenes from `comic.meta.ts`; characters from Task 2.
-- Produces: `docs/camping/story.md` with frontmatter keys `id`, `title`, `logline`, `status`, `release`, `media`. Task 4's README links it.
+- Produces: `docs/stories/camping/story.md` with frontmatter keys `id`, `title`, `logline`, `status`, `release`, `media`. Task 4's README links it.
 
-- [ ] **Step 1: Create `docs/camping/story.md`**
+- [ ] **Step 1: Create `docs/stories/camping/story.md`**
 
 Beats stay **high-level** (narrative, not slides). Content:
 
@@ -335,13 +335,13 @@ kinds of people — only different distances from the same cliff.
 
 - [ ] **Step 2: Verify frontmatter media list and beats**
 
-Run: `grep -q "media: \[comic, song\]" docs/camping/story.md && grep -c "^[0-9]\." docs/camping/story.md`
+Run: `grep -q "media: \[comic, song\]" docs/stories/camping/story.md && grep -c "^[0-9]\." docs/stories/camping/story.md`
 Expected: prints `5` (five beats)
 
 - [ ] **Step 3: Commit**
 
 ```bash
-git add docs/camping/story.md
+git add docs/stories/camping/story.md
 git commit -m "docs(camping): capture story spine (concept, background, beats)
 
 Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>"
@@ -352,13 +352,13 @@ Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>"
 ### Task 4: Write the camping README (index + production tracker)
 
 **Files:**
-- Create: `docs/camping/README.md`
+- Create: `docs/stories/camping/README.md`
 
 **Interfaces:**
 - Consumes: `story.md`, `characters/*.md`, `songs/camping.md` from Tasks 1-3.
 - Produces: the canonical README/tracker shape the `new-story` skill (Task 6) will scaffold for every future story.
 
-- [ ] **Step 1: Create `docs/camping/README.md`**
+- [ ] **Step 1: Create `docs/stories/camping/README.md`**
 
 ```markdown
 # Camping
@@ -391,13 +391,13 @@ EP1, track 1. A financier and the homeless man he judged both get automated away
 
 - [ ] **Step 2: Verify links resolve**
 
-Run: `cd docs/camping && for f in story.md characters/bob.md characters/tarquin.md songs/camping.md; do test -f "$f" && echo "$f ok" || echo "$f MISSING"; done; cd - >/dev/null`
+Run: `cd docs/stories/camping && for f in story.md characters/bob.md characters/tarquin.md songs/camping.md; do test -f "$f" && echo "$f ok" || echo "$f MISSING"; done; cd - >/dev/null`
 Expected: all four print `ok`
 
 - [ ] **Step 3: Commit**
 
 ```bash
-git add docs/camping/README.md
+git add docs/stories/camping/README.md
 git commit -m "docs(camping): add README index + production tracker
 
 Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>"
@@ -412,7 +412,7 @@ Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>"
 
 **Interfaces:**
 - Consumes: the folder convention established in Tasks 1-4.
-- Produces: a documented pointer so authors know `docs/<story>/` is the home for the spine.
+- Produces: a documented pointer so authors know `docs/stories/<story>/` is the home for the spine.
 
 - [ ] **Step 1: Update the working-process step that currently points only at `ideas/`**
 
@@ -420,7 +420,7 @@ In `docs/storytelling.md`, the "Working process" list ends with a step referenci
 `ideas/` and templates. Replace that final list item with:
 
 ```markdown
-4. Capture the story in its own folder, **`docs/<story>/`** — `story.md` (concept,
+4. Capture the story in its own folder, **`docs/stories/<story>/`** — `story.md` (concept,
    background, high-level beats), `characters/<name>.md`, and `songs/<slug>.md`.
    This folder is the single source of truth; the comic's `comic.meta.ts` and any
    other media derive from it. Use the **`new-story`** skill to scaffold and drive
@@ -430,14 +430,14 @@ In `docs/storytelling.md`, the "Working process" list ends with a step referenci
 
 - [ ] **Step 2: Verify the edit landed and the old `ideas/`-only wording is gone**
 
-Run: `grep -q "docs/<story>/" docs/storytelling.md && grep -q "new-story" docs/storytelling.md && echo ok`
+Run: `grep -q "docs/stories/<story>/" docs/storytelling.md && grep -q "new-story" docs/storytelling.md && echo ok`
 Expected: `ok`
 
 - [ ] **Step 3: Commit**
 
 ```bash
 git add docs/storytelling.md
-git commit -m "docs: point storytelling working-process at docs/<story>/ canon
+git commit -m "docs: point storytelling working-process at docs/stories/<story>/ canon
 
 Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>"
 ```
@@ -451,20 +451,20 @@ Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>"
 
 **Interfaces:**
 - Consumes: `docs/storytelling.md` (method), `docs/voice.md` (tone), the `suno-prompt` skill (song), the file shapes from Tasks 1-4.
-- Produces: a skill that scaffolds `docs/<story>/` and walks idea → captured canon.
+- Produces: a skill that scaffolds `docs/stories/<story>/` and walks idea → captured canon.
 
 - [ ] **Step 1: Create `.claude/skills/new-story/SKILL.md`**
 
 ```markdown
 ---
 name: new-story
-description: Use when starting, capturing, or developing a BadCode story — scaffolds docs/<story>/ (concept, characters, beats, song) as the single source of truth and drives idea → media. Triggers on "new story", "capture this story", "let's develop <story>", "write the canon for <story>", or working on camping / Karen Will Lead the Revolution / The Emperor's New Coin / GitPush Origin Master.
+description: Use when starting, capturing, or developing a BadCode story — scaffolds docs/stories/<story>/ (concept, characters, beats, song) as the single source of truth and drives idea → media. Triggers on "new story", "capture this story", "let's develop <story>", "write the canon for <story>", or working on camping / Karen Will Lead the Revolution / The Emperor's New Coin / GitPush Origin Master.
 ---
 
 # New Story (BadCode)
 
 Take a story idea — a fragment, a reference, an existing comic, a GPOM beat — and
-capture it as canon under `docs/<story>/`, the single source of truth that the
+capture it as canon under `docs/stories/<story>/`, the single source of truth that the
 comic, the song(s), and any later media derive from. Drive it collaboratively
 from the CLI; write the files as you go.
 
@@ -475,7 +475,7 @@ from the CLI; write the files as you go.
   & economics first; story over sermon). All prose and lyrics match this.
 - `docs/storytelling.md` — the method: Key concept + Background → beats →
   characters → image direction. Do not reinvent it; follow it.
-- For canon-linked stories, skim `docs/gitpush-origin-master/README.md` to stay
+- For canon-linked stories, skim `docs/stories/gitpush-origin-master/README.md` to stay
   consistent with the arc.
 
 ## The structure you produce
@@ -484,7 +484,7 @@ A story is a folder of markdown. Source of truth. Medium-agnostic — never assu
 a story becomes a slide-based comic.
 
 ```
-docs/<story>/
+docs/stories/<story>/
   README.md            # index + production tracker (table: medium / where / status)
   story.md             # spine: Key concept, Background, high-level Beats, the twist
   characters/<name>.md # one per character (frontmatter + prose)
@@ -497,13 +497,13 @@ Frontmatter is light and is the subset machine artifacts need:
 - `characters/<name>.md`: `name, role, voice, sheet, signals`
 - `songs/<slug>.md`: `title, status, suno: {style, exclude}, bpm, voices`
 
-`docs/camping/` is the worked reference — match its shape.
+`docs/stories/camping/` is the worked reference — match its shape.
 
 ## Workflow
 
 1. **Take the idea.** Fragment, reference, existing comic, or GPOM beat. Don't
    demand a brief.
-2. **Scaffold** `docs/<story>/` with the files above.
+2. **Scaffold** `docs/stories/<story>/` with the files above.
 3. **Capture the spine** collaboratively, writing each file as it firms up:
    **Key concept** (the one idea), **Background** (real-world grounding), then
    **characters**, then **high-level beats**. For an *existing* story, reverse-
@@ -531,7 +531,7 @@ Frontmatter is light and is the subset machine artifacts need:
 
 - [ ] **Step 2: Verify the skill is discoverable**
 
-Run: `grep -q "^name: new-story" .claude/skills/new-story/SKILL.md && grep -q "docs/<story>/" .claude/skills/new-story/SKILL.md && echo ok`
+Run: `grep -q "^name: new-story" .claude/skills/new-story/SKILL.md && grep -q "docs/stories/<story>/" .claude/skills/new-story/SKILL.md && echo ok`
 Expected: `ok`
 
 - [ ] **Step 3: Commit**
@@ -559,7 +559,7 @@ Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>"
 In `CLAUDE.md`, add a row to the Repo map table (after the `ideas/` row):
 
 ```markdown
-| `docs/<story>/` | Per-story canon (concept, characters, beats, songs) — source of truth | …you're capturing or producing a story's media |
+| `docs/stories/<story>/` | Per-story canon (concept, characters, beats, songs) — source of truth | …you're capturing or producing a story's media |
 ```
 
 - [ ] **Step 2: Add a "How to work" bullet for the skill**
@@ -568,22 +568,22 @@ In the "How to work in this repo" section, add:
 
 ```markdown
 - **Capture / develop a story:** run the **`new-story`** skill
-  (`.claude/skills/new-story/`). It scaffolds `docs/<story>/` (concept,
+  (`.claude/skills/new-story/`). It scaffolds `docs/stories/<story>/` (concept,
   characters, beats, songs) as the single source of truth and drives idea →
   media, reusing `docs/storytelling.md` and the `suno-prompt` skill. Worked
-  reference: [`docs/camping/`](./docs/camping/README.md).
+  reference: [`docs/stories/camping/`](./docs/stories/camping/README.md).
 ```
 
 - [ ] **Step 3: Verify both edits landed**
 
-Run: `grep -q "docs/<story>/" CLAUDE.md && grep -q "new-story" CLAUDE.md && echo ok`
+Run: `grep -q "docs/stories/<story>/" CLAUDE.md && grep -q "new-story" CLAUDE.md && echo ok`
 Expected: `ok`
 
 - [ ] **Step 4: Commit**
 
 ```bash
 git add CLAUDE.md
-git commit -m "docs: register new-story skill + docs/<story>/ convention in CLAUDE.md
+git commit -m "docs: register new-story skill + docs/stories/<story>/ convention in CLAUDE.md
 
 Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>"
 ```
@@ -593,7 +593,7 @@ Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>"
 ## Self-review
 
 **Spec coverage:**
-- Structure (`docs/<story>/`, songs/ folder, characters/ per-file) → Tasks 1-4 (camping pilot), Task 6 (skill documents it).
+- Structure (`docs/stories/<story>/`, songs/ folder, characters/ per-file) → Tasks 1-4 (camping pilot), Task 6 (skill documents it).
 - Light frontmatter schemas → Tasks 1-3 (camping), Task 6 (skill spec).
 - `new-story` orchestrator skill → Task 6; registered → Tasks 5 & 7.
 - Skill-driven `comic.meta.ts` derivation → documented as on-request in Task 6 step 1; correctly **not** exercised (deferred per spec).

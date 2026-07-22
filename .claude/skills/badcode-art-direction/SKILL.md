@@ -64,15 +64,15 @@ the character is **attached as a reference** — naming them in prose is not eno
 
 ## The loop (per panel)
 
-1. **Plan** the prompt from the panel beat + canon (`docs/<story>/storyboard/`), in the
+1. **Plan** the prompt from the panel beat + canon (`docs/stories/<story>/storyboard/`), in the
    BadCode house style. Shape: house-style preamble + specific scene description; for character panels **attach the character reference** (see "Casting characters") and describe their signals + the specific expression the beat requires.
 2. **Critique the prompt** before sending: does it name a motivated light source, or is it relying on the AI to invent one? Does it specify the class-coded environment, or leave it generic? Does it describe the character's actual physical signals (grey stubble, lanyard, cardigan), or just name them and hope? Does it read like THIS beat from THIS story, or like a generic dramatic comic panel? Revise; say what you changed and why.
-3. **Generate** → `flow_generate_image({ prompt, outPath: "<abs>/docs/<story>/storyboard/img/pNN.png" })`.
+3. **Generate** → `flow_generate_image({ prompt, outPath: "<abs>/docs/stories/<story>/storyboard/img/pNN.png" })`.
 4. **Look** at the returned file. Critique against the beat and the Calibration list: does the face have the right exhaustion/particularity? Is the lighting motivated or AI-invented? Is the framing observational or heroic? Is the palette muted, or has warmth crept in where it doesn't belong?
 5. **Refine or accept** → if weak on one axis, `flow_refine({ prompt: "<targeted correction>", outPath })` in the same session (keeps context; is cheaper than a fresh generation); else accept.
 
 ## Record
-Write `docs/<story>/storyboard/pNN.md` with the EXACT prompt sent and a revision-log
+Write `docs/stories/<story>/storyboard/pNN.md` with the EXACT prompt sent and a revision-log
 entry matching the existing storyboard record format — `panel`, `flow_media_id`, `model`, `status`, `asset_key` (the `img/iNN.jpg` comic asset the panel renders as — the `badcode panel` resolver and the `edit-panel` skill depend on it), the prompt, and a Revisions block — so "just like that but change X" is one cheap edit.
 
 ## Scope

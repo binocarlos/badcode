@@ -67,7 +67,7 @@ Both are **project-scoped and auto-activate** when working in the repo (skills v
   │  MECHANICS — deterministic    │◀───────│  TASTE — identity + calibration │
   │  flow_status                  │ calls  │  + plan→critique→gen→critique   │
   │  flow_generate_image          │ tools  │                                 │
-  │  flow_generate_video          │        │  records docs/<story>/.../pNN.md│
+  │  flow_generate_video          │        │  records docs/stories/<story>/.../pNN.md│
   │  flow_refine                  │        └─────────────────────────────────┘
   └──────────────────────────────┘                       ▲
             │ playwright.connectOverCDP                   │ references
@@ -164,7 +164,7 @@ skill/orchestrator's job.
    - *Generate* via `flow_generate_image`.
    - *Look* at the returned image and critique it against the panel's intent.
    - *Refine* via `flow_refine` (same session) or accept.
-4. **Recording** — write `docs/<story>/storyboard/pNN.md` with the exact prompt sent and a
+4. **Recording** — write `docs/stories/<story>/storyboard/pNN.md` with the exact prompt sent and a
    revision log entry (existing format, unchanged), so "just like that but change X" stays
    one cheap step.
 
@@ -178,10 +178,10 @@ skill/orchestrator's job.
 
 1. Human runs `scripts/flow-chrome.sh` once and logs in.
 2. Inside `make-comic`, the art-direction skill plans and self-critiques a prompt.
-3. Skill calls `flow_generate_image({ prompt, outPath: docs/<story>/storyboard/img/pNN.png })`.
+3. Skill calls `flow_generate_image({ prompt, outPath: docs/stories/<story>/storyboard/img/pNN.png })`.
 4. Server drives Flow, harvests the signed URL, writes the file, returns `{ path, mediaId, … }`.
 5. Skill looks at the image, critiques vs the beat; calls `flow_refine` or accepts.
-6. Skill records the exact prompt + revision in `docs/<story>/storyboard/pNN.md`.
+6. Skill records the exact prompt + revision in `docs/stories/<story>/storyboard/pNN.md`.
 7. (Existing, unchanged) `badcode push` / `assets-build` for v2 bucket-pipeline comics.
 
 ## Testing

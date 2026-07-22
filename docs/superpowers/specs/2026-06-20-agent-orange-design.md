@@ -2,7 +2,7 @@
 
 **Date:** 2026-06-20
 **Status:** Approved design (this session). Fused master spec — supersedes the engineering-only
-seed in [`docs/AGENTS_RESEARCH.md`](../../AGENTS_RESEARCH.md), which is retained as the raw
+seed in [`docs/misc/AGENTS_RESEARCH.md`](../../misc/AGENTS_RESEARCH.md), which is retained as the raw
 research substrate (sources, build-vs-buy, verified multi-agent findings).
 **Output of:** a brainstorming thread that turned a sober agent-framework research doc into a
 BadCode art-object — a real, runnable framework whose form *is* the message.
@@ -391,7 +391,7 @@ whole point. **Borrow the runtime; build the coordination/ledger/triggering/cons
 
 ## 14. Sources
 
-Carried from the research substrate ([`docs/AGENTS_RESEARCH.md`](../../AGENTS_RESEARCH.md)):
+Carried from the research substrate ([`docs/misc/AGENTS_RESEARCH.md`](../../misc/AGENTS_RESEARCH.md)):
 
 - Magentic-One — https://arxiv.org/abs/2411.04468
 - Semantic Kernel "Magentic" orchestration — https://learn.microsoft.com/en-us/semantic-kernel/frameworks/agent/agent-orchestration/magentic

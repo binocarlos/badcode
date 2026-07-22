@@ -187,7 +187,7 @@ A short section, grounded in `docs/voice.md`: restrained, deliberate camera/elem
 - [ ] **Step 5: Write the gated per-slide loop**
 
 Write the loop as **discuss → approve → produce** (mirror make-comic's gating). Steps, with the exact commands from Task 1:
-1. Resolve the panel → manifest `basePath`, the current static image key (e.g. `img/i05`), the storyboard record `docs/<story>/storyboard/pNN.md`, and the new `anim/<key>`. Optional `to` panel for a tween.
+1. Resolve the panel → manifest `basePath`, the current static image key (e.g. `img/i05`), the storyboard record `docs/stories/<story>/storyboard/pNN.md`, and the new `anim/<key>`. Optional `to` panel for a tween.
 2. Stage the source image: `gsutil cp gs://badcode-storage/comics-v2/<comic>/<imgKey>.<ext> <local>` (both images for a `to` tween).
 3. **Gate:** discuss + approve the motion prompt before any generation.
 4. Drive Flow per `docs/superpowers/flow-video.md` (source image + motion prompt + pinned aspect; poll completion).
@@ -198,7 +198,7 @@ Write the loop as **discuss → approve → produce** (mirror make-comic's gatin
 
 - [ ] **Step 6: Write the record format + resume + iterating**
 
-Add the storyboard record format `docs/<story>/storyboard/pNN.md` (creating `storyboard/` if absent) capturing the **exact motion prompt**, Flow media id, `anim/<key>`, `model`, `status: planned|done`, and a **Revisions** log — mirroring make-comic's character/panel records. Add a **Resume** section (a `pNN.md` with `status: done` whose page already renders `AnimationWidget` is complete; else continue from the first incomplete step) and an **Iterating** section (*"just like that but slower"* — read the record, re-prompt Flow in the same session, re-harvest, re-`assets-build`, append a revision line; touch only that one panel).
+Add the storyboard record format `docs/stories/<story>/storyboard/pNN.md` (creating `storyboard/` if absent) capturing the **exact motion prompt**, Flow media id, `anim/<key>`, `model`, `status: planned|done`, and a **Revisions** log — mirroring make-comic's character/panel records. Add a **Resume** section (a `pNN.md` with `status: done` whose page already renders `AnimationWidget` is complete; else continue from the first incomplete step) and an **Iterating** section (*"just like that but slower"* — read the record, re-prompt Flow in the same session, re-harvest, re-`assets-build`, append a revision line; touch only that one panel).
 
 - [ ] **Step 7: Verify the skill end-to-end on a SECOND slide**
 
@@ -207,7 +207,7 @@ The skill's "test" is reproduction. Follow the freshly-written `SKILL.md` litera
 - [ ] **Step 8: Commit**
 
 ```bash
-git add .claude/skills/animate-slide/SKILL.md docs/karen/storyboard apps/web/src/comics/karen
+git add .claude/skills/animate-slide/SKILL.md docs/stories/karen/storyboard apps/web/src/comics/karen
 git commit -m "feat(skill): animate-slide — turn a comic slide into a Flow video
 
 Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>"

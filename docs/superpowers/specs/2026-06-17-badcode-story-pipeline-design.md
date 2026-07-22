@@ -7,7 +7,7 @@
 
 BadCode has four stories in flight — **GitPush Origin Master**, **Camping**, **Karen Will Lead
 the Revolution**, **The Emperor's New Coin** — but only GPOM is actually written down (in
-`docs/gitpush-origin-master/`). The other three exist only as comics imported from Storyteller
+`docs/stories/gitpush-origin-master/`). The other three exist only as comics imported from Storyteller
 and/or loose Suno lyrics. We now want to work idea → published media quickly and have the comic
 and the music develop *hand in hand* off a shared source.
 
@@ -21,7 +21,7 @@ from.
 ## Goals / non-goals
 
 **Goals**
-- A standard, medium-agnostic on-disk structure for a story's canon under `docs/<story>/`.
+- A standard, medium-agnostic on-disk structure for a story's canon under `docs/stories/<story>/`.
 - Light, hand-friendly frontmatter that is also the subset machine artifacts need.
 - A single `new-story` orchestrator skill that captures a story and composes existing pieces
   (`docs/storytelling.md` method, `suno-prompt` skill).
@@ -35,7 +35,7 @@ from.
 
 ## Key decisions (from brainstorm)
 
-1. **`docs/<story>/` is the single source of truth.** `apps/web/src/comics/<story>/comic.meta.ts`
+1. **`docs/stories/<story>/` is the single source of truth.** `apps/web/src/comics/<story>/comic.meta.ts`
    is *derived* from it — one place to edit, no drift.
 2. **Derivation is skill-driven for v1.** `new-story` reads the canon and writes/updates
    `comic.meta.ts` itself. No new build tooling while the format is still settling.
@@ -46,10 +46,10 @@ from.
 
 ## Structure
 
-A story is a folder of markdown under `docs/<story>/`. Example (camping):
+A story is a folder of markdown under `docs/stories/<story>/`. Example (camping):
 
 ```
-docs/camping/
+docs/stories/camping/
   README.md            # index + production tracker (what media exist, status)
   story.md             # the spine: Key concept, Background, Beats, Twist/Warning
   characters/
@@ -110,7 +110,7 @@ Lives at `.claude/skills/new-story/`. One entry point, idea → captured canon:
 
 1. **Take the idea** — a fragment, a reference, or a GPOM beat. Read context: `CLAUDE.md`,
    `docs/voice.md`, `docs/storytelling.md`.
-2. **Scaffold** `docs/<story>/` with the files above.
+2. **Scaffold** `docs/stories/<story>/` with the files above.
 3. **Capture the spine** collaboratively — Key concept, Background, then characters, then
    high-level beats — writing each to its file. For *existing* stories (camping) it
    reverse-engineers from current material (comic scenes, song lyrics) rather than inventing.
@@ -123,8 +123,8 @@ It *composes* existing assets; it does not duplicate the storytelling method or 
 ## Pilot: camping
 
 Apply the structure to camping now:
-- Scaffold `docs/camping/` → `README.md`, `story.md`, `characters/bob.md`, `characters/tarquin.md`.
-- Migrate `docs/camping/suno.md` → `docs/camping/songs/camping.md` (keep the lyrics + style blocks;
+- Scaffold `docs/stories/camping/` → `README.md`, `story.md`, `characters/bob.md`, `characters/tarquin.md`.
+- Migrate `docs/stories/camping/suno.md` → `docs/stories/camping/songs/camping.md` (keep the lyrics + style blocks;
   add frontmatter).
 - `story.md` captures concept + background + high-level beats reverse-engineered from the four
   comic scenes (in `comic.meta.ts`) and the song.
@@ -136,5 +136,5 @@ Apply the structure to camping now:
 
 - Exact `README.md` / production-tracker shape (table of media × status).
 - Whether `voice.md` should gain a short note pointing at this pipeline, and whether
-  `storytelling.md` should link `docs/<story>/` as the home for the spine.
+  `storytelling.md` should link `docs/stories/<story>/` as the home for the spine.
 - Skill front-matter (name, description, triggers) and how it announces hand-off to `suno-prompt`.

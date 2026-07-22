@@ -10,7 +10,7 @@ loop: *discuss the motion prompt → approve → produce*. Nothing is generated 
 is approved. This skill operates on a **finished comic** one panel at a time; it does not
 rebuild the whole thing.
 
-Worked path: `docs/<story>/storyboard/pNN.md` + `comics-v2/<comic>/anim/<key>/video.mp4` in
+Worked path: `docs/stories/<story>/storyboard/pNN.md` + `comics-v2/<comic>/anim/<key>/video.mp4` in
 the bucket → `badcode assets-build` (renditions/poster/manifest) →
 `<AnimationWidget animation={comic.resolveAnimation('anim/<key>')} />`.
 
@@ -44,7 +44,7 @@ this is a **local/v1 comic**. Video requires the bucket pipeline — renditions,
 must be migrated to the bucket pipeline first (a pre-existing make-comic follow-up) and stop.
 
 **No `comic.meta.ts` is touched.** The source of truth for an animated panel is the storyboard
-record (`docs/<story>/storyboard/pNN.md`) and the generated `assets.manifest.json`. The runtime
+record (`docs/stories/<story>/storyboard/pNN.md`) and the generated `assets.manifest.json`. The runtime
 does not read `comic.meta.ts` for animations; Karen's 9 working animations aren't declared there.
 (Decided: YAGNI.)
 
@@ -155,7 +155,7 @@ Gather:
 | Comic id | given by the user (e.g. `karen`) |
 | `basePath` | `assets.manifest.json` → `"basePath"` (must be `comics-v2/<comic>`) |
 | Static image key | the `<ImageWidget src={comic.resolve('<imgKey>')} />` line for this page in `<Name>Comic.tsx` (e.g. `img/i05.png`) |
-| Storyboard record | `docs/<story>/storyboard/pNN.md` (may not exist yet — create it at step 8) |
+| Storyboard record | `docs/stories/<story>/storyboard/pNN.md` (may not exist yet — create it at step 8) |
 | New animation key | choose `anim/<key>` not already in the manifest (e.g. `anim/a10` or `anim/i05` — any folder not present) |
 
 If the user passes a `to` panel (end-keyframe tween), note its image key too.
@@ -260,12 +260,12 @@ screenshot. Expected: the slide plays as a scroll-scrubbed clip.
 
 ### Step 8: Record
 
-Write (or update) `docs/<story>/storyboard/pNN.md`. Create `docs/<story>/storyboard/` if it
+Write (or update) `docs/stories/<story>/storyboard/pNN.md`. Create `docs/stories/<story>/storyboard/` if it
 doesn't exist. See the record format below.
 
 ---
 
-## Record format — `docs/<story>/storyboard/pNN.md`
+## Record format — `docs/stories/<story>/storyboard/pNN.md`
 
 ```markdown
 ---
@@ -311,7 +311,7 @@ Do not restart completed work. Do not re-generate a clip that already renders co
 
 ## Iterating — "just like that but change X"
 
-1. Open `docs/<story>/storyboard/pNN.md` and read the recorded motion prompt.
+1. Open `docs/stories/<story>/storyboard/pNN.md` and read the recorded motion prompt.
 2. Re-prompt Flow in the **same session** if it is still open — "just like that but
    `<change>`". If the session is closed, start fresh from **step 2 of the loop** (re-stage
    the source image and re-upload it to Flow per `flow-video.md`) before re-prompting — a new

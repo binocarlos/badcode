@@ -11,7 +11,7 @@ into a full comic. That's fine — this is a holding pen, not a commitment.
 - **Capture:** say *"record this idea: …"* and the **`new-idea`** skill writes a new
   `docs/ideas/<slug>.md` (an `# H1` title + a faithful prose dump) and adds a row here.
 - **Develop:** when an idea is ready to become real, `new-idea` (or you) hands it to the
-  **`new-story`** skill, which builds the full canon under `docs/<story>/` — the source of
+  **`new-story`** skill, which builds the full canon under `docs/stories/<story>/` — the source of
   truth the comic, music, and later media derive from. The row's status flips to
   `graduated` and links to the new story folder.
 - **The inbox is optional.** An idea you're already sure about can skip straight to
@@ -22,7 +22,7 @@ scannable metadata lives in the table.
 
 **Media** — any combination of `comic · music · video · software`.
 **Status** — `seed` (captured, untouched) → `developing` (being worked) →
-`graduated` (has a `docs/<story>/` folder), or `parked` (set aside on purpose).
+`graduated` (has a `docs/stories/<story>/` folder), or `parked` (set aside on purpose).
 
 ## The inbox
 
@@ -58,18 +58,18 @@ Ideas that already live beyond the inbox — listed here so this README doubles 
 central map of BadCode content. The linked folders are the source of truth; don't develop
 them from here.
 
-- [Camping](../camping/README.md) — canon drafting; comic **built & live** (Storyteller
-  import); from-scratch rebuild underway at [camping-v2](../camping-v2/README.md). EP1 track 1.
-- [Karen Will Lead the Revolution](../karen/README.md) — canon drafting; comic shell
+- [Camping](../stories/camping/README.md) — canon drafting; comic **built & live** (Storyteller
+  import); from-scratch rebuild underway at [camping-v2](../stories/camping-v2/README.md). EP1 track 1.
+- [Karen Will Lead the Revolution](../stories/karen/README.md) — canon drafting; comic shell
   registered. EP1 track 2.
-- [The Emperor's New Coin](../emperors-coin/README.md) — canon developed, drafting. EP1 track 3.
-- [Magic Money Tree](../magic-money-tree/README.md) — canon drafted; comic **built & live**
+- [The Emperor's New Coin](../stories/emperors-coin/README.md) — canon developed, drafting. EP1 track 3.
+- [Magic Money Tree](../stories/magic-money-tree/README.md) — canon drafted; comic **built & live**
   (the reference Flow-pipeline comic). Solution twin: [We Can Afford What We Can Create](we-can-afford-what-we-can-create.md).
-- [GPOM Short](../gpom-short/README.md) — 16-panel teaser of the master arc; in production.
-- [GitPush Origin Master](../gitpush-origin-master/README.md) — the master universe,
+- [GPOM Short](../stories/gpom-short/README.md) — 16-panel teaser of the master arc; in production.
+- [GitPush Origin Master](../stories/gitpush-origin-master/README.md) — the master universe,
   beat-complete: Prologue → 6 acts → Coda, plus the two branch-tip epics
-  ([Storyverse](../gitpush-origin-master/storyverse.md),
-  [Future Proof](../gitpush-origin-master/future-proof.md)) and named latent nodes
+  ([Storyverse](../stories/gitpush-origin-master/storyverse.md),
+  [Future Proof](../stories/gitpush-origin-master/future-proof.md)) and named latent nodes
   (An Optimistic Lens, the Galileo piece, the Future Proof policy fleet — which claims
   [Billionaire Coin](billionaire-coin.md)).
 - [Brand images](../images/README.md) — standalone imagery catalogue (server-hall-monolith, …).

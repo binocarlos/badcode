@@ -3,8 +3,8 @@
 We are not pretending to be master storytellers. We'd rather **stand on the shoulders of giants** —
 study how great stories work and borrow their machinery — than wing it. This doc is the method.
 
-> Companion: [`how-we-tell-it.md`](./gitpush-origin-master/how-we-tell-it.md) goes deeper on the one
-> job this doc only gestures at — conveying the [Storyverse](./gitpush-origin-master/storyverse.md)'s
+> Companion: [`how-we-tell-it.md`](./stories/gitpush-origin-master/how-we-tell-it.md) goes deeper on the one
+> job this doc only gestures at — conveying the [Storyverse](./stories/gitpush-origin-master/storyverse.md)'s
 > three big ideas (participatory
 > reality, hierarchical entanglement, multi-dimensional time) without losing the audience. The
 > skeleton, the four skins, the simplest believable framing for each pillar.
@@ -39,7 +39,7 @@ characters, the beats, and the punchline — so the audience feels the point rat
 2. Research storytelling techniques and comparable stories — find the machinery worth borrowing.
 3. Draft **beats** (scene-by-scene), then **characters** (each visual/behavioural choice loaded with
    meaning), then **image/style direction**.
-4. Capture the story in its own folder, **`docs/<story>/`** — `story.md` (concept,
+4. Capture the story in its own folder, **`docs/stories/<story>/`** — `story.md` (concept,
    background, high-level beats), `characters/<name>.md`, and `songs/<slug>.md`.
    This folder is the single source of truth; the comic's `comic.meta.ts` and any
    other media derive from it. Use the **`new-story`** skill to scaffold and drive

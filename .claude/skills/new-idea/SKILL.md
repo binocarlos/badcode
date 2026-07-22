@@ -1,6 +1,6 @@
 ---
 name: new-idea
-description: Use to record a new BadCode idea the moment it pops — parks it as a minimal prose file under docs/ideas/ and adds a row to the inbox index, then offers to develop it with new-story. Triggers on "record this idea", "new idea", "park this", "capture this idea", "jot this down", or any half-formed idea the user wants kept for later.
+description: Use to record a new BadCode idea the moment it pops — parks it as a minimal prose file under docs/ideas/ and adds a row to the inbox index, then offers to develop it with new-story. Also the distiller for rough material — a pasted conversation transcript, a rambling voice-note dump — which it turns into clean idea files via a short interview. Triggers on "record this idea", "new idea", "park this", "capture this idea", "jot this down", "here's a transcript", "distill this", or any half-formed idea the user wants kept for later.
 ---
 
 # New Idea (BadCode) — the inbox front door
@@ -13,7 +13,7 @@ it faithfully and point at the door to development.
 
 > **Front door vs. workshop.** `new-idea` answers *"should I keep this thought?"* — it
 > captures and tracks. **`new-story`** answers *"let's make this real"* — it builds the full
-> `docs/<story>/` canon. They chain; they don't overlap. The inbox is optional: a confident
+> `docs/stories/<story>/` canon. They chain; they don't overlap. The inbox is optional: a confident
 > idea can skip straight to `new-story`.
 
 ## Read first
@@ -40,6 +40,13 @@ section like the worked examples — otherwise leave it out. Keep it fast.
 
 The README table is the only structured artifact. Columns: `Idea | Hook | Media | Status`.
 
+**Routing.** `docs/ideas/` is for *content* ideas (stories, songs, shorts, images —
+things we'd make). If what's being captured is a **marketing/distribution play**
+(channels, campaigns, launch sequencing, promotion automation), hand off to the
+**`new-marketing-idea`** skill — it owns `docs/marketing/` and carries the
+marketing-specific interview. If it fits neither, park it in `docs/misc/`. See
+`docs/README.md` for the section map.
+
 - **Media** — any combination of `comic · music · video · software` (middot-separated).
   Best guess at capture time; revised freely later.
 - **Status** — `seed` → `developing` → `graduated`, or `parked`. New captures are `seed`.
@@ -61,12 +68,43 @@ The README table is the only structured artifact. Columns: `Idea | Hook | Media 
    This is a suggestion, not an automatic jump — the usual answer is "leave it," but the
    path to the workshop is always shown.
 
+### Distill (a pasted transcript or rambling dump)
+
+When the user pastes rough material — a transcript of them talking with a collaborator,
+a voice-note dump, a chaotic brain-dump — the job is **interview, then capture**. Do not
+just summarise it; rough talk usually contains several ideas tangled together, and the
+speakers know things they didn't say.
+
+1. **Read the material and split it.** List the distinct ideas you can see, each with a
+   one-line hook, and play the list back: *"I count N ideas in here: …"* Let the user
+   correct the split before anything is written.
+2. **Interview, briefly, per idea.** Ask only the questions whose answers you don't
+   already have from the material — a few at a time, not a form to fill. The key ones:
+   - **The one idea.** What's the single load-bearing political/economic point? (If it
+     takes two sentences, it might be two ideas.)
+   - **The hook.** What's the image, scene, or line that made you want to keep this?
+   - **Medium instinct.** Comic, song, short, image, marketing plan — any signal, even
+     "no idea yet" is an answer.
+   - **New or extension?** Standalone, or does it belong to an existing story
+     (`docs/stories/`) or the GPOM arc?
+   - **The punchline.** Is there a twist/ending already, or is that open?
+   - **Anything said out loud but not in the transcript?** The best line is often the
+     one that didn't get typed.
+3. **Capture each idea** via the Capture steps above (route marketing plans to
+   `docs/marketing/` per the routing note). Keep the user's vivid phrasing verbatim —
+   distilled, not rewritten.
+4. **Play back the result.** List the files written, one hook each, then the usual
+   hand-off offer per idea worth developing now.
+
+Stay light: the interview refines *capture fidelity*, not development. Characters,
+beats, and songs still belong to `new-story`.
+
 ### Develop (when the user says go — now or later)
 
 5. **Hand off to `new-story`.** Invoke the **`new-story`** skill, passing the idea file as
-   the starting fragment. Say you are handing off. `new-story` builds `docs/<story>/`.
+   the starting fragment. Say you are handing off. `new-story` builds `docs/stories/<story>/`.
 6. **Update the index row.** Flip status to `developing` while in progress, then
-   `graduated` once `docs/<story>/` exists, and point the row's link (or hook) at the new
+   `graduated` once `docs/stories/<story>/` exists, and point the row's link (or hook) at the new
    story folder. The idea file stays as the historical seed.
 
 ### Park

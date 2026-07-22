@@ -33,7 +33,7 @@ persistent browser profile) and a final spot-check; the mechanical loop runs una
 
 The pipeline is further along than "we only have the comics":
 
-- **Story canon** under `docs/<story>/` (`story.md`, `characters/*.md`, `songs/*.md`) — the
+- **Story canon** under `docs/stories/<story>/` (`story.md`, `characters/*.md`, `songs/*.md`) — the
   declared source of truth. The `new-story` skill captures it.
 - **`comic.meta.ts`** per comic — the asset/scene layer: each slide is an `asset` with a
   `scene` prompt referencing `[character]`s and prior images. *Caveat:* Camping's scenes are

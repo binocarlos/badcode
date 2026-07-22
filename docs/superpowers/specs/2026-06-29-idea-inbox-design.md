@@ -1,7 +1,7 @@
 # Design: the idea inbox — `docs/ideas/` + the `new-idea` skill
 
 > Brainstormed with Kai, 2026-06-29. A lightweight place to record ideas the second
-> they pop, sitting **upstream** of the existing `new-story` → `docs/<story>/` canon
+> they pop, sitting **upstream** of the existing `new-story` → `docs/stories/<story>/` canon
 > pipeline. Most ideas will become a comic; some carry music, video, and/or software,
 > in any combination; some are tiny (a single image, a YouTube short) and may never be
 > a full comic.
@@ -23,13 +23,13 @@ idea pops  ──/new-idea──▶  docs/ideas/<slug>.md   (seed)
                           (develop it)
                                   │ /new-idea hand-off
                                   ▼
-                          new-story skill ──▶ docs/<story>/   (full canon)
+                          new-story skill ──▶ docs/stories/<story>/   (full canon)
                                   │
-                          inbox row ──▶ status: graduated, links to docs/<story>/
+                          inbox row ──▶ status: graduated, links to docs/stories/<story>/
 ```
 
 `new-story` already owns "develop an idea into full canon." The inbox is the stage
-*before* that. The two never overlap: an idea file is a brain-dump; a `docs/<story>/`
+*before* that. The two never overlap: an idea file is a brain-dump; a `docs/stories/<story>/`
 folder is the source of truth.
 
 ### Front door vs. workshop (the two skills' relationship)
@@ -39,7 +39,7 @@ The skills feel adjacent but answer different questions, at different commitment
 - **`new-idea` — the front door.** *"Should I keep this thought?"* One prose file + an
   index row. Zero development, zero commitment. Doesn't yet care whether the idea becomes
   a comic, a shorts series, a song, or nothing. Most ideas live here as `seed` or `parked`.
-- **`new-story` — the workshop.** *"Let's make this real."* Builds the full `docs/<story>/`
+- **`new-story` — the workshop.** *"Let's make this real."* Builds the full `docs/stories/<story>/`
   canon — the source of truth the comic, music, and later media derive from. Real work.
 
 They do not collide; they **chain**. `new-story`'s own first step is "take the idea — a
@@ -91,7 +91,7 @@ seed ──▶ developing ──▶ graduated
 
 - **seed** — captured, untouched since.
 - **developing** — actively being worked (e.g. `new-story` in progress).
-- **graduated** — has a real `docs/<story>/` folder; the README row links to it. The
+- **graduated** — has a real `docs/stories/<story>/` folder; the README row links to it. The
   idea file stays as the historical seed.
 - **parked** — set aside on purpose (not dead, just not now).
 
@@ -110,7 +110,7 @@ A small skill in `.claude/skills/new-idea/`. Triggers: "record this idea", "new 
    A suggestion, not an automatic jump — the default answer is usually "leave it," but the
    door to `new-story` is always shown so the path forward is never a dead end. If the user
    says go, invoke `new-story` (passing the idea file as the starting fragment) and flip the
-   README row to `developing`/`graduated` with a link to the resulting `docs/<story>/`.
+   README row to `developing`/`graduated` with a link to the resulting `docs/stories/<story>/`.
 
 The skill stays deliberately thin: it does not develop characters, beats, or songs —
 that is `new-story`'s job. It captures, tracks, and points at the workshop door.

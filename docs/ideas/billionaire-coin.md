@@ -9,7 +9,7 @@ The egos get to feel superior, and the public will actually like them — becaus
 gamified "get the rich to pay tax."
 
 Already claimed by the good branch: this is one of the named policy-fleet nodes in
-[Future Proof](../gitpush-origin-master/future-proof.md) (GPOM's good-branch epic), so
+[Future Proof](../stories/gitpush-origin-master/future-proof.md) (GPOM's good-branch epic), so
 development likely happens there rather than as a standalone story.
 
 ---

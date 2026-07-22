@@ -57,7 +57,7 @@ Three parts, nothing else:
 ```
 flow_edit_image({
   prompt, referenceImages: [<golden>], numOutputs: 2,
-  outPath: "<abs>/docs/<story>/storyboard/img/pNN-rev<K>.jpg",   // K = revisionCount + 1
+  outPath: "<abs>/docs/stories/<story>/storyboard/img/pNN-rev<K>.jpg",   // K = revisionCount + 1
 })
 ```
 
@@ -87,7 +87,7 @@ user picks, tweaks the ask, or calls another round. Don't pick for them.
 
 ## 7. On accept
 
-1. Copy the winner over `docs/<story>/storyboard/img/pNN.<ext>` — the new golden.
+1. Copy the winner over `docs/stories/<story>/storyboard/img/pNN.<ext>` — the new golden.
 2. Copy it to `apps/web/public/comics/<comic>/<assetKey>` (`storage: "local"`), or for
    bucket comics push + rebuild the manifest (`badcode push` / `badcode assets-build`
    — see the comic's pipeline).

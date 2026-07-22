@@ -5,7 +5,7 @@ import { join } from 'node:path'
  * Resolve "page N of comic C" to everything an image-edit loop needs — the rendered
  * asset key, the panel record (exact Flow prompt, characters, media id) and the local
  * golden image — WITHOUT opening a browser. The link between the two worlds is the
- * `asset_key` frontmatter field on docs/<story>/storyboard/pNN.md records.
+ * `asset_key` frontmatter field on docs/stories/<story>/storyboard/pNN.md records.
  */
 
 export interface PanelRecord {
@@ -37,8 +37,8 @@ export interface ResolvedPanel {
 
 /** Comic id → story docs dir (repo-relative). Null = no per-panel records exist (yet). */
 const STORY_DIRS: Record<string, string | null> = {
-  'gpom-short': 'docs/gpom-short',
-  'magic-money-tree': 'docs/magic-money-tree',
+  'gpom-short': 'docs/stories/gpom-short',
+  'magic-money-tree': 'docs/stories/magic-money-tree',
   // V1 storyteller imports with no panel records; camping-v2 is a from-scratch rework
   // still in canon phase — its records link up when its comic ships.
   camping: null,

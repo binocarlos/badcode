@@ -49,7 +49,7 @@ into a full comic. That's fine — this is a holding pen, not a commitment.
 - **Capture:** say *"record this idea: …"* and the **`new-idea`** skill writes a new
   `docs/ideas/<slug>.md` (an `# H1` title + a faithful prose dump) and adds a row here.
 - **Develop:** when an idea is ready to become real, `new-idea` (or you) hands it to the
-  **`new-story`** skill, which builds the full canon under `docs/<story>/` — the source of
+  **`new-story`** skill, which builds the full canon under `docs/stories/<story>/` — the source of
   truth the comic, music, and later media derive from. The row's status flips to
   `graduated` and links to the new story folder.
 - **The inbox is optional.** An idea you're already sure about can skip straight to
@@ -60,7 +60,7 @@ scannable metadata lives in the table.
 
 **Media** — any combination of `comic · music · video · software`.
 **Status** — `seed` (captured, untouched) → `developing` (being worked) →
-`graduated` (has a `docs/<story>/` folder), or `parked` (set aside on purpose).
+`graduated` (has a `docs/stories/<story>/` folder), or `parked` (set aside on purpose).
 
 ## The inbox
 
@@ -165,7 +165,7 @@ it faithfully and point at the door to development.
 
 > **Front door vs. workshop.** `new-idea` answers *"should I keep this thought?"* — it
 > captures and tracks. **`new-story`** answers *"let's make this real"* — it builds the full
-> `docs/<story>/` canon. They chain; they don't overlap. The inbox is optional: a confident
+> `docs/stories/<story>/` canon. They chain; they don't overlap. The inbox is optional: a confident
 > idea can skip straight to `new-story`.
 
 ## Read first
@@ -216,9 +216,9 @@ The README table is the only structured artifact. Columns: `Idea | Hook | Media 
 ### Develop (when the user says go — now or later)
 
 5. **Hand off to `new-story`.** Invoke the **`new-story`** skill, passing the idea file as
-   the starting fragment. Say you are handing off. `new-story` builds `docs/<story>/`.
+   the starting fragment. Say you are handing off. `new-story` builds `docs/stories/<story>/`.
 6. **Update the index row.** Flip status to `developing` while in progress, then
-   `graduated` once `docs/<story>/` exists, and point the row's link (or hook) at the new
+   `graduated` once `docs/stories/<story>/` exists, and point the row's link (or hook) at the new
    story folder. The idea file stays as the historical seed.
 
 ### Park

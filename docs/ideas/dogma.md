@@ -8,7 +8,7 @@ they took the fucking piss).
 
 > we didn't vote for him because we like him, we voted for him because we hate you
 
-Note: GPOM's [Future Proof](../gitpush-origin-master/future-proof.md) already flags a
+Note: GPOM's [Future Proof](../stories/gitpush-origin-master/future-proof.md) already flags a
 "Galileo piece" (the dogma Galileo's victory built) — this seed is the same territory and
 should feed it.
 

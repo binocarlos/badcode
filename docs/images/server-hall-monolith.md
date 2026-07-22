@@ -8,7 +8,7 @@ used_by:                       # not yet deployed
 
 ![server-hall-monolith](server-hall-monolith.jpg)
 
-A variant of the register anchor (`docs/gpom-short/storyboard/img/p01.jpg`) with
+A variant of the register anchor (`docs/stories/gpom-short/storyboard/img/p01.jpg`) with
 the server hall slightly more readable — the light's spill lets the nearest rack
 faces register before dissolving into blackness.
 

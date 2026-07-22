@@ -1,12 +1,12 @@
 ---
 name: new-story
-description: Use when starting, capturing, or developing a BadCode story — scaffolds docs/<story>/ (concept, characters, beats, song) as the single source of truth and drives idea → media. Triggers on "new story", "capture this story", "let's develop <story>", "write the canon for <story>", or working on camping / Karen Will Lead the Revolution / The Emperor's New Coin / GitPush Origin Master.
+description: Use when starting, capturing, or developing a BadCode story — scaffolds docs/stories/<story>/ (concept, characters, beats, song) as the single source of truth and drives idea → media. Triggers on "new story", "capture this story", "let's develop <story>", "write the canon for <story>", or working on camping / Karen Will Lead the Revolution / The Emperor's New Coin / GitPush Origin Master.
 ---
 
 # New Story (BadCode)
 
 Take a story idea — a fragment, a reference, an existing comic, a GPOM beat — and
-capture it as canon under `docs/<story>/`, the single source of truth that the
+capture it as canon under `docs/stories/<story>/`, the single source of truth that the
 comic, the song(s), and any later media derive from. Drive it collaboratively
 from the CLI; write the files as you go.
 
@@ -21,7 +21,7 @@ from the CLI; write the files as you go.
   & economics first; story over sermon). All prose and lyrics match this.
 - `docs/storytelling.md` — the method: Key concept + Background → beats →
   characters → image direction. Do not reinvent it; follow it.
-- For canon-linked stories, skim `docs/gitpush-origin-master/README.md` to stay
+- For canon-linked stories, skim `docs/stories/gitpush-origin-master/README.md` to stay
   consistent with the arc.
 
 ## The structure you produce
@@ -30,7 +30,7 @@ A story is a folder of markdown. Source of truth. Medium-agnostic — never assu
 a story becomes a slide-based comic.
 
 ```
-docs/<story>/
+docs/stories/<story>/
   README.md            # index + production tracker (table: medium / where / status)
   story.md             # spine: Key concept, Background, high-level Beats, the twist
   characters/<name>.md # one per character (frontmatter + prose)
@@ -43,13 +43,13 @@ Frontmatter is light and is the subset machine artifacts need:
 - `characters/<name>.md`: `name, role, voice, sheet, signals`
 - `songs/<slug>.md`: `title, status, suno: {style, exclude}, bpm, voices`
 
-`docs/camping/` is the worked reference — match its shape.
+`docs/stories/camping/` is the worked reference — match its shape.
 
 ## Workflow
 
 1. **Take the idea.** Fragment, reference, existing comic, or GPOM beat. Don't
    demand a brief.
-2. **Scaffold** `docs/<story>/` with the files above.
+2. **Scaffold** `docs/stories/<story>/` with the files above.
 3. **Capture the spine** collaboratively, writing each file as it firms up:
    **Key concept** (the one idea), **Background** (real-world grounding), then
    **characters**, then **high-level beats**. For an *existing* story, reverse-

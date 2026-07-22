@@ -17,7 +17,7 @@ duplicate them.
   & economics first; story over sermon). All prose and captions match it.
 - `docs/storytelling.md` — the method: one load-bearing idea, real grounding,
   beats. Don't reinvent it.
-- The **`new-story`** skill — captures the `docs/<story>/` canon. Stages 1, 2, 4
+- The **`new-story`** skill — captures the `docs/stories/<story>/` canon. Stages 1, 2, 4
   delegate to its method.
 - `packages/flow-mcp/README.md` — the `flow` MCP server (tools, prerequisites).
 - `badcode-art-direction` skill — prompt craft + critique loop; invoked for every image.
@@ -28,15 +28,15 @@ duplicate them.
 
 | # | Stage | Produces | Tool |
 |---|---|---|---|
-| 1 | Idea | `docs/<story>/story.md` + `README.md` | new-story method |
-| 2 | Characters | `docs/<story>/characters/<name>.md` (+ visual `sheet` desc) | new-story method |
+| 1 | Idea | `docs/stories/<story>/story.md` + `README.md` | new-story method |
+| 2 | Characters | `docs/stories/<story>/characters/<name>.md` (+ visual `sheet` desc) | new-story method |
 | 3 | Character images | a portrait + record per character | flow MCP + art-direction |
-| 4 | Storyboard | `docs/<story>/storyboard/index.md` + `pNN.md` (planned) | new-story method |
+| 4 | Storyboard | `docs/stories/<story>/storyboard/index.md` + `pNN.md` (planned) | new-story method |
 | 5 | Storyboard images | one image + record per panel | flow MCP + art-direction |
 | 6 | Assemble | comic `.tsx` + manifest + route, verified rendering | @badcode/comic |
 
-`docs/<story>/` is the **source of truth**; the comic in `apps/web` is *derived*
-(Stage 6). Worked reference: `docs/magic-money-tree/` and
+`docs/stories/<story>/` is the **source of truth**; the comic in `apps/web` is *derived*
+(Stage 6). Worked reference: `docs/stories/magic-money-tree/` and
 `apps/web/src/comics/magic-money-tree/`.
 
 ## Gating principle
@@ -47,7 +47,7 @@ This mirrors how `superpowers:brainstorming` gates its sections.
 
 ## Resume
 
-Progress **is** the artifacts. On invocation, inspect `docs/<story>/` and
+Progress **is** the artifacts. On invocation, inspect `docs/stories/<story>/` and
 continue at the first incomplete stage/panel:
 
 - `story.md` / `characters/*` present → stages 1–2 done.
@@ -62,19 +62,19 @@ Resume; don't restart.
 
 Discuss the concept and the single load-bearing political/economic idea, in the
 BadCode voice. Take a fragment, reference, or existing material — **don't demand a
-brief.** Using `new-story`'s method, write `docs/<story>/story.md` (key concept,
-background, high-level beats, the twist) and `docs/<story>/README.md` (the
+brief.** Using `new-story`'s method, write `docs/stories/<story>/story.md` (key concept,
+background, high-level beats, the twist) and `docs/stories/<story>/README.md` (the
 tracker).
 
 **Gate:** present the spine; get approval before Stage 2.
 
 ## Stage 2 — Characters
 
-Discuss each character. Using `new-story`, write `docs/<story>/characters/<name>.md`
+Discuss each character. Using `new-story`, write `docs/stories/<story>/characters/<name>.md`
 for **every named character** — each one becomes a Flow Character in Stage 3. Each
 file must include a specific, class-coded **visual `sheet` description** in house
-style (see `docs/voice.md` image direction; `docs/camping/characters/` and
-`docs/magic-money-tree/characters/dawn.md` are worked examples).
+style (see `docs/voice.md` image direction; `docs/stories/camping/characters/` and
+`docs/stories/magic-money-tree/characters/dawn.md` are worked examples).
 
 **Gate:** approve the character descriptions before Stage 3.
 
@@ -86,13 +86,13 @@ Image generation is now deterministic via the `flow` MCP server, and prompt craf
 critique live in the **`badcode-art-direction`** skill — invoke it for every image.
 Per image: the art-direction skill plans + critiques the prompt, calls
 `flow_generate_image({ prompt, outPath })` (or `flow_refine` to correct in-session),
-and records the prompt + revision in `docs/<story>/storyboard/pNN.md`.
+and records the prompt + revision in `docs/stories/<story>/storyboard/pNN.md`.
 
 Prerequisite: `./scripts/flow-chrome.sh` running and logged in (see
 `packages/flow-mcp/README.md`). Do NOT puppeteer Flow via the Playwright MCP by hand.
 
 For **every named character**: invoke **`badcode-art-direction`** with the character's
-`sheet` description; harvest the portrait to `docs/<story>/characters/img/<name>.jpg`,
+`sheet` description; harvest the portrait to `docs/stories/<story>/characters/img/<name>.jpg`,
 set the character file's `sheet:` frontmatter to that path, and append the **character
 record** below.
 
@@ -114,15 +114,15 @@ record** below.
 
 ## Stage 4 — Storyboard
 
-Discuss the panel sequence (beats → panels). Write `docs/<story>/storyboard/index.md`
+Discuss the panel sequence (beats → panels). Write `docs/stories/<story>/storyboard/index.md`
 (an overview: numbered panels, each with a one-line intent and which characters
-appear) and one `docs/<story>/storyboard/pNN.md` per panel with `status: planned`,
+appear) and one `docs/stories/<story>/storyboard/pNN.md` per panel with `status: planned`,
 the planned scene, the narration/speech copy (BadCode voice), and the characters
 in it.
 
 **Gate:** approve the board before any image is generated.
 
-### Panel record — `docs/<story>/storyboard/pNN.md`
+### Panel record — `docs/stories/<story>/storyboard/pNN.md`
 
 ```markdown
 ---
@@ -150,14 +150,14 @@ Image generation is now deterministic via the `flow` MCP server, and prompt craf
 critique live in the **`badcode-art-direction`** skill — invoke it for every image.
 Per image: the art-direction skill plans + critiques the prompt, calls
 `flow_generate_image({ prompt, outPath })` (or `flow_refine` to correct in-session),
-and records the prompt + revision in `docs/<story>/storyboard/pNN.md`.
+and records the prompt + revision in `docs/stories/<story>/storyboard/pNN.md`.
 
 Prerequisite: `./scripts/flow-chrome.sh` running and logged in (see
 `packages/flow-mcp/README.md`). Do NOT puppeteer Flow via the Playwright MCP by hand.
 
 For each `pNN.md` with `status: planned`: invoke **`badcode-art-direction`**, casting
 **every** character listed in `characters:` by name; generate, judge, and harvest to
-`docs/<story>/storyboard/img/pNN.jpg`. Then fill `flow_media_id`, set
+`docs/stories/<story>/storyboard/img/pNN.jpg`. Then fill `flow_media_id`, set
 `status: done`, embed the image, record the **exact prompt** used, and add a
 revision line.
 
@@ -186,11 +186,11 @@ then `flow_status` → loggedIn: true) and the project is opened with
 
 ## Stage 6 — Assemble
 
-Derive the comic from the storyboard (`docs/<story>/` stays the source). Read
+Derive the comic from the storyboard (`docs/stories/<story>/` stays the source). Read
 `packages/comic/AUTHORING.md` first.
 
 1. Copy storyboard images to `apps/web/public/comics/<slug>/img/iNN.jpg` (the
-   source of truth stays in `docs/<story>/storyboard/img/`). *[v1 path; migrating
+   source of truth stays in `docs/stories/<story>/storyboard/img/`). *[v1 path; migrating
    to the `badcode assets-build` bucket pipeline is a later follow-up.]*
 2. Write `apps/web/src/comics/<slug>/assets.manifest.json`: `basePath`
    `"comics/<slug>"`, one asset per frame

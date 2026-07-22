@@ -55,18 +55,18 @@ describe('resolvePanel', () => {
     await mkdir(join(root, 'apps/web/src/comics/gpom-short'), { recursive: true })
     await mkdir(join(root, 'apps/web/public/comics/gpom-short/img'), { recursive: true })
     await writeFile(join(root, 'apps/web/public/comics/gpom-short/img/i04.jpg'), 'x')
-    await mkdir(join(root, 'docs/gpom-short/storyboard/img'), { recursive: true })
-    await writeFile(join(root, 'docs/gpom-short/storyboard/p04.md'), RECORD)
-    await writeFile(join(root, 'docs/gpom-short/storyboard/img/p04.jpg'), 'x')
+    await mkdir(join(root, 'docs/stories/gpom-short/storyboard/img'), { recursive: true })
+    await writeFile(join(root, 'docs/stories/gpom-short/storyboard/p04.md'), RECORD)
+    await writeFile(join(root, 'docs/stories/gpom-short/storyboard/img/p04.jpg'), 'x')
     // bucket-style comic dir with an anim page, reusing the same story records
     await mkdir(join(root, 'apps/web/src/comics/magic-money-tree'), { recursive: true })
     await writeFile(
       join(root, 'apps/web/src/comics/magic-money-tree/page-map.json'),
       JSON.stringify({ p01: { kind: 'anim', key: 'anim/a01' }, p02: { kind: 'image', key: 'img/i04.jpg' } }),
     )
-    await mkdir(join(root, 'docs/magic-money-tree/storyboard/img'), { recursive: true })
-    await writeFile(join(root, 'docs/magic-money-tree/storyboard/p04.md'), RECORD)
-    await writeFile(join(root, 'docs/magic-money-tree/storyboard/img/p04.jpg'), 'x')
+    await mkdir(join(root, 'docs/stories/magic-money-tree/storyboard/img'), { recursive: true })
+    await writeFile(join(root, 'docs/stories/magic-money-tree/storyboard/p04.md'), RECORD)
+    await writeFile(join(root, 'docs/stories/magic-money-tree/storyboard/img/p04.jpg'), 'x')
   })
 
   afterAll(async () => {
@@ -76,8 +76,8 @@ describe('resolvePanel', () => {
   it('resolves a local-style page to record + golden + web image', async () => {
     const r = await resolvePanel(root, 'gpom-short', 4)
     expect(r.assetKey).toBe('img/i04.jpg')
-    expect(r.record).toBe(join(root, 'docs/gpom-short/storyboard/p04.md'))
-    expect(r.golden).toBe(join(root, 'docs/gpom-short/storyboard/img/p04.jpg'))
+    expect(r.record).toBe(join(root, 'docs/stories/gpom-short/storyboard/p04.md'))
+    expect(r.golden).toBe(join(root, 'docs/stories/gpom-short/storyboard/img/p04.jpg'))
     expect(r.storage).toBe('local')
     expect(r.prompt).toContain('benefits office')
     expect(r.revisionCount).toBe(2)

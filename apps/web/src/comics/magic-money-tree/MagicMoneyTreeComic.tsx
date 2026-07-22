@@ -5,7 +5,7 @@ import manifest from './assets.manifest.json'
 
 // Frames live in apps/web/public/comics/magic-money-tree/img (generated via the
 // Flow automation pipeline). baseUrl '' resolves them from the site root, not the
-// asset bucket. See docs/magic-money-tree/ for the canon + storyboard.
+// asset bucket. See docs/stories/magic-money-tree/ for the canon + storyboard.
 const comic = createComic(manifest, { baseUrl: '' })
 
 const NARR = 'rgba(10,15,28,0.82)'

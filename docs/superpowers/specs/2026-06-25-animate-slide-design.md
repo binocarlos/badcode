@@ -76,7 +76,7 @@ image slides and animations.
 | Surface | **Standalone `animate-slide` skill** — points at any bucket-pipeline comic, reuses a shared Flow video recipe; separate from `make-comic` |
 | Build approach | **Spike-first**, mirroring the image loop: Phase 1 records the Flow video recipe by animating one real slide; Phase 2 writes the skill |
 | Storage / wiring | Follow **Karen's proven path**: clip → `anim/<key>/video.mp4` in the bucket → `assets-build` → `resolveAnimation`. **No `comic.meta.ts` change** and **no new CLI code** (gsutil + `assets-build` already cover it) |
-| Source of truth | `docs/<story>/storyboard/pNN.md` records the **exact motion prompt + Flow media id + status** (same revision-log discipline as `make-comic` images); the manifest carries the built renditions |
+| Source of truth | `docs/stories/<story>/storyboard/pNN.md` records the **exact motion prompt + Flow media id + status** (same revision-log discipline as `make-comic` images); the manifest carries the built renditions |
 
 ## The two new artifacts
 
@@ -117,7 +117,7 @@ MCP available? walk through `./scripts/flow-chrome.sh` + restart if not).
 **Per-run loop:**
 1. **Resolve the panel** → the comic's `assets.manifest.json` (confirm it is a bucket-pipeline
    manifest, `basePath: comics-v2/<comic>`) and the static image key it currently renders
-   (e.g. `img/i07`), plus the storyboard record `docs/<story>/storyboard/pNN.md`. Choose the
+   (e.g. `img/i07`), plus the storyboard record `docs/stories/<story>/storyboard/pNN.md`. Choose the
    new animation key (`anim/<key>`). If `to` is given, resolve that panel's image key too.
 2. **Stage the source image** — `gsutil cp gs://badcode-storage/comics-v2/<comic>/<imgKey>
    <local>` so it can be uploaded to Flow. (For a `to` tween, stage both.)
@@ -138,7 +138,7 @@ MCP available? walk through `./scripts/flow-chrome.sh` + restart if not).
    `<AnimationWidget animation={comic.resolveAnimation('anim/<key>')} />` in the comic `.tsx`
    (per `AUTHORING.md`). Verify (`npm run typecheck`; spot-check in `npm run dev`).
 8. **Record** — write the **exact motion prompt**, Flow media id, `anim/<key>`, and `status`
-   into `docs/<story>/storyboard/pNN.md`, plus a revision log, so *"just like that, but change
+   into `docs/stories/<story>/storyboard/pNN.md`, plus a revision log, so *"just like that, but change
    X"* is one cheap follow-up.
 
 **Resume:** progress is the artifacts — a `pNN.md` whose video record is `status: done` and

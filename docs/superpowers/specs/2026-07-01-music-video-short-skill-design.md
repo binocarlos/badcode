@@ -193,7 +193,7 @@ and continues at the first incomplete stage/scene.
 - **Automatic beat/section detection** from the returned audio. Human's note is
   the source of truth for section boundaries in v1.
 - **Anchoring to existing story canon.** v1 is standalone-lightweight only;
-  deriving a short from an existing `docs/<story>/` is a future option.
+  deriving a short from an existing `docs/stories/<story>/` is a future option.
 - **Publishing the short to the website.** Distribution is a separate concern.
 
 ## Success criteria
