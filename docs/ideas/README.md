@@ -51,6 +51,11 @@ scannable metadata lives in the table.
 | [100 (The Hundred Dollar Bill)](hundred-dollar-bill.md) | one note's biography: velocity vs. the vault | comic · music | seed |
 | [Far Wars](far-wars.md) | were there any Ewoks aboard when you dropped the bomb? | music | seed |
 | [Look at the Hand](look-at-the-hand.md) | auction today's news lens on-chain to prove the news is for sale | software · music | seed |
+| [Camping: Choose Your Own Ending](camping-bandersnatch.md) | Bandersnatch the finished Camping comic — later, not now | comic · software | parked |
+| [Kill Bots, Stand Down](kill-bots-stand-down.md) | "STOP — they're the last ones!" — the GPOM cut scene as a 10-second meme | video | seed |
+| [The BadCode Future History](badcode-future-history.md) | "2047: this happened" — retelling the next 50 years, because only BadCode knows | video | seed |
+| [Storyverse, Standalone](storyverse-standalone.md) | the GPOM physics as its own art object / website — you matter, there's no copy of you | software · comic | seed |
+| [Manifesting BadCode](manifesting-badcode.md) | making BadCode is the meta version of BadCode arriving — two idiots only | video | seed |
 
 ## Graduated & canon (the rest of the map)
 
@@ -62,12 +67,15 @@ them from here.
   import); from-scratch rebuild underway at [camping-v2](../stories/camping-v2/README.md). EP1 track 1.
 - [Karen Will Lead the Revolution](../stories/karen/README.md) — canon drafting; comic shell
   registered. EP1 track 2.
-- [The Emperor's New Coin](../stories/emperors-coin/README.md) — canon developed, drafting. EP1 track 3.
-- [Magic Money Tree](../stories/magic-money-tree/README.md) — canon drafted; comic **built & live**
-  (the reference Flow-pipeline comic). Solution twin: [We Can Afford What We Can Create](we-can-afford-what-we-can-create.md).
+- [The Emperor's New Coin](../stories/emperors-coin/README.md) — canon developed, drafting.
+  **Moved off EP1 (2026-07-22)** — its software/interactive ambitions deferred to after the EP.
+- [Magic Money Tree](../stories/magic-money-tree/README.md) — **reworked 2026-07-22** (Question Time
+  2017 → set crumbles → COVID → Bank of England vault) and **now on EP1, track 3**; the Dawn comic
+  stays live as the v1 pipeline reference. Solution twin: [We Can Afford What We Can Create](we-can-afford-what-we-can-create.md).
 - [GPOM Short](../stories/gpom-short/README.md) — 16-panel teaser of the master arc; in production.
 - [GitPush Origin Master](../stories/gitpush-origin-master/README.md) — the master universe,
-  beat-complete: Prologue → 6 acts → Coda, plus the two branch-tip epics
+  beat-complete, and **on EP1 as the title track (2026-07-22)** — the release that ends "we are
+  BadCode": Prologue → 6 acts → Coda, plus the two branch-tip epics
   ([Storyverse](../stories/gitpush-origin-master/storyverse.md),
   [Future Proof](../stories/gitpush-origin-master/future-proof.md)) and named latent nodes
   (An Optimistic Lens, the Galileo piece, the Future Proof policy fleet — which claims

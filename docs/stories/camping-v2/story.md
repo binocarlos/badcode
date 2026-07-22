@@ -123,3 +123,19 @@ Candidates considered and set aside (kept for provenance): a harder fourth-wall
 turn at the viewer (*you are Tarquin; the trip is now*); closing on the song's
 *"by the time it hits, we'll be gone."* Either could return as the song/social
 cut's framing without changing the comic's landing.
+
+**Reconfirmed 2026-07-22 (Kai + Jack), with texture:** the ending is the two of
+them making up in the car park — a **bleak-but-friendly** landing. *"Well, yeah,
+this is it then."* One of those bleak endings, but at least they're being kind
+to each other — don't judge each other too much. The story's dual-perspective
+point restated in session: Tarquin's sneer and the "why don't you just get a
+job" reflex are *both* detached responses that help nobody (the David
+Mitchell-style flinch is a survival instinct, not villainy), Bob hates having to
+beg — and at the end both perspectives sit together: *this is how we could have
+done it differently.*
+
+**Status (2026-07-22): effectively done — ~100%.** Comic, tune, and music video
+all exist; remaining work is editing a couple of slides and small tweaks. On the
+shelf doesn't mean finished forever: the choose-your-own-ending idea is parked
+in [`docs/ideas/camping-bandersnatch.md`](../../ideas/camping-bandersnatch.md)
+— deliberately *not now*.

@@ -12,6 +12,15 @@ A nurse is told there's no money for her ward — then watches the same system
 conjure billions overnight for everyone but her. Load-bearing idea: scarcity is
 manufactured; "we can't afford it" is a choice about who counts, not a fact.
 
+> **Reworked 2026-07-22 (Kai + Jack):** the story is now the realist telling —
+> Question Time 2017 ("there is no magic money tree") → the set crumbles into
+> 2020 Downing Street (COVID, £300bn out of nowhere, VIP PPE lane) → the Bank of
+> England's inner vault, where the tree that makes the paper feeds the money
+> printer. Michelle Mone's boat as the closing Easter egg. Kept deliberately
+> short. See the rework section in [`story.md`](./story.md); the Dawn version
+> stands as the v1 pipeline reference. **On EP1** (session conclusion: the four
+> EP1 stories are Camping, Karen, Magic Money Tree, GitPush Origin Master).
+
 ## Canon
 
 - [`story.md`](./story.md) — key concept, background, beats, the twist
@@ -25,5 +34,5 @@ manufactured; "we can't afford it" is a choice about who counts, not a fact.
 | Story spine | [`story.md`](./story.md) | drafted Jun 2026 |
 | Storyboard | [`storyboard.md`](./storyboard.md) | 10 panels drafted |
 | Comic | `apps/web/src/comics/magic-money-tree/` | **built** — live at `/comics/magic-money-tree`; 10 Flow-generated frames (Dawn as a Flow Character), assembled scroll comic, verified rendering. Frames served from `public/` (bucket migration is a follow-up). Panel 9 (money tree) leaned illustrative — candidate for a photoreal reroll. |
-| Song | — | not started |
+| Song | [`songs/magic-money-tree.md`](./songs/magic-money-tree.md) | Suno takes exist (Jack); best take saved with lyrics — refine via `suno-prompt`, cut hard on "there is no magic money tree" |
 | Video | — | not started |

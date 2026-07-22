@@ -47,7 +47,11 @@ what ordinary people do about it.
   redundant; eggs Karen on — "that's your best skill"), **the President** (the
   "ultimate manager", who learns the buck does *not* stop with him), and **the
   AI** (the company's, then the government's — locks the cabinet out and makes
-  them all redundant). *Name TBD — Kai floated something like "Sean AI"; confirm.*
+  them all redundant). **Name confirmed (2026-07-22): AI Sean.** Register: hard-man
+  menace, Ray Winstone-adjacent — *"don't fuck with me, sunshine."* Within the
+  GPOM frame, AI Sean is one of the thousand forms bad code takes — a
+  manifestation that gets talked to, which is why personifying him here is fine
+  while the master-arc AI stays unpersonified.
 
 ## Beats
 
@@ -88,11 +92,19 @@ what ordinary people do about it.
     redundant too. The buck did *not* stop with him.
 11. **The alliance.** Finally getting it, the President calls Karen back: *"Sorry
     I had to run. I've got an idea — we need to inspire people now. Shall we work
-    together?"* The revolution against the AI takeover begins. **We do not depict
-    it.**
+    together?"* **Expanded (2026-07-22): this is a longer conversation, and the
+    one addition the story still needs.** The President, now leading the
+    human-against-AI task force, spells out why Karen: *she was there from the
+    beginning, trying to tell everybody* — there is immense PR value in her, and
+    her persistence is exactly the muscle the resistance needs. A war-room beat
+    with Karen in it makes the alliance concrete. Keep it subtle — the point is
+    the overall idea, not blow-by-blow plot. The revolution itself we still
+    **do not depict**.
 12. **The leap — 100 years on.** A university lecture hall, half humans and half
     androids. The lecturer: *"So — who can tell me about the Karen-led Revolution
-    of 2026?"* It's canon history now; the reader fills in how it happened.
+    of 2026?"* (Session variant, 2026-07-22: *"who can tell us about when humans
+    and AI signed an accord, thanks to Karen?"* — the accord framing keeps the
+    ending cooperative rather than victorious.) It's canon history now; the reader fills in how it happened.
     Final image: a bronze statue of Karen in her phone box — a memorial to
     dedication and persistence.
 
@@ -125,12 +137,38 @@ mistake" so much as "here's the muscle you'll need when you do." Automation come
 for everyone — even the President — but organised, relentless, *persistent*
 people are the answer. Up your Karen game.
 
+Sharpened in session (2026-07-22): **it's not complaining, it's resisting.**
+Against an ever-more-authoritarian government and private corporations more
+powerful than nation states, the public's enemy only grows — and Karen is the
+one who already knows how to fight it. We're puppeting the comfortable
+middle-class person in denial about the AI coming (Gary Stevenson's point about
+the upper middle class: *you're next*); Karen was that person, got put through
+the ringer, and now warns from the outside. People who hate Karens should
+recognise the part of her they'll need to adopt. There's compassion in a
+character everyone loves to hate — and the statue proves the persistence worked.
+
 ## Open threads
 
-- **The AI's name** (see Characters) — confirm or decide.
-- **The song.** The *"I've got all day to complain"* hook is the plot engine and
-  wants to be a real BadCode track (Ari's viral tune). Hand off to the
-  `suno-prompt` skill when ready; capture the result in `songs/<slug>.md`.
-- **Release slot** — is Karen part of EP1 or a later drop? (`release:` is `tbd`.)
+- ~~**The AI's name**~~ — **resolved 2026-07-22: AI Sean** (see Characters).
+- ~~**Release slot**~~ — **resolved 2026-07-22: EP1.** The four EP1 stories are
+  Camping, Karen, Magic Money Tree, GitPush Origin Master. Karen is **next up**
+  after Camping; verdict on the story itself: solid — *send it* — it needs an
+  edit plus the expanded beat-11 conversation, nothing structural.
+- **The song — direction decided 2026-07-22, track not yet made.** Not
+  story-as-rap (tried; wasn't working). Instead a **skit structure** (Eminem-skit
+  energy, comedy sketch with the music behind it): beep-boop phone-menu
+  exchanges — *"I've lost my job, I need some help" / "OK, you're going to have
+  to wait" / "Well, I've got all day to complain, all day to complain"* — with
+  the hook as a **funk switch** (cut to wah-wah). A catchphrase in the
+  camping-song mould ("can I speak to the manager please"). **AI Sean is a voice
+  on the track** ("This isn't bad code. This is Sean."). If we're smart, the
+  name tags on the escalation ladder become the names in the song, matching the
+  comic's map zoom-outs (box → night → snowing). Hand to `suno-prompt`; capture
+  in `songs/`.
+- **The video — direction decided 2026-07-22:** the whole video is the
+  freestyle-YouTuber format — **Ari roaming with Karen, freestyling into the
+  mic**. (The comic's Ari at Home character *is* the format; think the
+  real-world freestyle-guy channels.)
 - **Tone of the 100-years frame** — how much BadCode future-narrator voice leaks
-  into the lecture-hall ending vs. playing it straight.
+  into the lecture-hall ending vs. playing it straight. (The "accord" variant in
+  beat 12 leans cooperative.)

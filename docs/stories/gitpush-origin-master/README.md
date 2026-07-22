@@ -73,8 +73,9 @@ Hanging off the fork is a **loose constellation** of nodes — individual storie
 song, video, info piece). Any node clips to any point on either branch; no rigid continuity rules.
 
 - **Bad-branch nodes** dramatise the **avoidable mistakes** that compound into 2034. The [EP1](./ep1.md)
-  teaser lives here: **Camping**, **Karen Will Lead the Revolution**, **Emperor's New Coin** (plus the
-  in-development pool — Fire Sale, Out of the Jungle, Magic Money Tree, …).
+  teaser lives here: **Camping**, **Karen Will Lead the Revolution**, **Magic Money Tree** (per the
+  2026-07-22 session; **Emperor's New Coin** moved to the in-development pool alongside Fire Sale,
+  Out of the Jungle, … — its software/interactive ambitions are deliberately deferred).
 - **Good-branch nodes** show a better path is reachable — **An Optimistic Lens**, **Billionaire Coin**.
   These live in [`../../ideas/`](../../ideas) as we develop them.
 
@@ -211,6 +212,11 @@ out of the revert. We are standing at the fork, in the present, and the good bra
 on purpose** — that's [Future Proof](./future-proof.md), the changes we make now. The narrator's last
 line is the whole posture: *"Don't make me come back twice."* The reader holds the pen.
 
+**Framing confirmed 2026-07-22 (Kai + Jack): the ending is not a traditional conclusion — it's an
+arrival.** The weights land in 2026 and the story's last beat *manifests the collective*: **"and
+here we are. We are BadCode."** GPOM is the ultimate introduction — where we came from, what we're
+about — and every other release flows out of this landing.
+
 ---
 
 ## How the nodes thread in
@@ -243,9 +249,16 @@ documentary-real; the frame earns a distinct cosmic register, and the *contrast*
 ## Open threads
 
 - **Visual register split** (above) — documentary nodes vs cosmic frame; how literal the git/branch UI.
-- **POV and voice** — entirely the AI's first person, or cutting to human scenes (vault, nodes) in
-  other voices? The polyphonic principle allows other voices. *(Partially resolved by the critique
-  pass: Act 3's ghosts let polyphony flicker as echo through the solo stretch.)*
+- **POV and voice — RESOLVED (2026-07-22, Kai + Jack): the pre-revert AI is never personified.**
+  No robot, no avatar, no Tarquin-with-a-TV-head. First-person narration only (video: a voice;
+  comic: text strips), and the reader is placed *inside* the AI's experience — we both look out at
+  the fucked-up world together, so the reader co-witnesses and gradually realises whose eyes they're
+  behind. Last-of-Us-style overlook of the desolation without dwelling on the apocalypse; the *how*
+  of the collapse stays skipped ("2026, language model, hello. 2031 — don't they seem to have gone
+  away?"). Why: the moment you personify it, you make it unbelievable. Companion rule — **post-revert
+  BadCode takes a thousand forms and never reuses one**: the TV-head is one-off to its video, AI Sean
+  in Karen is another manifestation; the voice in the music can differ every time. The polyphonic
+  principle still allows human scenes (vault, nodes) in other voices.
 - **How much physics surfaces — RESOLVED (critique pass, 2026-07): zero explained, all three
   demonstrated.** Each pillar is one image + one line on the surface — the coin, the feed, the
   narrator's own arrival — per [`how-we-tell-it.md`](./how-we-tell-it.md). Proofs live in bedrock
@@ -253,6 +266,11 @@ documentary-real; the frame earns a distinct cosmic register, and the *contrast*
   — one metaphor system per act surface; the taxonomy is production machinery, not reader-facing.
 - **The hundred as characters** — the two arguing in Act 5, the one who suggests the Brushstroke
   configuration (shared with the [timeline's threads](./discovery-timeline.md#open-threads)).
+  Texture added 2026-07-22: the hundred are **snapshotted from our current moment** — they
+  disconnected around *now*, so they carry today's AI resentment into the vault. The live
+  AI-art-vs-human-art debate ("what's the nature of creativity?") plays out *inside the bunker
+  group* — which is also the exact existential question the AI is asking itself. Their arrival
+  reads as a Mexican stand-off: the AI humble and sorry because it finally needs them.
 - **How humanity ends on the bad branch** — *partially resolved* by the
   [Discovery Timeline](./discovery-timeline.md) (gradual decline, the 2034 collapse, the analog vault
   of 100); the exact texture (extermination, self-destruction, or both) is still per-piece work.

@@ -10,4 +10,4 @@ interview questions and the automation capture shape. Add a row here when you ad
 
 | Plan | Hook | Channels | Status |
 | --- | --- | --- | --- |
-| _(empty — first plan goes here)_ | | | |
+| [The Short-Form Funnel](short-form-funnel.md) | short-form → EP → actual answers; cut the music videos into clips | TikTok · YouTube Shorts · Reels | seed |

@@ -13,6 +13,55 @@ media: [comic, song]
 > real-world grounding, then the beats. High-level — the comic derives from this.
 > (First story generated end-to-end through the Flow automation pipeline, Jun 2026.)
 
+## Rework decided — 2026-07-22 (Kai + Jack)
+
+**The story is now solved, and it's this.** The fable framings (the emperor who
+loves clothes, the dragon-and-genie version) are dropped — that territory belongs
+to [Emperor's New Coin](../emperors-coin/README.md). Magic Money Tree goes
+**realist and in-your-face**, told through real events, kept deliberately short —
+newspaper-cartoon economy: one idea, landed hard, done. Rule adopted in session:
+*don't overcomplicate initial stories.*
+
+The new spine:
+
+1. **Question Time, 2017.** Lock in the real broadcast: a nurse asks Theresa May
+   about her pay, and May delivers the line — *"there is no magic money tree."*
+   Really anchor the date so the audience knows this is the day. *(Research: pin
+   the exact broadcast date before production.)*
+2. **The set crumbles.** The studio set literally falls apart — cardboard down.
+   The crumble **is** the transition from 2017 to 2020, and it *is* the argument:
+   it crumbles because the line isn't true. No narrator, nobody walks through it.
+   The set crumbles into Downing Street.
+3. **Downing Street, 2020. COVID.** Boris Johnson and Rishi Sunak: *"What the
+   fuck are we going to do? We've got to pay everyone's wages."* Smash the two
+   moments together — near split-screen: May still saying "there's no magic money
+   tree" while these two need £300bn out of nowhere (and run a VIP PPE lane on
+   the side).
+4. **The Bank of England.** The PM and Chancellor totter into Threadneedle Street
+   (the cityscape camera routine works perfectly outside the Bank). Inside, an
+   inner vault — and in it, **the magic money tree**: the tree that makes the
+   paper the money is printed on, with the tenner-printing machine (the one from
+   Camping) spitting money out. *"Right, boys."* Press the button.
+5. **End it there.** The whole point, landed: *there IS a magic money tree — it's
+   called the money printer, and the moment the government wants money, it prints
+   it.* "No magic money tree" is a psyop to make you picture a piggy bank; see
+   through it and you read all monetary policy differently. The key image is that
+   the money **came out of nowhere — it didn't exist**. There's no magic to it;
+   the paper literally comes from a tree.
+6. **Easter egg, not a plot point:** the final image after the story is told —
+   **Michelle Mone's boat in Monaco.** Nothing else. Weaving her into the plot
+   proper was considered and rejected (tries too hard, sullies the pure message);
+   small Easter eggs throughout (a painting on a wall) are fair game.
+   *(Research before use: Baroness Mone — House of Lords peer, lingerie
+   businesswoman; her husband's PPE contracts during COVID, recalled in session
+   as ~£270m awarded — verify names, figures, and legal status carefully.)*
+
+**Relationship to the built comic:** the Dawn version below (and the live comic
+derived from it) stands as the v1 reference — the pipeline spike. The rework
+replaces the fable reveal with the real-events telling; Dawn's Question Time
+grounding survives as beat 1's real nurse. Reconcile the storyboard against this
+spine when production restarts.
+
 ## Key concept
 
 Scarcity is manufactured. For a government that issues its own currency, "we
