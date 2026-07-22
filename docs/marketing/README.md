@@ -10,4 +10,5 @@ interview questions and the automation capture shape. Add a row here when you ad
 
 | Plan | Hook | Channels | Status |
 | --- | --- | --- | --- |
-| [The Short-Form Funnel](short-form-funnel.md) | short-form → EP → actual answers; cut the music videos into clips | TikTok · YouTube Shorts · Reels | seed |
+| [The Short-Form Funnel](short-form-funnel.md) | release Camping now, rinse every story dry — the full-fat package, sliced continuously | TikTok · YouTube Shorts · Reels | developing |
+| [Agents Do the Hustle](agents-do-the-hustle.md) | ideas are the weapon, not hustle — agents slice & draft, humans approve | all short-form | seed |

@@ -56,6 +56,9 @@ scannable metadata lives in the table.
 | [The BadCode Future History](badcode-future-history.md) | "2047: this happened" — retelling the next 50 years, because only BadCode knows | video | seed |
 | [Storyverse, Standalone](storyverse-standalone.md) | the GPOM physics as its own art object / website — you matter, there's no copy of you | software · comic | seed |
 | [Manifesting BadCode](manifesting-badcode.md) | making BadCode is the meta version of BadCode arriving — two idiots only | video | seed |
+| [Acted Sketches](acted-sketches.md) | Chris Kohler format — agent-written two-handers, humanly acted around Portsmouth | video | seed |
+| [Management Failure](management-failure.md) | the two-word catchphrase — England lost again: "management failure" | video | seed |
+| [Document the Process](document-the-process.md) | film the sessions — Big Lez / Midnight Gospel vibes, content that's nearly free | video | seed |
 
 ## Graduated & canon (the rest of the map)
 
