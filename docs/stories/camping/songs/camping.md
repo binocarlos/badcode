@@ -1,6 +1,7 @@
 ---
 title: Camping
-status: drafting
+status: released v1 — superseded as the working cut by ./camping-ukg.md
+sibling: ./camping-ukg.md
 suno:
   style: >-
     Drum and bass, dark neurofunk with UK grime influence, 174 BPM. Dystopian,
@@ -25,6 +26,12 @@ voices: [bob, tarquin]
 Two voices: **Bob** (Scouse, weathered) and **Tarquin** (posh London, sneering).
 See [`../characters/bob.md`](../characters/bob.md) and
 [`../characters/tarquin.md`](../characters/tarquin.md).
+
+> **This is the released v1 — the active cut is now
+> [`camping-ukg.md`](./camping-ukg.md).** That file (the UK-garage-over-D&B take
+> of 2026-09-13) is the one to base new experiments on; it drops the drops,
+> anonymises the two voices and rewrites the bridge. This one stands as
+> released, because Jack's music video is cut to it — don't edit it to match.
 
 > **Provenance:** these lyrics predate the 2026-08-04 story restructure
 > ([`../story.md`](../story.md)) — the track and Jack's music video already

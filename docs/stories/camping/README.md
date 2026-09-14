@@ -45,8 +45,11 @@ tent, after the AI has taken even his job.
   [`characters/wank-tank.md`](./characters/wank-tank.md) — load-bearing object refs
 - [`style.md`](./style.md) — thin per-story style notes (locations, warmth
   rules, motifs)
-- [`songs/camping.md`](./songs/camping.md) — the "Camping" track (lyrics + Suno
-  style/exclude; predates the restructure)
+- [`songs/camping-ukg.md`](./songs/camping-ukg.md) — **the active cut** of the
+  "Camping" track: UK garage over D&B, round 10 recovered from Suno with the
+  boxes, sliders and model, plus the round-11 experiment grid
+- [`songs/camping.md`](./songs/camping.md) — the released v1 of the track
+  (lyrics + Suno style/exclude; predates the restructure)
 
 ## What's committed vs open
 
@@ -61,7 +64,8 @@ later). Change the story here first, then the media.
 | --- | --- | --- |
 | Story spine | [`story.md`](./story.md) | **locked structure** (2026-08-04 master notes) |
 | Storyboard (video) | [`story.md`](./story.md#storyboard--scene-by-scene-video-guide) | drafted from the spine — Jack to shoot from |
-| Song — "Camping" | [`songs/camping.md`](./songs/camping.md) | exists; lyrics predate the restructure — revisit at cut time |
+| Song — "Camping" (v1) | [`songs/camping.md`](./songs/camping.md) | **released** — Jack's music video is cut to it; lyrics predate the restructure |
+| Song — "Camping" (UKG cut) | [`songs/camping-ukg.md`](./songs/camping-ukg.md) | **active cut** — round 10 (2026-09-13) is the base; round 11 grid drafted |
 | Video | Jack, from the storyboard section of `story.md` | next up |
 | Comic | `apps/web/src/comics/camping/` | **tells the old spine** (v1 recut, 24 pages) — rebuild from this canon when the video has proven the telling |
 | Social posts | — | not started |
